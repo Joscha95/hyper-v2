@@ -25,7 +25,6 @@
 import draggable from "vuedraggable";
 import collapsable from "./collapsable.vue";
 let idGlobal = 8;
-console.log(Date.now());
 export default {
   name: "AllBlocks",
   order: 3,
