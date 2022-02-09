@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      show:false
+      show:true
     };
   },
   methods: {
@@ -41,7 +41,7 @@ export default {
   border:1px solid black;
 }
 .content{
-  width:200px;
+  width:400px;
 }
 .list-group{
   min-height:1.5em;

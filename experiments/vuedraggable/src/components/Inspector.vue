@@ -1,15 +1,17 @@
 <template>
     <div class="widget-area" v-if="store.selectedObject" >
+      <strong>object</strong>
       <draggable
         class="dragArea list-group"
         :list="store.selectedObject.from "
-        group="blocks"
+        :group="{ name: 'blocks', pull:false }"
         @change="log"
-        item-key="id"
+        @add="addedItem($event,'from')"
+        item-key="uuid"
       >
         <template #item="{ element }">
-          <div class="list-group-item" :class="store.selectedObject.id==element.id ? 'selected': '' " @click="store.selectedObject=element">
-            {{ element.name }}
+          <div class="list-group-item" :class="store.selectedObject.uuid==element.uuid ? 'selected': '' " >
+             <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.from=[]">x</span>
           </div>
         </template>
       </draggable>
@@ -23,11 +25,12 @@
         :list="store.selectedObject.to"
         group="blocks"
         @change="log"
-        item-key="id"
+        @add="addedItem($event,'to')"
+        item-key="uuid"
       >
         <template #item="{ element }">
-          <div class="list-group-item" :class="store.selectedObject.id==element.id ? 'selected': '' " @click="store.selectedObject=element">
-            {{ element.name }}
+          <div class="list-group-item" :class="store.selectedObject.uuid==element.uuid ? 'selected': '' ">
+            <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.to=[]">x</span>
           </div>
         </template>
       </draggable>
@@ -51,19 +54,31 @@ export default {
   },
   data() {
     return {
-      store,
+      store
     };
   },
   methods: {
-    log: function(evt) {
+    log(evt){
       window.console.log(evt);
+    },
+    addedItem(evt,list){
+      const ele = store.selectedObject[list][evt.newIndex];
+      store.selectedObject[list]=[ele];
     }
   }
 };
 </script>
 <style scoped>
 .list-group-item{
-  cursor:grab;
+  cursor:pointer;
+}
+
+.widget-area{
+  text-align:center
+}
+
+.name:hover{
+  text-decoration:underline
 }
 
 .selected{
