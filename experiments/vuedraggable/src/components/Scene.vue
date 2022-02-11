@@ -1,15 +1,16 @@
 <template>
     <div class="widget-area" >
+      <strong>scene</strong>
       <draggable
         class="dragArea list-group"
         :list="sceneList"
-        group="blocks"
-        :animation="150"
+        :group="{ name: 'blocks', pull: 'clone' }"
+        animation="150"
         @change="log"
-        item-key="id"
+        item-key="uuid"
       >
         <template #item="{ element }">
-          <div class="list-group-item" :class="selectedObjectId==element.id ? 'selected': '' " @click="store.selectedObject=element">
+          <div class="list-group-item" :class="selectedObjectId==element.uuid ? 'selected': '' " @click="store.selectedObject=element">
             {{ element.name }}
           </div>
         </template>
@@ -31,12 +32,12 @@ export default {
   data() {
     return {
       sceneList: [],
-      store,
+      store
     }
   },
   computed:{
     selectedObjectId(){
-      return store.selectedObject ? store.selectedObject.id : ''
+      return store.selectedObject ? store.selectedObject.uuid : ''
     }
   },
   methods: {
@@ -48,7 +49,7 @@ export default {
 </script>
 <style scoped>
 .list-group-item{
-  cursor:grab;
+  cursor:pointer;
 }
 
 .selected{

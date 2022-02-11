@@ -1,24 +1,22 @@
 <template>
-  <collapsable>
-    <div class="widget-area">
-      <h3>All blocks</h3>
-      <draggable
-        class="dragArea list-group"
-        :list="blocks"
-        :group="{ name: 'blocks', pull: 'clone', put: false }"
-        :sort="false"
-        :clone="cloneBlock"
-        @change="log"
-        item-key="id"
-      >
-        <template #item="{ element }">
-          <div class="list-group-item">
-            {{ element.name }}
-          </div>
-        </template>
-      </draggable>
-    </div>
-  </collapsable>
+  <div class="widget-area">
+    <strong>all blocks</strong>
+    <draggable
+      class="dragArea list-group"
+      :list="blocks"
+      :group="{ name: 'blocks', pull: 'clone', put: false }"
+      :sort="false"
+      :clone="cloneBlock"
+      @change="log"
+      item-key="id"
+    >
+      <template #item="{ element }">
+        <div class="list-group-item">
+          {{ element.name }}
+        </div>
+      </template>
+    </draggable>
+  </div>
 </template>
 
 <script>
