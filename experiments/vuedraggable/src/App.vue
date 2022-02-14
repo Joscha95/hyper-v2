@@ -49,7 +49,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position:absolute;
-  text-align:center;
   right:0;
   top:0;
   height:100vh;
@@ -69,8 +68,16 @@ export default {
   opacity:0.3;
 }
 
+header{
+  text-align:center
+}
+
 .highlight{
   box-shadow: 0 0 2px #2196F3;
+}
+
+.dragArea{
+  text-align:center;
 }
 
 .list-group-item{

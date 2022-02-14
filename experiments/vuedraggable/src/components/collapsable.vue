@@ -38,6 +38,7 @@ export default {
   border-radius:20px 0 0 20px;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
   padding:10px;
+  box-sizing: border-box;
 }
 
 .toggleShow{
