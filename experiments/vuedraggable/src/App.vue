@@ -66,6 +66,7 @@ export default {
 }
 .sortable-ghost{
   cursor:grab;
+  opacity:0.3;
 }
 
 .highlight{

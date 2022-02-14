@@ -1,13 +1,13 @@
 <template>
     <div class="widget-area" >
-      <strong>scene</strong>
+      <strong>composition</strong>
       <br>
       <br>
       <draggable
         class="dragArea list-group"
         :list="sceneList"
         :group="{ name: 'blocks', pull: 'clone' }"
-        :removeOnSpill="true"
+        :removeOnSpill="false"
         @spill="spill"
         animation="150"
         item-key="uuid"
@@ -48,7 +48,7 @@ export default {
       window.console.log(evt);
     },
     spill: function(evt) {
-      if(this.sceneList.splice(evt.newIndexDraggable,1)[0]==store.selectedObject) store.selectedObject=null;
+      if(this.sceneList.splice(evt.oldIndex,1)[0]==store.selectedObject) store.selectedObject=null;
     }
   }
 };

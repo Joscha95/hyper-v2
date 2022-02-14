@@ -1,7 +1,7 @@
 <template>
   <label class="toggle">
     <input type="checkbox" :checked="bool" @change="$emit('update:modelValue', $event.target.checked)">
-    <span class="slider round"><span :class="bool ? '':'active'">edit scene</span> <span :class="bool ? 'active':''"> add blocks</span></span>
+    <span class="slider round"><span :class="bool ? '':'active'">edit object</span> <span :class="bool ? 'active':''"> add blocks</span></span>
   </label>
 </template>
 
