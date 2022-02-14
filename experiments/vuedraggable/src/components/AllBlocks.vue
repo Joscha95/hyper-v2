@@ -34,10 +34,10 @@ export default {
   data() {
     return {
       blocks: [
-        { name: "dog 1", id: 1, to:[],from:[] },
-        { name: "dog 2", id: 2, to:[],from:[] },
-        { name: "dog 3", id: 3, to:[],from:[] },
-        { name: "dog 4", id: 4, to:[],from:[] }
+        { name: "dog 1", id: 1 },
+        { name: "dog 2", id: 2 },
+        { name: "dog 3", id: 3 },
+        { name: "dog 4", id: 4 }
       ]
     };
   },
@@ -50,7 +50,10 @@ export default {
         id: id,
         uuid:'_'+Date.now(),
         name: name,
-        to:[],from:[]
+        to:[],
+        from:[],
+        children:[],
+        type: content
       };
     }
   }

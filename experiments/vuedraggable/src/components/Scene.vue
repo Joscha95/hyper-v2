@@ -1,65 +1,50 @@
 <template>
     <div class="widget-area" >
-      <strong>composition</strong>
+      <strong>composition</strong><br>
       <br>
+      <div class="addgroup" @click="addGroup">
+        + new group
+      </div>
       <br>
-      <draggable
-        class="dragArea list-group"
-        :list="sceneList"
-        :group="{ name: 'blocks', pull: 'clone' }"
-        :removeOnSpill="false"
-        @spill="spill"
-        animation="150"
-        item-key="uuid"
-      >
-        <template #item="{ element }">
-          <div class="list-group-item" :class="selectedObjectId==element.uuid ? 'selected': '' " @click="store.selectedObject=element">
-            {{ element.name }}
-          </div>
-        </template>
-      </draggable>
+      <nested :children="store.sceneList"/>
     </div>
 </template>
 
 <script>
-import draggable from "vuedraggable";
+import nested from "./nested-draggable.vue";
 import {store} from '../store.js';
+
 
 let idGlobal = 8;
 export default {
   name: "Scene",
   order: 3,
-  components: {
-    draggable
-  },
-  data() {
-    return {
-      sceneList: [],
+  data(){
+    return{
       store
     }
   },
-  computed:{
-    selectedObjectId(){
-      return store.selectedObject ? store.selectedObject.uuid : ''
-    }
+  components:{
+    nested
   },
-  methods: {
-    log: function(evt) {
-      window.console.log(evt);
-    },
-    spill: function(evt) {
-      if(this.sceneList.splice(evt.oldIndex,1)[0]==store.selectedObject) store.selectedObject=null;
+  methods:{
+    addGroup: function() {
+      store.sceneList.push({
+        name:"new Group",
+        uuid:'_'+Date.now(),
+        type:'group',
+        children:[],
+        from:[],
+        to:[]
+      })
     }
   }
 };
 </script>
 <style scoped>
-.list-group-item{
-  cursor:pointer;
-}
-
-.selected{
-  color:blue;
-}
-
+  .addgroup{
+    cursor:pointer;
+    font-size:.7em;
+    text-align:right;
+  }
 </style>

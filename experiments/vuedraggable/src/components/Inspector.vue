@@ -7,7 +7,7 @@
         class="dragArea list-group"
         :class="store.selectedObject.from.length==0 ? 'empty' : ''"
         :list="store.selectedObject.from "
-        :group="{ name: 'blocks', pull:false }"
+        :group="{ name: 'blocks', pull:'clone'}"
         @change="log"
         @add="addedItem($event,'from')"
         :removeOnSpill="true"
@@ -30,7 +30,7 @@
         :class="store.selectedObject.to.length==0 ? 'empty' : ''"
         :removeOnSpill="true"
         @spill="store.selectedObject.to=[]"
-        group="blocks"
+        :group="{ name: 'blocks', pull:'clone'}"
         @change="log"
         @add="addedItem($event,'to')"
         item-key="uuid"
@@ -45,6 +45,18 @@
       <div class="meta">
         id: {{ store.selectedObject.id }}<br>
         uuid: {{ store.selectedObject.uuid }}<br>
+      </div>
+
+      <div class="" v-if="store.selectedObject.type=='group'">
+        <br>
+        <br>
+        <strong>children</strong><br>
+        <br>
+        <div  class="list-group-item"
+              v-for="(element,index) in store.selectedObject.children"
+              :class="store.selectedObject.uuid==element.uuid ? 'selected': '' ">
+          <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="removeChildFromGroup($event,index)">x</span>
+        </div>
       </div>
     </div>
 
@@ -76,6 +88,11 @@ export default {
     addedItem(evt,list){
       const ele = store.selectedObject[list][evt.newIndex];
       store.selectedObject[list]=[ele];
+    },
+    removeChildFromGroup(evt,index){
+      store.sceneList.push(
+        store.selectedObject.children.splice(index,1)[0]
+      )
     }
   }
 };
