@@ -35,16 +35,18 @@ export default {
   grid-template-rows: 100%;
   height:100%;
   float:left;
+  border-radius:20px 0 0 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  padding:10px;
 }
 
-.collapse-wrapper > div{
-  border:1px solid black;
+.toggleShow{
+  font-weight:900;
+  font-size: .9em;
 }
+
 .content{
   width:400px;
 }
-.list-group{
-  min-height:1.5em;
-  background-color:rgb(250,250,250)
-}
+
 </style>

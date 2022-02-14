@@ -5,8 +5,8 @@
     </header>
     <br>
     <div id="panel">
-      <AllBlocks v-show="addBlocks"/>
       <Scene/>
+      <AllBlocks v-show="addBlocks"/>
       <Inspector v-show="!addBlocks"/>
     </div>
   </collapsable>
@@ -23,7 +23,11 @@ import toggle from './components/toggle.vue';
 export default {
   name: 'App',
   components: {
-    AllBlocks,Inspector,collapsable,Scene,toggle
+    AllBlocks,
+    Inspector,
+    collapsable,
+    Scene,
+    toggle
   },
   data(){
     return{
@@ -34,6 +38,12 @@ export default {
 </script>
 
 <style>
+:root{
+  --border:1px solid rgb(230,230,230);
+  --gray1:rgb(250,250,250);
+  --gray2:rgb(230,230,230);
+}
+
 #app {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -46,7 +56,9 @@ export default {
 }
 
 #panel{
-  display:flex;
+  display:grid;
+  grid-template-columns: 47.5% 47.5% ;
+  grid-column-gap:5%;
 }
 
 #panel> div{
@@ -62,8 +74,15 @@ export default {
 
 .list-group-item{
   cursor:pointer;
+  padding: 10px 0;
+  border:var(--border);
 }
 .list-group-item:active{
   cursor:grabbing;
+}
+
+.list-group{
+  min-height:2.5em;
+  background-color:var(--gray1)
 }
 </style>

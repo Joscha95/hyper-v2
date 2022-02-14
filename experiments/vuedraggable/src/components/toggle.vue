@@ -38,7 +38,7 @@ export default {
  left: 0;
  right: 0;
  bottom: 0;
- background-color: rgb(240,240,240);
+ background-color: var(--gray1);
  -webkit-transition: .2s;
  transition: .2s;
  overflow:hidden;

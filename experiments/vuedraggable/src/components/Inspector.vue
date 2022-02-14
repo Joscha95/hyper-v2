@@ -1,12 +1,17 @@
 <template>
     <div class="widget-area" v-if="store.selectedObject" >
       <strong>object</strong>
+      <br>
+      <br>
       <draggable
         class="dragArea list-group"
+        :class="store.selectedObject.from.length==0 ? 'empty' : ''"
         :list="store.selectedObject.from "
         :group="{ name: 'blocks', pull:false }"
         @change="log"
         @add="addedItem($event,'from')"
+        :removeOnSpill="true"
+        @spill="store.selectedObject.from=[]"
         item-key="uuid"
       >
         <template #item="{ element }">
@@ -15,14 +20,16 @@
           </div>
         </template>
       </draggable>
-      &darr;
+      <i>&darr;</i>
       <input type="text" name="" v-model="store.selectedObject.name"><br>
-      <small>id: {{ store.selectedObject.id }}</small><br>
-      <small>uuid: {{ store.selectedObject.uuid }}</small><br>
-      &darr;
+
+      <i>&darr;</i>
       <draggable
         class="dragArea list-group"
         :list="store.selectedObject.to"
+        :class="store.selectedObject.to.length==0 ? 'empty' : ''"
+        :removeOnSpill="true"
+        @spill="store.selectedObject.to=[]"
         group="blocks"
         @change="log"
         @add="addedItem($event,'to')"
@@ -34,6 +41,11 @@
           </div>
         </template>
       </draggable>
+      <br>
+      <div class="meta">
+        id: {{ store.selectedObject.id }}<br>
+        uuid: {{ store.selectedObject.uuid }}<br>
+      </div>
     </div>
 
     <div v-else>
@@ -71,6 +83,37 @@ export default {
 <style scoped>
 .list-group-item{
   cursor:pointer;
+}
+
+.list-group.empty{
+  border: var(--border);
+
+  background-color:white;
+}
+
+input{
+  border-style:dashed;
+  padding:10px 0 10px 10px;
+  box-sizing:border-box;
+  display:inline-block;
+  width:100%;
+}
+
+.sortable-chosen,
+.sortable-ghost{
+  color:red;
+}
+
+.meta{
+  text-align:right;
+  /* color:var(--gray2); */
+  font-size:.6em;
+}
+
+
+i{
+  display: inline-block;
+  margin:1em 0;
 }
 
 .widget-area{

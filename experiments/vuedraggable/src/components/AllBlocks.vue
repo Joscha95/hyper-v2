@@ -1,6 +1,8 @@
 <template>
   <div class="widget-area">
     <strong>all blocks</strong>
+    <br>
+    <br>
     <draggable
       class="dragArea list-group"
       :list="blocks"
@@ -44,7 +46,6 @@ export default {
       window.console.log(evt);
     },
     cloneBlock({ name,id }) {
-      console.log(name);
       return {
         id: id,
         uuid:'_'+Date.now(),
@@ -56,5 +57,7 @@ export default {
 };
 </script>
 <style scoped>
-
+  .list-group-item{
+    background-color:white;
+  }
 </style>
