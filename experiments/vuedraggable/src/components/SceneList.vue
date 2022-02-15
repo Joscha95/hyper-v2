@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import nested from "./nested-draggable.vue";
+import nested from "./subcomponents/nested-draggable.vue";
 import {store} from '../store.js';
 
 
 let idGlobal = 8;
 export default {
-  name: "Scene",
+  name: "SceneList",
   order: 3,
   data(){
     return{
@@ -47,4 +47,5 @@ export default {
     font-size:.7em;
     text-align:right;
   }
+
 </style>

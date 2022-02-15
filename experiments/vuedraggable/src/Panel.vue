@@ -4,8 +4,8 @@
       <toggle v-model="addBlocks" :bool="addBlocks"/>
     </header>
     <br>
-    <div id="panel">
-      <Scene/>
+    <div id="panel-inner">
+      <SceneList/>
       <AllBlocks v-show="addBlocks"/>
       <Inspector v-show="!addBlocks"/>
     </div>
@@ -15,18 +15,18 @@
 <script>
 import AllBlocks from './components/AllBlocks.vue';
 import Inspector from './components/Inspector.vue';
-import Scene from './components/Scene.vue';
-import collapsable from './components/collapsable.vue';
-import toggle from './components/toggle.vue';
+import SceneList from './components/SceneList.vue';
+import collapsable from './components/subcomponents/collapsable.vue';
+import toggle from './components/subcomponents/toggle.vue';
 
 
 export default {
-  name: 'App',
+  name: 'Panel',
   components: {
     AllBlocks,
     Inspector,
     collapsable,
-    Scene,
+    SceneList,
     toggle
   },
   data(){
@@ -42,9 +42,10 @@ export default {
   --border:1px solid rgb(230,230,230);
   --gray1:rgb(250,250,250);
   --gray2:rgb(230,230,230);
+  --gray3:rgb(200,200,200);
 }
 
-#app {
+#panel {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -54,15 +55,16 @@ export default {
   height:100vh;
 }
 
-#panel{
+#panel-inner{
   display:grid;
   grid-template-columns: 47.5% 47.5% ;
   grid-column-gap:5%;
 }
 
-#panel> div{
+#panel-inner> div{
   flex:1;
 }
+
 .sortable-ghost{
   cursor:grab;
   opacity:0.3;
@@ -80,11 +82,21 @@ header{
   text-align:center;
 }
 
+.dragArea .dragArea{
+  width:90%;
+  display:inline-block;
+}
+
 .list-group-item{
-  cursor:pointer;
-  padding: 10px 0;
   border:var(--border);
 }
+
+.list-group-item span{
+  cursor:pointer;
+  display:inline-block;
+  padding: 10px 0;
+}
+
 .list-group-item:active{
   cursor:grabbing;
 }
@@ -92,5 +104,17 @@ header{
 .list-group{
   min-height:2.5em;
   background-color:var(--gray1)
+}
+
+.selected-by-drag{
+  border:1px solid blue !important;
+}
+
+.selected{
+  color:blue;
+}
+
+.list-group-item[type="content"] + .list-group-item[type="content"]{
+  border-top:0;
 }
 </style>

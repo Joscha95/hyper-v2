@@ -7,7 +7,8 @@
         class="dragArea list-group"
         :class="store.selectedObject.from.length==0 ? 'empty' : ''"
         :list="store.selectedObject.from "
-        :group="{ name: 'blocks', pull:'clone'}"
+        :group="{ name: 'object', pull:'clone', put:true}"
+        :sort="false"
         @change="log"
         @add="addedItem($event,'from')"
         :removeOnSpill="true"
@@ -30,8 +31,9 @@
         :class="store.selectedObject.to.length==0 ? 'empty' : ''"
         :removeOnSpill="true"
         @spill="store.selectedObject.to=[]"
-        :group="{ name: 'blocks', pull:'clone'}"
+        :group="{ name: 'object', pull:'clone', put:true}"
         @change="log"
+
         @add="addedItem($event,'to')"
         item-key="uuid"
       >
@@ -102,10 +104,24 @@ export default {
   cursor:pointer;
 }
 
+.selected-by-drag .list-group-item:not(.sortable-chosen){
+  display:none;
+}
+
 .list-group.empty{
   border: var(--border);
-
   background-color:white;
+}
+
+.list-group.empty:after{
+  content:'drag block here';
+  color:var(--gray2);
+  padding:10px;
+  display:block;
+}
+
+.selected-by-drag.list-group.empty:after{
+  display:none;
 }
 
 input{
@@ -139,10 +155,6 @@ i{
 
 .name:hover{
   text-decoration:underline
-}
-
-.selected{
-  color:blue;
 }
 
 </style>

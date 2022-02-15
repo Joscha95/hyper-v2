@@ -44,10 +44,11 @@ export default {
 .toggleShow{
   font-weight:900;
   font-size: .9em;
+  cursor:pointer;
 }
 
 .content{
-  width:400px;
+  width:40vw;
 }
 
 </style>

@@ -14,7 +14,7 @@
     >
       <template #item="{ element }">
         <div class="list-group-item">
-          {{ element.name }}
+          <span>{{ element.name }}</span>
         </div>
       </template>
     </draggable>
@@ -23,13 +23,12 @@
 
 <script>
 import draggable from "vuedraggable";
-import collapsable from "./collapsable.vue";
 let idGlobal = 8;
 export default {
   name: "AllBlocks",
   order: 3,
   components: {
-    draggable,collapsable
+    draggable
   },
   data() {
     return {
@@ -53,7 +52,7 @@ export default {
         to:[],
         from:[],
         children:[],
-        type: content
+        type: 'content'
       };
     }
   }
@@ -62,5 +61,9 @@ export default {
 <style scoped>
   .list-group-item{
     background-color:white;
+  }
+
+  .list-group-item + .list-group-item{
+    border-top:0;
   }
 </style>
