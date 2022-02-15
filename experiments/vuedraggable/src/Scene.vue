@@ -1,9 +1,21 @@
 <template lang="html">
-  <nested :children="store.sceneList"/>
+  <draggable
+    class="drag-area list-group"
+    :list="store.sceneList"
+    :group="{ name: ['blocks'],pull:false,put:true}"
+    item-key="uuid"
+  >
+  <template #item="{ element }">
+    <div class="list-group-item" :type="element.type" >
+        {{ element.name }}
+    </div>
+  </template>
+  </draggable>
+
 </template>
 
 <script>
-import nested from "./components/nested-draggable.vue";
+import draggable from "vuedraggable";
 import {store} from './store.js';
 
 export default {
@@ -13,7 +25,9 @@ export default {
     }
   },
   components:{
-    nested
+    draggable
+  },
+  methods:{
   }
 }
 </script>
@@ -21,5 +35,12 @@ export default {
 <style lang="css">
  #THREEScene{
    position: absolute;
+   top:0;
+   left:0;
+   width:100vw;
+   height:100vh;
+ }
+ .drag-area{
+   height:100%;
  }
 </style>
