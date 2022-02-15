@@ -1,5 +1,5 @@
 <template>
 	<section class="page">
-		<h1>SCENE</h1>
+		<h1>{{ $route.params.id }}</h1>
 	</section>
 </template>

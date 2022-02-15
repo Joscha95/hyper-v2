@@ -6,12 +6,7 @@
 		<br>
 		<p id="info">
 			<span id="message">{{ message }}</span>
-			<a 
-				v-if="valid"
-				:href="'https://www.are.na/channel/'+channel.id" 
-				id="channel_title" 
-				target="_blank"
-			>
+			<a v-if="valid" :href="'https://www.are.na/channel/'+channel.id" id="channel_title" target="_blank">
 				{{ channel.title }}
 			</a>
 		</p>
@@ -80,7 +75,7 @@ export default {
 			}
 		},
 		submit() {
-			console.log(this.channel)
+			console.log(channel)
 		}
 	}
 }
@@ -92,56 +87,20 @@ export default {
 		text-align: center;
 	}
 	label {
+		color: var(--main-gray-color);
 		margin-bottom: 0.5rem;
 		font-size: 0.7em;
 		display: inline-block;
 	}
-	label a {
-		color: inherit;
-		text-decoration-style: dotted;
-	}
-	input {
-		border: 1px solid black;
-		height: 2.3rem;
-		border-radius: 1px;
-		font-size: 1rem;
-		padding: 0 0.6em;
-		background-color: var(--main-faintgray-color);
-		width: 15rem;
-		display: inline-block;
-	}
-	button {
-		display: inline-block;
-		background: white;
-		border: 0;
-		height: 2.7rem;
-		border-radius: 8px;
-		padding: 0 3em;
-		font-weight: bold;
-		font-size: 1em;
-		margin-top: 2rem;
-		cursor: pointer;
-		border: 1px solid var(--main-gray-color);
-		color: var(--main-darkgray-color);
-	}
-	button:hover, button:hover {
-		border: 1px solid black;
-		color: black;
-	}
-	button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover{
-		color: var(--main-gray-color);
-		cursor: auto;
-		border: 1px solid var(--main-lightgray-color);
-		background-color: var(--main-faintgray-color);
-	}
 	#info {
+		color: var(--main-gray-color);
 		margin-bottom: 0;
 	}
 	#channel_title {
 		color: black;
 		text-decoration-style: dotted;
 	}
-	#channel_title:hover, label a:hover {
+	#channel_title:hover {
 		text-decoration-style: solid;
 	}
 </style>

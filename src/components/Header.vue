@@ -9,15 +9,6 @@
 	</header>
 </template>
 
-<script>
-export default {
-	props: {
-		appName: String,
-		channelName: String
-	}
-}
-</script>
-
 <style>
 	header {
 		top: 0;
