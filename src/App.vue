@@ -1,18 +1,20 @@
 <template>
-	<Header appName="hyper" />
-	<Setup />
+	<Header />
+	<main>
+		<router-view />
+	</main>
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import Setup from './components/Setup.vue'
-
-export default {
-	name: 'App',
-	components: { Header, Setup }
-}
+	import Header from './components/Header.vue'
+	
+	export default {
+		data() {
+			return {
+				appName: 'hyper',
+				channel: false
+			}
+		},
+		components: { Header }
+	}
 </script>
-
-<style>
-	@import './assets/css/main.css';
-</style>

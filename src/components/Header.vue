@@ -1,8 +1,11 @@
 <template>
 	<header>
-		<div id="logo"  v-bind:class="{ dark: !channelName }">{{ appName }}</div>
-		<div id="seperator" v-if="channelName">/</div>
-		<div id="channel_name" v-if="channelName"></div>
+		<div id="logo">
+			(
+				<span id="channel_name" v-if="this.$root.channelName">{{ this.$root.channelName }}</span>
+			)
+			<sup id="app_name">{{ this.$root.appName }}</sup>
+		</div>
 	</header>
 </template>
 
@@ -15,20 +18,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 	header {
-		position: fixed;
 		top: 0;
 		left: 0;
 		width: 100%;
 		padding: 1rem;
+		box-sizing: border-box;
 	}
-	#logo, #seperator, #channel_name {
+	#logo {
 		display: inline;
 		color: var(--main-gray-color);
-		margin-right: .33em;
 	}
-	#channel_name, 	#logo.dark {
-		color: var(--main-dark-color);
+	#channel_name {
+		color: var(--main-darkgray-color);
+	}
+	.header_nav_link {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
 	}
 </style>
