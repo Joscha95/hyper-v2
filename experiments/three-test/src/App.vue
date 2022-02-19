@@ -1,21 +1,21 @@
 <template>
-  <Graph/>
+  <HelloWorld />
 </template>
 
 <script>
-import Graph from './components/Graph.vue'
+import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
-    Graph
+    HelloWorld
   }
 }
 </script>
 
 <style>
 #app {
-  font-family:  Helvetica, Arial, sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

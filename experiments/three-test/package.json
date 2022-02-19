@@ -1,5 +1,5 @@
 {
-  "name": "force-graph",
+  "name": "three-test",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,13 +7,11 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "d3-force-3d": "^3.0.3",
     "three": "^0.137.5",
-    "vue": "^3.0.0",
-    "vuedraggable": "^2.24.3"
+    "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "~4.5.15",
     "@vue/compiler-sfc": "^3.0.0"
   }
 }
