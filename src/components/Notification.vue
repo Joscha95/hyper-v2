@@ -1,0 +1,55 @@
+<template>
+	<div id="notification" :class="notification.id ? 'show ' + notification.type : notification.type">{{ notification.text }}</div>
+</template>
+
+<script>
+export default {
+	props: {
+		notification: Object
+	},
+	data() {
+		return {
+			timer: null
+		}
+	},
+	watch: {
+		notification() {
+			window.clearTimeout(this.timer)
+			this.timer = setTimeout(() => { this.notification.id = false;  }, 4000)
+		}
+	}
+}
+</script>
+
+<style scoped>
+	#notification {
+		position: fixed;
+		left: 50%;
+		top: 0em;
+		width: 300px;
+		font-size: .9em;
+		transform: translate(-50%, -100%);
+		padding: 1em 1.3em;
+		border-radius: 1.5em;
+		transition: all .33s;
+		box-shadow: none;
+		box-sizing: content-box;
+	}
+	#notification.show {
+		top: 1.5em;
+		transform: translate(-50%, 0);
+		box-shadow: 0 .1em .33em rgba(0,0,0,.33);
+	}
+	.default {
+		background: var(--main-faintgray-color);
+		color: black;
+	}
+	.success {
+		background: var(--main-success-color);
+		color: white;
+	}
+	.error {
+		background: var(--main-error-color);
+		color: white;
+	}
+</style>

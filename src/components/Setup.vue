@@ -1,16 +1,23 @@
 <template>
 	<form @submit.prevent="submit">
-		<label>Input the URL of an existing <a href="https://www.are.na/" target="_blank">Are.na</a> Channel:</label>
-		<br>
-		<input type="text" v-model.trim="input" >
-		<br>
-		<p id="info">
-			<span id="message">{{ message }}</span>
-			<a v-if="valid" :href="'https://www.are.na/channel/'+channel.id" id="channel_title" target="_blank">
-				{{ channel.title }}
-			</a>
-		</p>
-		<button type="submit" :disabled="!valid">Create hyper</button>
+		<section id="channel_search">
+			<label>Input the URL of an existing <a href="https://www.are.na/" target="_blank">Are.na</a> Channel:</label>
+			<input type="text" v-model.trim="query" :class="{ valid: channel }" required>
+			<p id="info" v-if="message">
+				<span id="message">{{ message }}</span>
+				<a v-if="channel" :href="`https://www.are.na/channel/${channel.id}`" id="channel_title" target="_blank">
+					{{ channel.title }}
+				</a>
+			</p>
+		</section>
+		<section id="user_data" v-if="advance">
+			<label><strong>Mail</strong> (only used for password retrieval)</label>
+			<input type="email" v-model.trim="email" :class="{ valid: validEmail }" required><br>
+			<label><strong>Password</strong> (for managing the hyper)<span id="pwLInd">{{ password.length }} > {{ passwordMinLength-1 }}</span></label>
+			<input type="password" v-model.trim="password" :class="{ valid: password.length>passwordMinLength-1 }" minlength="{{ passwordMinLength }}" required>
+		</section>
+		<button type="submit" :disabled="!channel" v-if="!advance">Next</button>
+		<button type="submit" :disabled="!valid" v-if="advance">Create hyper</button>
 	</form>
 </template>
 
@@ -18,16 +25,21 @@
 export default {
 	data() {
 		return {
-			valid: false,
-			input: '',
+			query: '',
 			message: '',
 			channel: false,
+			advance: false,
+			valid: false,
+			email: '',
+			validEmail: false,
+			password: '',
+			passwordMinLength: 8
 		}
 	},
 	watch: {
-		input() {
-			var slug = this.input
-			var slashPos = this.input.lastIndexOf('/')
+		query() {
+			var slug = this.query
+			var slashPos = this.query.lastIndexOf('/')
 			if(slashPos != -1){
 				// string is probably a url
 				// remove trailing slash (edge case)
@@ -49,33 +61,69 @@ export default {
 				this.searchChannel(slug.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g).join('-').toLowerCase())
 			} else {
 				// if user clears the input again
-				this.valid = false
+				this.channel = false
 				this.message = ''
 			}
+		},
+		email() { 
+			( this.email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? this.validEmail=true : this.validEmail=false ) 
+			this.validate() 
+		},
+		password() { 
+			this.validate() 
 		}
 	},
 	methods: {
-		async searchChannel(slug, n = 0) {
-			this.valid = false
+		async searchChannel(slug) {
 			this.message = 'searching...'
 			try {
-				const res = await fetch('https://api.are.na/v2/channels/'+slug+'?per='+n)
+				const res = await fetch(`https://api.are.na/v2/channels/${slug}?per=15`)
 				const result = (await res.json())
 				if(result.id){
-					this.valid = true
 					this.message = 'Channel: '
 					this.channel = result
 				}else{
-					this.valid = false
+					this.channel = false
 					this.message = 'No channel found'
 				}
 			} catch (error) {
-				this.valid = false
+				this.channel = false
 				this.message = error
 			}
+			this.validate()
+		},
+		validate() {
+			(
+				!this.validEmail || 
+				this.password.length < this.passwordMinLength ||
+				this.channel == false ?
+				this.valid = false :
+				this.valid = true
+			)
 		},
 		submit() {
-			console.log(channel)
+			if(!this.advance && this.channel) {
+				// proceed to next step
+				this.advance = true
+			} else {
+				// finish, proceed to comp creation
+				const axios = require('axios').default;
+				axios.post(
+					process.env.VUE_APP_API_URL + '?r=c',
+					{ email: this.email, auth: this.password, channel: this.channel }, 
+					{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
+				)
+				.then(response => { 
+					// if scene file has been successfully written, route to scene view
+					this.$root.notify('Your hyperspace has been created', 'success')
+					this.$router.push(`/${response.data}`)
+				})
+				.catch(error => { 
+					// something went wrong writing the scene file
+					this.$root.notify(error, 'error')
+					console.log(error)
+				})
+			}
 		}
 	}
 }
@@ -83,14 +131,20 @@ export default {
 
 <style scoped>
 	form {
-		margin-top: 5rem;
+		margin: 5rem auto 0 auto;
 		text-align: center;
+		width: 18rem;
 	}
-	label {
-		color: var(--main-gray-color);
-		margin-bottom: 0.5rem;
-		font-size: 0.7em;
-		display: inline-block;
+	button {
+		margin-top: 2.5em;
+	}
+	input, label {
+		width: 100%;
+		display: block;
+	}
+	input:not(.valid, :focus) {
+		background-color: var(--main-faintgray-color);
+		color: black;
 	}
 	#info {
 		color: var(--main-gray-color);
@@ -102,5 +156,11 @@ export default {
 	}
 	#channel_title:hover {
 		text-decoration-style: solid;
+	}
+	#user_data {
+		margin-top: 2rem;
+	}
+	#pwLInd {
+		float: right;
 	}
 </style>
