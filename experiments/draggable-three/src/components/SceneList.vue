@@ -6,13 +6,12 @@
         + new group
       </div>
       <br>
-      <nested :children="store.sceneList"/>
+      <nested :children="store.sceneList" @change="onChange"/>
     </div>
 </template>
 
 <script>
 import nested from "@/components/subcomponents/nested-draggable.vue";
-import {store} from '@/store.js';
 
 
 let idGlobal = 8;
@@ -21,7 +20,7 @@ export default {
   order: 3,
   data(){
     return{
-      store
+      store:this.$root.$data.store
     }
   },
   components:{
@@ -29,14 +28,17 @@ export default {
   },
   methods:{
     addGroup: function() {
-      store.sceneList.push({
+      this.store.sceneList.push({
         name:"new Group",
-        uuid:'_'+Date.now(),
+        h_uuid:'_'+Date.now(),
         type:'group',
         children:[],
         from:[],
         to:[]
       })
+    },
+    onChange(evt){
+      this.$emit('change',evt)
     }
   }
 };

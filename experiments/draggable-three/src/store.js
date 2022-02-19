@@ -1,7 +1,10 @@
 import { reactive } from 'vue'
 
-export const store = reactive({
+const store = reactive({
   selectedObject:null,
   scene:null,
+  isDragging:false,
   sceneList:[]
 })
+
+export default store

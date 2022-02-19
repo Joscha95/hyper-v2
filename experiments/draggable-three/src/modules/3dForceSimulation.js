@@ -13,18 +13,18 @@ class ForceSimulation {
   init(){
     this.simulation.numDimensions(3)
     this.simulation.nodes(this.graphData.nodes)
-    this.simulation.force('link', d3Force3d.forceLink(this.graphData.links).id((d) => { return d.hyperID; }))
+    this.simulation.force('link', d3Force3d.forceLink(this.graphData.links).id((d) => { return d.h_uuid; }))
     .force('charge', d3Force3d.forceManyBody())
     //.force('center', d3Force3d.forceCenter())
     //.force('dagRadial', null);
-    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.hyperID,n]))
+    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_uuid,n]))
   }
 
   setNodes(nodes){
     this.simulation.nodes(this.graphData.nodes);
     this.reheat();
     this.onDataChange()
-    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.hyperID,n]))
+    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_uuid,n]))
   }
 
   setLinks(links){
@@ -43,8 +43,8 @@ class ForceSimulation {
     this.simulation.tick();
   }
 
-  getNodeById(hyperID){
-    return this.nodeMap.get(hyperID);
+  getNodeById(h_uuid){
+    return this.nodeMap.get(h_uuid);
   }
 }
 

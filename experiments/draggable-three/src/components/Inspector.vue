@@ -13,10 +13,10 @@
         @add="addedItem($event,'from')"
         :removeOnSpill="true"
         @spill="store.selectedObject.from=[]"
-        item-key="uuid"
+        item-key="h_uuid"
       >
         <template #item="{ element }">
-          <div class="list-group-item" :class="store.selectedObject.uuid==element.uuid ? 'selected': '' " >
+          <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' " >
              <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.from=[]">x</span>
           </div>
         </template>
@@ -35,10 +35,10 @@
         @change="log"
 
         @add="addedItem($event,'to')"
-        item-key="uuid"
+        item-key="h_uuid"
       >
         <template #item="{ element }">
-          <div class="list-group-item" :class="store.selectedObject.uuid==element.uuid ? 'selected': '' ">
+          <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' ">
             <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.to=[]">x</span>
           </div>
         </template>
@@ -46,7 +46,7 @@
       <br>
       <div class="meta">
         id: {{ store.selectedObject.id }}<br>
-        uuid: {{ store.selectedObject.uuid }}<br>
+        h_uuid: {{ store.selectedObject.h_uuid }}<br>
       </div>
 
       <div class="" v-if="store.selectedObject.type=='group'">
@@ -56,7 +56,7 @@
         <br>
         <div  class="list-group-item"
               v-for="(element,index) in store.selectedObject.children"
-              :class="store.selectedObject.uuid==element.uuid ? 'selected': '' ">
+              :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' ">
           <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="removeChildFromGroup($event,index)">x</span>
         </div>
       </div>
@@ -69,7 +69,6 @@
 
 <script>
 import draggable from "vuedraggable";
-import {store} from '@/store.js';
 
 let idGlobal = 8;
 export default {
@@ -80,7 +79,7 @@ export default {
   },
   data() {
     return {
-      store
+      store:this.$root.store
     };
   },
   methods: {
@@ -88,12 +87,12 @@ export default {
       window.console.log(evt);
     },
     addedItem(evt,list){
-      const ele = store.selectedObject[list][evt.newIndex];
-      store.selectedObject[list]=[ele];
+      const ele = this.store.selectedObject[list][evt.newIndex];
+      this.store.selectedObject[list]=[ele];
     },
     removeChildFromGroup(evt,index){
-      store.sceneList.push(
-        store.selectedObject.children.splice(index,1)[0]
+      this.store.sceneList.push(
+        this.store.selectedObject.children.splice(index,1)[0]
       )
     }
   }

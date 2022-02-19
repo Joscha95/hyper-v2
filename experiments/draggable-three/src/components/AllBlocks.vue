@@ -9,7 +9,9 @@
       :group="{ name: 'blocks', pull: 'clone', put: false }"
       :sort="false"
       :clone="cloneBlock"
-      @change="log"
+      @start="toggleCanvasDragTarget"
+      @end="toggleCanvasDragTarget"
+      @move="onMove"
       item-key="id"
     >
       <template #item="{ element }">
@@ -23,9 +25,9 @@
 
 <script>
 import draggable from "vuedraggable";
+
 let idGlobal = 8;
 export default {
-  name: "AllBlocks",
   order: 3,
   components: {
     draggable
@@ -37,23 +39,38 @@ export default {
         { name: "dog 2", id: 2 },
         { name: "dog 3", id: 3 },
         { name: "dog 4", id: 4 }
-      ]
+      ],
+      store:this.$root.$data.store,
+      lastSelected:null
     };
   },
   methods: {
-    log: function(evt) {
-      window.console.log(evt);
+    toggleCanvasDragTarget(e){
+      switch (e.type) {
+        case 'start':
+          this.store.isDragging=true
+          break;
+        case 'end':
+          this.store.isDragging=false
+          break;
+        default:
+      }
     },
     cloneBlock({ name,id }) {
       return {
         id: id,
-        uuid:'_'+Date.now(),
+        h_uuid:'_'+Date.now(),
         name: name,
         to:[],
         from:[],
         children:[],
-        type: 'content'
+        h_type: 'content'
       };
+    },
+    onMove(evt){
+      if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
+      this.lastSelected=evt.to;
+      this.lastSelected.classList.add('selected-by-drag')
     }
   }
 };

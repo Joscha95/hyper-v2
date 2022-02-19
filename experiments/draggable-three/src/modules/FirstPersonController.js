@@ -5,7 +5,7 @@ class FirstPersonController {
     this.enabled = true;
   	this.domElement = domElement;
   	this.camera = new THREE.PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 50000);
-    this.camera.position.set(300,300,300);
+    this.camera.position.set(300,100,0);
     this.camera.lookAt(0,0,0);
   	this.rotateSpeed = options.rotateSpeed || 0.15;
   	this.zoomSpeed = options.zoomSpeed || 1;

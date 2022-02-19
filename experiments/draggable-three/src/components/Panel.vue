@@ -1,13 +1,13 @@
 <template>
   <collapsable id="panel">
     <header>
-      <span @click="activeWidget=addBlocks">add blocks</span>
-      <span @click="activeWidget=editScene">edit scene</span>
+      <span @click="activeWidget='addBlocks'">blocks</span>
+      <span @click="activeWidget='editScene'"> object</span>
     </header>
     <br>
     <div id="panel-inner">
-      <SceneList/>
       <AllBlocks v-if="activeWidget=='addBlocks'"/>
+      <SceneList/>
       <Inspector v-if="activeWidget=='editScene'"/>
     </div>
   </collapsable>

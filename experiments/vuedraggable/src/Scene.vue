@@ -16,7 +16,7 @@
 
 <script>
 import draggable from "vuedraggable";
-import {store} from './store.js';
+import {store} from '@/store.js';
 
 export default {
   data(){

@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import FirstPersonController from './FirstPersonController.js'
 import Globe from './GlobeHelper.js'
+import LineHelper from './LineHelper.js'
 
 class THREEScene {
   constructor(domparent,forceSimulation,cameraSettings) {
@@ -14,13 +15,20 @@ class THREEScene {
     this.cameraController=new FirstPersonController(domparent,cameraSettings);
     this.planes=[];
     this.defaultMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+    this.mouse=new THREE.Vector2();
+    this.raycaster = new THREE.Raycaster();
+    this.lineHelper=new LineHelper();
+    this.scene.add(this.lineHelper.line);
+
+    domparent.addEventListener('click',(e)=>this.onClick(e));
+    domparent.addEventListener('mousemove',(e)=>this.onMousemove(e));
 
     this.globeHelper = new Globe(3000, 16, 32, 64, 'white'); // Radius, num lat, num lon, segments, color
     this.globeHelper.position.copy(this.cameraController.camera.position);
     this.scene.add(this.globeHelper);
 
     const helper= new THREE.GridHelper(3,3);
-    helper.scale.setScalar(200);
+    helper.scale.setScalar(100);
     this.scene.add(helper);
 
     this.renderer=new THREE.WebGLRenderer({ antialias: true });
@@ -53,7 +61,7 @@ class THREEScene {
     let simPos;
     const simIsHot=this.forceSimulation.isHot;
     this.planes.forEach((item, i) => {
-      simPos=this.forceSimulation.getNodeById(item.hyperID);
+      simPos=this.forceSimulation.getNodeById(item.h_uuid);
       item.position.set(simPos.x,simPos.y,simPos.z);
       if (simIsHot) {
         item.lookAt(this.cameraController.camera.position)
@@ -65,11 +73,8 @@ class THREEScene {
   }
 
   importNodes(){
-
     this.forceSimulation.simulation.nodes().forEach((item, i) => {
-      const geometry = new THREE.PlaneGeometry( 100, 100 );
-      const plane = new THREE.Mesh( geometry, this.defaultMat );
-      plane.hyperID=item.hyperID;
+      const plane=createPlane(item,this.defaultMat)
       this.planes.push(plane);
       this.scene.add(plane)
     });
@@ -80,23 +85,22 @@ class THREEScene {
     const nodes = this.forceSimulation.simulation.nodes();
     const planes = this.planes;
     const toAdd =  nodes.filter((n)=>{
-        return !planes.some((p) => n.hyperID==p.hyperID)
+        return !planes.some((p) => n.h_uuid==p.h_uuid)
       });
     toAdd.forEach((item, i) => {
-        const geometry = new THREE.PlaneGeometry( 100, 100 );
-        const plane = new THREE.Mesh( geometry, this.defaultMat );
-        plane.hyperID=item.hyperID;
+        const plane=createPlane(item,this.defaultMat)
         this.planes.push(plane);
         this.scene.add(plane)
       });
 
     const toRemove = planes.filter((p)=>{
-      return !nodes.some((n)=>n.hyperID==p.hyperID)
+      return !nodes.some((n)=>n.h_uuid==p.h_uuid)
     })
 
     this.planes=planes.filter((p)=>{
-      return nodes.some((n)=>n.hyperID==p.hyperID)
+      return nodes.some((n)=>n.h_uuid==p.h_uuid)
     })
+
     toRemove.forEach((item, i) => {
       this.scene.remove(item)
     });
@@ -118,6 +122,33 @@ class THREEScene {
     pos.copy( this.cameraController.camera.position ).add( vec );
     return pos;
   }
+
+  castRay(){
+    this.raycaster.setFromCamera(this.mouse, this.cameraController.camera);
+    const intersects = this.raycaster.intersectObjects(this.planes);
+    if (intersects.length > 0) {
+      const targ = intersects[0].object;
+      console.log(targ);
+    }
+  }
+
+  onClick(e){
+    this.castRay();
+  }
+
+  onMousemove(e){
+    this.mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
+    this.lineHelper.endPosition = this.getWorldPosition(event.clientX,event.clientY,1.3);
+    this.lineHelper.update();
+  }
+}
+
+function createPlane(item,mat) {
+  const geometry = new THREE.PlaneGeometry( 100, 100 );
+  const plane = new THREE.Mesh( geometry, mat );
+  plane.h_uuid=item.h_uuid;
+  plane.h_type=item.h_type;
+  return plane;
 }
 
 export default THREEScene

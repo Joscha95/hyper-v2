@@ -1,4 +1,6 @@
 <template lang="html">
+  <CanvasDragtarget @blockAdded="blockAdded"/>
+
   <div @click="addItem" oncontextmenu="return false;" id="scene" ref="scene"></div>
 
   <div @click="removeItem">
@@ -9,29 +11,14 @@
 <script>
 import ForceSimulation from '@/modules/3dForceSimulation.js';
 import THREEScene from '@/modules/THREEScene.js';
+import CanvasDragtarget from '@/components/CanvasDragtarget.vue';
 
 export default {
   data(){
     return{
       graphData:{
-          "nodes": [
-              {
-                "hyperID": "id1",
-                "name": "name1",
-                "val": 1
-              },
-              {
-                "hyperID": "id2",
-                "name": "name2",
-                "val": 1
-              },
-          ],
-          "links": [
-              {
-                  "source": "id1",
-                  "target": "id2"
-              },
-          ]
+          "nodes": [],
+          "links": []
       },
       THREEScene:null,
       forceSimulation:null
@@ -47,17 +34,19 @@ export default {
     this.forceSimulation=new ForceSimulation(this.graphData);
     this.THREEScene = new THREEScene(this.$refs.scene,this.forceSimulation,cameraSettings);
   },
+  components:{
+    CanvasDragtarget
+  },
   methods:{
-    addItem(e){
-      const pos=this.THREEScene.getWorldPosition(e.clientX,e.clientY)
-      this.graphData.nodes.push({
-        "hyperID": "id_"+Date.now(),
-        "name": "name3",
-        "val": 1,
-        'x':pos.x,
-        'y':pos.y,
-        'z':pos.z
-      });
+    blockAdded(b){
+      const pos = this.THREEScene.getWorldPosition(b.clientX,b.clientY)
+      const ele = b.element;
+      ele.x=pos.x
+      ele.y=pos.y
+      ele.z=pos.z
+      ele.val=1
+
+      this.graphData.nodes.push(ele)
       this.forceSimulation.setNodes(this.graphData.nodes)
     },
     removeItem(){

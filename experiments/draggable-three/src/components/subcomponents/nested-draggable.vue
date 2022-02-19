@@ -5,6 +5,7 @@
     :group="{ name: ['blocks','object'],pull:onPull,put:true}"
     @move="onMove"
     @end="onEnd"
+    @change="onChange"
     animation="50"
     item-key="uuid"
   >
@@ -12,7 +13,7 @@
       <div class="list-group-item" :type="element.type" >
         <span
           @click="store.selectedObject=element"
-          :class="selectedObjectId==element.uuid ? 'selected': '' ">
+          :class="selectedObjectId==element.h_uuid ? 'selected': '' ">
           {{ element.name }}
         </span>
         <nested-draggable v-if="element.type=='group'" :children="element.children ? element.children : []" />
@@ -22,7 +23,6 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-import {store} from '@/store.js';
 
 
 export default {
@@ -34,13 +34,13 @@ export default {
   },
   data(){
     return{
-      store,
+      store:this.$root.$data.store,
       lastSelected:null
     }
   },
   computed:{
     selectedObjectId(){
-      return store.selectedObject ? store.selectedObject.uuid : ''
+      return this.store.selectedObject ? this.store.selectedObject.h_uuid : ''
     }
   },
   components: {
@@ -55,6 +55,9 @@ export default {
       if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
       this.lastSelected=evt.to;
       this.lastSelected.classList.add('selected-by-drag')
+    },
+    onChange(evt){
+      this.$emit('change',evt);
     },
     onEnd(evt){
       if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
