@@ -2,12 +2,20 @@
 	<header>
 		<div id="logo">
 			(
-				<span id="channel_name" v-if="this.$root.channelName">{{ this.$root.channelName }}</span>
+				<span id="channel_name" v-if="this.title">{{ title }}</span>
 			)
 			<sup id="app_name">{{ this.$root.appName }}</sup>
 		</div>
 	</header>
 </template>
+
+<script>
+export default {
+	props: {
+		title: ''
+	}
+}
+</script>
 
 <style>
 	header {

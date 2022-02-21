@@ -1,20 +1,31 @@
 <template>
-	<Header />
-	<main>
+	<Notification :notification="this.notification" />
+	<Header :title="this.channelTitle" />
+	<main >
 		<router-view />
 	</main>
 </template>
 
 <script>
-	import Header from './components/Header.vue'
+	import Notification from '@/components/Notification.vue'
+	import Header from '@/components/Header.vue'
 	
 	export default {
+		setup() {
+			
+		},
 		data() {
 			return {
 				appName: 'hyper',
-				channel: false
+				channelTitle: false,
+				notification: { id: false, text: '', type: '' }
 			}
 		},
-		components: { Header }
+		methods: {
+			notify(text, type = 'default') {
+				this.notification = { id: Date.now(), text: text, type: type }
+			}
+		},
+		components: { Notification, Header }
 	}
 </script>

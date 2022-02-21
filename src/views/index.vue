@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import Setup from '../components/Setup.vue'
+import Setup from '@/components/Setup.vue'
 
 export default {
 	components: { Setup }
