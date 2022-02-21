@@ -1,8 +1,7 @@
 <template>
   <div class="widget-area">
     <strong>all blocks</strong>
-    <br>
-    <br>
+    <searchbar @search="filterBlocks" />
     <draggable
       class="dragArea list-group"
       :list="blocks"
@@ -15,7 +14,7 @@
       item-key="id"
     >
       <template #item="{ element }">
-        <div class="list-group-item">
+        <div class="list-group-item" v-show="element.name.includes(searchstring)">
           <span>{{ element.name }}</span>
         </div>
       </template>
@@ -25,12 +24,14 @@
 
 <script>
 import draggable from "vuedraggable";
+import searchbar from "@/components/subcomponents/searchbar.vue";
 
 let idGlobal = 8;
 export default {
   order: 3,
   components: {
-    draggable
+    draggable,
+    searchbar
   },
   data() {
     return {
@@ -41,7 +42,8 @@ export default {
         { name: "dog 4", id: 4 }
       ],
       store:this.$root.$data.store,
-      lastSelected:null
+      lastSelected:null,
+      searchstring:''
     };
   },
   methods: {
@@ -51,7 +53,9 @@ export default {
           this.store.isDragging=true
           break;
         case 'end':
-          this.store.isDragging=false
+          this.store.isDragging=false;
+          if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
+          this.lastSelected=null;
           break;
         default:
       }
@@ -60,7 +64,7 @@ export default {
       return {
         id: id,
         h_uuid:'_'+Date.now(),
-        name: name,
+        h_name: name,
         to:[],
         from:[],
         children:[],
@@ -71,6 +75,9 @@ export default {
       if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
       this.lastSelected=evt.to;
       this.lastSelected.classList.add('selected-by-drag')
+    },
+    filterBlocks(e){
+      this.searchstring=e.value
     }
   }
 };

@@ -10,13 +10,13 @@
     item-key="uuid"
   >
     <template #item="{ element }">
-      <div class="list-group-item" :type="element.type" >
+      <div class="list-group-item" :type="element.type" v-if="element.h_name.includes(searchstring)" @dblclick="onDoubleClick($event,element)">
         <span
           @click="store.selectedObject=element"
           :class="selectedObjectId==element.h_uuid ? 'selected': '' ">
-          {{ element.name }}
+          {{ getElementName(element) }}
         </span>
-        <nested-draggable v-if="element.type=='group'" :children="element.children ? element.children : []" />
+        <nested-draggable v-if="element.h_type=='group'" :children="element.children ? element.children : []" />
       </div>
     </template>
   </draggable>
@@ -29,8 +29,10 @@ export default {
   props: {
     children: {
       required: true,
-      type:Array
-    }
+      type:Array,
+    },
+    searchstring:''
+
   },
   data(){
     return{
@@ -62,6 +64,13 @@ export default {
     onEnd(evt){
       if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
       this.lastSelected=null;
+    },
+    onDoubleClick(e,element){
+      window.location.hash=element.h_uuid;
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    },
+    getElementName(element){
+      return element.h_type=='connection' ?  element.source.h_name +' -> '+ element.target.h_name : element.h_name;
     }
   }
 };

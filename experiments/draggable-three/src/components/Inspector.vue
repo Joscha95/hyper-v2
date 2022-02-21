@@ -1,8 +1,6 @@
 <template>
     <div class="widget-area" v-if="store.selectedObject" >
-      <strong>object</strong>
-      <br>
-      <br>
+      <strong>object</strong><br>
       <draggable
         class="dragArea list-group"
         :class="store.selectedObject.from.length==0 ? 'empty' : ''"
@@ -17,12 +15,18 @@
       >
         <template #item="{ element }">
           <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' " >
-             <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.from=[]">x</span>
+             <span class="name" @click="store.selectedObject=element">{{ getElementName(element) }}</span> <span @click="store.selectedObject.from=[]">x</span>
           </div>
         </template>
       </draggable>
       <i>&darr;</i>
-      <input type="text" name="" v-model="store.selectedObject.name"><br>
+
+      <div v-if="store.selectedObject.h_type!='connection'">
+        <input type="text"  name="" v-model="store.selectedObject.h_name">
+      </div>
+      <div v-else>
+        <input type="text" :value="getElementName(store.selectedObject)">
+      </div>
 
       <i>&darr;</i>
       <draggable
@@ -39,7 +43,7 @@
       >
         <template #item="{ element }">
           <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' ">
-            <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.to=[]">x</span>
+            <span class="name" @click="store.selectedObject=element">{{ getElementName(element) }}</span> <span @click="store.selectedObject.to=[]">x</span>
           </div>
         </template>
       </draggable>
@@ -49,7 +53,7 @@
         h_uuid: {{ store.selectedObject.h_uuid }}<br>
       </div>
 
-      <div class="" v-if="store.selectedObject.type=='group'">
+      <div class="" v-if="store.selectedObject.h_type=='group'">
         <br>
         <br>
         <strong>children</strong><br>
@@ -57,8 +61,16 @@
         <div  class="list-group-item"
               v-for="(element,index) in store.selectedObject.children"
               :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' ">
-          <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="removeChildFromGroup($event,index)">x</span>
+          <span class="name" @click="store.selectedObject=element">{{ getElementName(element) }}</span> <span @click="removeChildFromGroup($event,index)">x</span>
         </div>
+      </div>
+
+      <div class="" v-if="store.selectedObject.h_type=='connection'">
+        <br>
+        <br>
+        <strong>text</strong><br>
+        <br>
+        <textarea rows="5" v-model="store.selectedObject.text" placeholder="say something about the connection"></textarea>
       </div>
     </div>
 
@@ -94,6 +106,9 @@ export default {
       this.store.sceneList.push(
         this.store.selectedObject.children.splice(index,1)[0]
       )
+    },
+    getElementName(element){
+      return element.h_type=='connection' ?  element.source.h_name +' -> '+ element.target.h_name : element.h_name;
     }
   }
 };
@@ -154,6 +169,14 @@ i{
 
 .name:hover{
   text-decoration:underline
+}
+
+textarea{
+  display:block;
+  width:100%;
+  box-sizing:border-box;
+  resize:vertical;
+  height:auto;
 }
 
 </style>

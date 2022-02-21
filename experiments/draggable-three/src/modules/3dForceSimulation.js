@@ -27,8 +27,13 @@ class ForceSimulation {
     this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_uuid,n]))
   }
 
-  setLinks(links){
-    this.simulation.links(this.graphData.links);
+  addLink(link){
+    this.graphData.links.push(link)
+    this.simulation.force('link',
+      d3Force3d.forceLink(this.graphData.links)
+      .id((l) => { return l.h_uuid; })
+      .distance((l)=>l.distance))
+
     this.reheat();
     this.onDataChange()
   }

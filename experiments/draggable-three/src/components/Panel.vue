@@ -1,14 +1,11 @@
 <template>
   <collapsable id="panel">
     <header>
-      <span @click="activeWidget='addBlocks'">blocks</span>
-      <span @click="activeWidget='editScene'"> object</span>
+      <span v-for="widget in widgets" @click="widget.show=!widget.show" :class="{active:widget.show}">{{ widget.display }}</span>
     </header>
     <br>
     <div id="panel-inner">
-      <AllBlocks v-if="activeWidget=='addBlocks'"/>
-      <SceneList/>
-      <Inspector v-if="activeWidget=='editScene'"/>
+      <component v-for="widget in activeWidgets" :is="widget.component"/>
     </div>
   </collapsable>
 </template>
@@ -30,7 +27,16 @@ export default {
   },
   data(){
     return{
-      activeWidget:'addBlocks',
+      widgets:[
+        {component:'AllBlocks', display: 'blocks', show:true},
+        {component:'SceneList', display: 'scene',show:false},
+        {component:'Inspector', display: 'object',show:false},
+      ]
+    }
+  },
+  computed:{
+    activeWidgets(){
+      return this.widgets.filter((w)=> w.show)
     }
   }
 }
@@ -55,13 +61,13 @@ export default {
 }
 
 #panel-inner{
-  display:grid;
-  grid-template-columns: 47.5% 47.5% ;
+  display:flex;
   grid-column-gap:5%;
 }
 
 #panel-inner> div{
   flex:1;
+  width:200px;
 }
 
 .sortable-ghost{
@@ -116,4 +122,16 @@ header{
 .list-group-item[type="content"] + .list-group-item[type="content"]{
   border-top:0;
 }
+</style>
+
+<style scoped>
+  header span{
+    margin-right:1em;
+    opacity:.4
+  }
+
+  .active{
+    font-weight:bolder;
+    opacity:1
+  }
 </style>

@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import FirstPersonController from './FirstPersonController.js'
 import Globe from './GlobeHelper.js'
 import LineHelper from './LineHelper.js'
+import Connection from './Connection.js'
 
 class THREEScene {
   constructor(domparent,forceSimulation,cameraSettings) {
@@ -13,15 +14,19 @@ class THREEScene {
     this.height=window.innerWidth;
     this.aspect=this.width/this.height;
     this.cameraController=new FirstPersonController(domparent,cameraSettings);
+    this.cameraController.onmove=()=> this.onCamMove();
     this.planes=[];
+    this.connections=[];
     this.defaultMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
     this.mouse=new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
-    this.lineHelper=new LineHelper();
-    this.scene.add(this.lineHelper.line);
+    this.lineHelper=null;
+
+    this.onLinkAdded=()=>{};
 
     domparent.addEventListener('click',(e)=>this.onClick(e));
     domparent.addEventListener('mousemove',(e)=>this.onMousemove(e));
+    window.addEventListener('hashchange', (e)=>this.onHashChange(e));
 
     this.globeHelper = new Globe(3000, 16, 32, 64, 'white'); // Radius, num lat, num lon, segments, color
     this.globeHelper.position.copy(this.cameraController.camera.position);
@@ -68,6 +73,11 @@ class THREEScene {
       }
     });
 
+    this.connections.forEach((item, i) => {
+      if (simIsHot) item.update()
+    });
+
+
     this.renderer.render(this.scene,this.cameraController.camera);
     window.requestAnimationFrame(()=> this.render());
   }
@@ -84,6 +94,8 @@ class THREEScene {
   simDataChanged(){
     const nodes = this.forceSimulation.simulation.nodes();
     const planes = this.planes;
+
+    // check which nodes are in the simulation but not in the scene -> add new plane to scene
     const toAdd =  nodes.filter((n)=>{
         return !planes.some((p) => n.h_uuid==p.h_uuid)
       });
@@ -93,6 +105,7 @@ class THREEScene {
         this.scene.add(plane)
       });
 
+    // check which planes are in the scene but not in the simulation -> remove them from scene
     const toRemove = planes.filter((p)=>{
       return !nodes.some((n)=>n.h_uuid==p.h_uuid)
     })
@@ -128,7 +141,14 @@ class THREEScene {
     const intersects = this.raycaster.intersectObjects(this.planes);
     if (intersects.length > 0) {
       const targ = intersects[0].object;
-      console.log(targ);
+      if (!this.isConnecting) {
+        this.startConnection(targ);
+      } else {
+        this.finishConnection(targ);
+      }
+
+    }else {
+      if(this.lineHelper) this.disposeConnection();
     }
   }
 
@@ -138,14 +158,67 @@ class THREEScene {
 
   onMousemove(e){
     this.mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
-    this.lineHelper.endPosition = this.getWorldPosition(event.clientX,event.clientY,1.3);
-    this.lineHelper.update();
+    if (this.lineHelper) {
+      this.lineHelper.endPosition = this.getWorldPosition(event.clientX,event.clientY,1.3);
+      this.lineHelper.update();
+    }
+  }
+
+  onHashChange() {
+    const target = this.scene.getObjectByName(location.hash.substr(1));
+    if (target) {
+      this.cameraController.moveTo(target);
+    }
+  }
+
+  onCamMove(){
+    this.planes.forEach((item, i) => {
+      item.lookAt(this.cameraController.camera.position)
+    });
+
+    if(this.lineHelper)  this.lineHelper.update();
+  }
+
+  startConnection(obj){
+    if(this.lineHelper) this.lineHelper.dispose(this.scene);
+    this.lineHelper = new LineHelper(obj);
+    this.scene.add(this.lineHelper.line);
+    this.isConnecting=true;
+  }
+
+  disposeConnection(){
+    if(this.lineHelper) this.lineHelper.dispose(this.scene);
+    this.isConnecting=false;
+  }
+
+  finishConnection(obj){
+    if(this.lineHelper) this.lineHelper.dispose(this.scene);
+    this.isConnecting=false;
+    if(obj==this.lineHelper.startObject) return;
+    const dist = confirm('Keep distance or unset Distance?') ? obj.position.distanceTo(this.lineHelper.startObject.position) : 100;
+    const l = {
+      "source" : this.lineHelper.startObject.h_uuid,
+      "target" : obj.h_uuid,
+      "distance" : dist,
+      "h_name":  '',
+      "h_type": 'connection',
+      "h_uuid":'_'+Date.now(),
+      'from':[],
+      'to':[],
+      'text':''
+    }
+    // callBack to Graph.vue to update simulation data
+    this.onLinkAdded(l);
+    this.connections.push(new Connection(this.scene,this.lineHelper.startObject,obj));
+
   }
 }
 
 function createPlane(item,mat) {
   const geometry = new THREE.PlaneGeometry( 100, 100 );
   const plane = new THREE.Mesh( geometry, mat );
+  plane.name=item.h_uuid;
+  plane.h_name=item.name;
   plane.h_uuid=item.h_uuid;
   plane.h_type=item.h_type;
   return plane;

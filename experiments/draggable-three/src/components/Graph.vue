@@ -1,11 +1,8 @@
 <template lang="html">
   <CanvasDragtarget @blockAdded="blockAdded"/>
 
-  <div @click="addItem" oncontextmenu="return false;" id="scene" ref="scene"></div>
+  <div oncontextmenu="return false;" id="scene" ref="scene"></div>
 
-  <div @click="removeItem">
-  remove
-  </div>
 </template>
 
 <script>
@@ -21,7 +18,8 @@ export default {
           "links": []
       },
       THREEScene:null,
-      forceSimulation:null
+      forceSimulation:null,
+      store:this.$root.store
     }
   },
   mounted(){
@@ -33,9 +31,20 @@ export default {
 
     this.forceSimulation=new ForceSimulation(this.graphData);
     this.THREEScene = new THREEScene(this.$refs.scene,this.forceSimulation,cameraSettings);
+    this.THREEScene.onLinkAdded = (l) => {this.linkAdded(l)};
   },
   components:{
     CanvasDragtarget
+  },
+  computed:{
+    links(){
+      return this.graphData.links.length
+    }
+  },
+  watch:{
+    links(){
+        console.log('links changed');
+      }
   },
   methods:{
     blockAdded(b){
@@ -49,9 +58,10 @@ export default {
       this.graphData.nodes.push(ele)
       this.forceSimulation.setNodes(this.graphData.nodes)
     },
-    removeItem(){
-      this.graphData.nodes.pop();
-      this.forceSimulation.setNodes(this.graphData.nodes)
+    linkAdded(l){
+      this.graphData.links.push(l);
+      this.forceSimulation.addLink(l);
+      this.store.sceneList.push(l);
     }
   }
 }

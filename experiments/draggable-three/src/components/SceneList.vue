@@ -1,18 +1,14 @@
 <template>
     <div class="widget-area" >
       <strong>composition</strong><br>
-      <br>
-      <div class="addgroup" @click="addGroup">
-        + new group
-      </div>
-      <br>
-      <nested :children="store.sceneList" @change="onChange"/>
+      <searchbar @search="filterBlocks" />
+      <nested :children="store.sceneList" :searchstring="searchstring" @change="onChange"/>
     </div>
 </template>
 
 <script>
 import nested from "@/components/subcomponents/nested-draggable.vue";
-
+import searchbar from "@/components/subcomponents/searchbar.vue";
 
 let idGlobal = 8;
 export default {
@@ -20,22 +16,28 @@ export default {
   order: 3,
   data(){
     return{
-      store:this.$root.$data.store
+      store:this.$root.store,
+      searchstring:''
     }
   },
   components:{
-    nested
+    nested,
+    searchbar
   },
   methods:{
     addGroup: function() {
       this.store.sceneList.push({
         name:"new Group",
         h_uuid:'_'+Date.now(),
-        type:'group',
+        h_type:'group',
         children:[],
         from:[],
         to:[]
       })
+    },
+    filterBlocks(e){
+      console.log(e.value);
+      this.searchstring=e.value
     },
     onChange(evt){
       this.$emit('change',evt)

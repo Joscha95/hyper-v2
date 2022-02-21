@@ -31,7 +31,7 @@ export default {
 
 .collapse-wrapper{
   display:grid;
-  grid-template-columns: 20px 100%;
+  grid-template-columns: 20px auto;
   grid-template-rows: 100%;
   height:100%;
   float:left;
@@ -46,10 +46,6 @@ export default {
   font-weight:900;
   font-size: .9em;
   cursor:pointer;
-}
-
-.content{
-  width:40vw;
 }
 
 </style>
