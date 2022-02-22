@@ -13,7 +13,9 @@ class ForceSimulation {
   init(){
     this.simulation.numDimensions(3)
     this.simulation.nodes(this.graphData.nodes)
-    this.simulation.force('link', d3Force3d.forceLink(this.graphData.links).id((d) => { return d.h_uuid; }))
+    this.simulation.force('link', d3Force3d.forceLink(this.graphData.links)
+                    .id((d) => { return d.h_uuid; })
+                    .distance((l) => l.distance))
     .force('charge', d3Force3d.forceManyBody())
     //.force('center', d3Force3d.forceCenter())
     //.force('dagRadial', null);

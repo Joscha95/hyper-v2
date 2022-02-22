@@ -44,6 +44,7 @@ class THREEScene {
     }
 
     this.importNodes();
+    this.importlinks();
 
     domparent.appendChild(this.renderer.domElement);
     this.render();
@@ -87,6 +88,14 @@ class THREEScene {
       const plane=createPlane(item,this.defaultMat)
       this.planes.push(plane);
       this.scene.add(plane)
+    });
+  }
+
+  importlinks(){
+    this.forceSimulation.simulation.force('link').links().forEach((item, i) => {
+      const startObject = this.scene.getObjectByName(item.source.h_uuid)
+      const endObject = this.scene.getObjectByName(item.target.h_uuid)
+      this.connections.push(new Connection(this.scene,startObject,endObject,item));
     });
 
   }
@@ -209,7 +218,7 @@ class THREEScene {
     }
     // callBack to Graph.vue to update simulation data
     this.onLinkAdded(l);
-    this.connections.push(new Connection(this.scene,this.lineHelper.startObject,obj));
+    this.connections.push(new Connection(this.scene,this.lineHelper.startObject,obj,l));
 
   }
 }

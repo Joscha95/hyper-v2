@@ -14,8 +14,8 @@ export default {
   data(){
     return{
       graphData:{
-          "nodes": [],
-          "links": []
+          "nodes": this.$root.store.sceneList.filter((n)=>n.h_type!='connection'),
+          "links": this.$root.store.sceneList.filter((n)=>n.h_type=='connection')
       },
       THREEScene:null,
       forceSimulation:null,
@@ -38,7 +38,7 @@ export default {
   },
   computed:{
     links(){
-      return this.graphData.links.length
+      return this.graphData.links.length;
     }
   },
   watch:{
