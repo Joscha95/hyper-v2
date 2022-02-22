@@ -77,7 +77,6 @@ class THREEScene {
     if (simIsHot) {
       this.connections.forEach((item, i) => {
          item.update();
-         item.midPoint.lookAt(this.cameraController.camera.position)
       });
     }
 
@@ -88,19 +87,28 @@ class THREEScene {
   }
 
   importNodes(){
-    this.forceSimulation.simulation.nodes().forEach((item, i) => {
+    const nodes = this.forceSimulation.simulation.nodes();
+    nodes.forEach((item, i) => {
       const plane=createPlane(item,this.defaultMat)
       this.planes.push(plane);
       this.scene.add(plane)
     });
+
+    nodes.filter((n) => n.h_type=='connection').forEach((item, i) => {
+      const startObject=this.scene.getObjectByProperty('h_uuid',item.sourceID);
+      const middleObject=this.scene.getObjectByProperty('h_uuid',item.h_uuid)
+      const endObject=this.scene.getObjectByProperty('h_uuid',item.targetID);
+      this.connections.push(new Connection(this.scene,startObject,middleObject,endObject));
+    });
+
   }
 
   importlinks(){
-    this.forceSimulation.simulation.force('link').links().forEach((item, i) => {
-      const startObject = this.scene.getObjectByProperty('h_uuid',item.source.h_uuid)
-      const endObject = this.scene.getObjectByProperty('h_uuid',item.target.h_uuid)
-      this.connections.push(new Connection(this.scene,startObject,endObject,item));
-    });
+    // this.forceSimulation.simulation.force('link').links().forEach((item, i) => {
+    //   const startObject = this.scene.getObjectByProperty('h_uuid',item.source.h_uuid)
+    //   const endObject = this.scene.getObjectByProperty('h_uuid',item.target.h_uuid)
+    //   this.connections.push(new Connection(this.scene,startObject,endObject,item));
+    // });
 
   }
 
@@ -188,9 +196,6 @@ class THREEScene {
     this.planes.forEach((item, i) => {
       item.lookAt(this.cameraController.camera.position)
     });
-    this.connections.forEach((item, i) => {
-      item.midPoint.lookAt(this.cameraController.camera.position)
-    });
 
     if(this.lineHelper)  this.lineHelper.update();
   }
@@ -211,49 +216,14 @@ class THREEScene {
     if(this.lineHelper) this.lineHelper.dispose(this.scene);
     this.isConnecting=false;
     if(obj==this.lineHelper.startObject) return;
-    const dist = confirm('Keep distance or unset Distance?') ? obj.position.distanceTo(this.lineHelper.startObject.position) : 100;
-    const center = new THREE.Vector3().copy(this.lineHelper.startObject).lerp(obj.position,0.5);
-    const node = {
-      h_uuid:'_'+Date.now()+makeid(5),
-      name: 'connection Node',
-      to:[],
-      from:[],
-      x:center.x,
-      y:center.y,
-      z:center.z,
-      h_type: 'connectionNode'
-    }
-    const l = {
-      link1:
-        {
-          source : this.lineHelper.startObject.h_uuid,
-          target : node.h_uuid,
-          distance : dist/2,
-          name:  '',
-          h_type: 'connection',
-          h_uuid:'_'+Date.now()+makeid(5),
-          from:[],
-          to:[],
-          text:''
-        },
-      node:node,
-      link2:
-        {
-          source : node.h_uuid,
-          target : obj.h_uuid,
-          distance : dist/2,
-          name:  '',
-          h_type: 'connection',
-          h_uuid:'_'+Date.now()+makeid(5),
-          from:[],
-          to:[],
-          text:''
-        }
-    }
+
+    const middleNodePlane = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), this.defaultMat );
+    const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj)
 
     // callBack to Graph.vue to update simulation data
-    this.onLinkAdded(l);
-    this.connections.push(new Connection(this.scene,this.lineHelper.startObject,obj,l,this.defaultMat));
+    this.onLinkAdded(con.createNew());
+    this.connections.push(con);
+    this.planes.push(middleNodePlane);
   }
 }
 

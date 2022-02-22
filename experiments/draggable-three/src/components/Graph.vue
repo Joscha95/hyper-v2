@@ -14,8 +14,8 @@ export default {
   data(){
     return{
       graphData:{
-          "nodes": this.$root.store.sceneList.filter((n)=>n.h_type!='connection'),
-          "links": this.$root.store.sceneList.filter((n)=>n.h_type=='connection')
+          "nodes": this.$root.store.sceneList,
+          "links": this.$root.store.sceneList.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
       },
       THREEScene:null,
       forceSimulation:null,
@@ -55,13 +55,17 @@ export default {
       ele.z=pos.z
       ele.val=1
 
-      this.graphData.nodes.push(ele)
+      //this.graphData.nodes.push(ele)
       this.forceSimulation.setNodes(this.graphData.nodes)
     },
     linkAdded(l){
-      this.graphData.links.push(l);
-      this.forceSimulation.addLink(l);
-      this.store.sceneList.push(l);
+      this.graphData.nodes.push(l.node)
+      this.forceSimulation.setNodes(this.graphData.nodes)
+
+      this.graphData.links.push(l.link1);
+      this.graphData.links.push(l.link2);
+      this.forceSimulation.addLink(l.link1);
+      this.forceSimulation.addLink(l.link2);
     }
   }
 }

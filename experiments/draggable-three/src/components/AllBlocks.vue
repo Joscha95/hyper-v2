@@ -63,7 +63,7 @@ export default {
     cloneBlock({ name,id }) {
       return {
         a_id: id,
-        h_uuid:'_'+Date.now(),
+        h_uuid:'H'+Date.now(),
         name: name,
         to:[],
         from:[],

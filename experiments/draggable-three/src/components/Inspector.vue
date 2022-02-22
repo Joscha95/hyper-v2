@@ -15,14 +15,17 @@
       >
         <template #item="{ element }">
           <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' " >
-             <span class="name" @click="store.selectedObject=element">{{ getElementName(element) }}</span> <span @click="store.selectedObject.from=[]">x</span>
+             <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.from=[]">x</span>
           </div>
         </template>
       </draggable>
       <i>&darr;</i>
 
-      <div>
-        {{ getElementName(store.selectedObject) }}
+      <div v-if="store.selectedObject.h_type=='connection'">
+        <input type="text"  name="" v-model="store.selectedObject.name">
+      </div>
+      <div v-else>
+        {{ store.selectedObject.name }}
       </div>
 
       <i>&darr;</i>
@@ -40,7 +43,7 @@
       >
         <template #item="{ element }">
           <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' ">
-            <span class="name" @click="store.selectedObject=element">{{ getElementName(element) }}</span> <span @click="store.selectedObject.to=[]">x</span>
+            <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.to=[]">x</span>
           </div>
         </template>
       </draggable>
@@ -58,7 +61,7 @@
         <div  class="list-group-item"
               v-for="(element,index) in store.selectedObject.children"
               :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' ">
-          <span class="name" @click="store.selectedObject=element">{{ getElementName(element) }}</span> <span @click="removeChildFromGroup($event,index)">x</span>
+          <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="removeChildFromGroup($event,index)">x</span>
         </div>
       </div>
 
@@ -103,9 +106,6 @@ export default {
       this.store.sceneList.push(
         this.store.selectedObject.children.splice(index,1)[0]
       )
-    },
-    getElementName(element){
-      return element.h_type=='connection' ?  element.source.name +' -> '+ element.target.name : element.name;
     }
   }
 };
