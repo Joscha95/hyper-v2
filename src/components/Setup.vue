@@ -77,7 +77,7 @@ export default {
 		async searchChannel(slug) {
 			this.message = 'searching...'
 			try {
-				const res = await fetch(`https://api.are.na/v2/channels/${slug}?per=15`)
+				const res = await fetch(`https://api.are.na/v2/channels/${slug}?per=0`)
 				const result = (await res.json())
 				if(result.id){
 					this.message = 'Channel: '
@@ -114,16 +114,16 @@ export default {
 					{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 				)
 				.then(response => { 
-					// if scene file has been successfully written, route to scene view
-					if(response.status === 201){
+					if(response.status === 200){
 						this.$root.notify('Your hyperspace has been created', 'success')
-						//this.$router.push(`/${response.data.slug}`)
+						this.$router.push(`/${response.data.slug}`)
 					}else{
-						console.log(response.data)
+						this.$root.notify('Something went wrong', 'error')
+						console.error(response.data)
 					}
 				})
 				.catch(error => { 
-					// something went wrong writing the scene file
+					// something went wrong creating the scene
 					this.$root.notify(error, 'error')
 					console.error(error)
 				})
