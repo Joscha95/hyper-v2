@@ -110,18 +110,22 @@ export default {
 				const axios = require('axios').default;
 				axios.post(
 					process.env.VUE_APP_API_URL + '?r=c',
-					{ email: this.email, auth: this.password, channel: this.channel }, 
+					{ email: this.email, password: this.password, channel: this.channel }, 
 					{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 				)
 				.then(response => { 
 					// if scene file has been successfully written, route to scene view
-					this.$root.notify('Your hyperspace has been created', 'success')
-					this.$router.push(`/${response.data}`)
+					if(response.status === 201){
+						this.$root.notify('Your hyperspace has been created', 'success')
+						//this.$router.push(`/${response.data.slug}`)
+					}else{
+						console.log(response.data)
+					}
 				})
 				.catch(error => { 
 					// something went wrong writing the scene file
 					this.$root.notify(error, 'error')
-					console.log(error)
+					console.error(error)
 				})
 			}
 		}

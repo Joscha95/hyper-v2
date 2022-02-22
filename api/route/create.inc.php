@@ -1,50 +1,38 @@
 <?php
 
-$config = [
-	'dir' => '../public/scenes/',
-	'tempDir' => '../public/scenes/temp/',
-	'authDir' => '../public/scenes/auth/',
-	'tempBypass' => true
-];
+$email = filter_var($data->email, FILTER_SANITIZE_EMAIL);
+$password = password_hash($data->password, PASSWORD_BCRYPT);
+$channel_id = intval($data->channel->id);
+$slug = urlencode($data->channel->slug);
 
-if(!$config['tempBypass']){
-	// creates the files with a very unique id and puts them in temp fold
-	// user gets send the unique id via mail
-	// he can active his hyper scene and confirm his mail
-	$slug = $data->channel->slug.'_'.uniqid();
-	$scenePath = $config['tempDir'].$slug.'.json';
-} else {
-	// if scene file for same slug exists, count up
-	$slug = $data->channel->slug;
-	for( $i=1; file_exists($config['dir'].$slug.'.json'); $i++ ){
-		$slug = $data->channel->slug.'_'.$i;
+$query = "
+INSERT INTO scenes (email, password, channel_id) VALUES ('$email', '$password', '$channel_id');
+SET @scene_id = LAST_INSERT_ID();
+SET @number = (SELECT COUNT(id) FROM slugs WHERE string LIKE '$slug')+1;
+INSERT INTO slugs (scene_id, string, number) VALUES (@scene_id, '$slug', @number );
+SET @slug_id = LAST_INSERT_ID();
+UPDATE scenes SET slug_id = @slug_id WHERE id = @scene_id;
+SELECT @number;
+";
+
+$mysqli->autocommit(FALSE);
+$mysqli->begin_transaction();
+
+$mysqli->multi_query($query);
+do {
+	if ($result = $mysqli->store_result()) {
+		while ($row = $result->fetch_row()) {
+			$counter = $row[0]!=1 ? '_'.$row[0] : '';
+		}
 	}
-	$scenePath = $config['dir'].$slug.'.json';
-}
-$authPath = $config['authDir'].$slug.'.json';
+} while ($mysqli->next_result());
 
-// create scene and auth file
-$sceneFile = fopen($scenePath, 'w') or die('Unable to write scene file.');
-$authFile = fopen($authPath, 'w') or die('Unable to write auth file.');
-
-// write channel data to scene file
-$channel = array('channel' => $data->channel);
-if ( fwrite( $sceneFile, json_encode($channel) ) === false ) {
+if( $mysqli->error ){
+	$mysqli->rollback();
 	header('HTTP/1.1 500 Internal Server Error');
-	$response = "Cannot write to scene file.";
+	echo json_encode(array('error' => $mysqli->error));
 } else {
+	$mysqli->commit();
 	header('HTTP/1.1 201 Created');
-	$response = $slug;
+	echo json_encode(array('slug' => $slug.$counter));
 }
-
-// write email and hashed pw to auth file
-unset($data->channel);
-$data->auth = hash('sha256', $data->auth, false);
-if ( fwrite( $authFile, json_encode($data) ) === false ) {
-	header('HTTP/1.1 500 Internal Server Error');
-	$response = "Cannot write to auth file.";
-} else {
-	header('HTTP/1.1 201 Created');
-}
-echo $response;
-exit;

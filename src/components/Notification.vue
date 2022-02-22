@@ -1,5 +1,5 @@
-<template>
-	<div id="notification" :class="notification.id ? 'show ' + notification.type : notification.type">{{ notification.text }}</div>
+<template>	
+	<div id="notification" :class="[{show:notification.id}, notification.type]">{{ notification.text }}</div>
 </template>
 
 <script>
