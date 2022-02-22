@@ -125,6 +125,9 @@ header{
 </style>
 
 <style scoped>
+header{
+  text-align:left;
+}
   header span{
     margin-right:1em;
     opacity:.4
