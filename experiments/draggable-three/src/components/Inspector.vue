@@ -21,11 +21,8 @@
       </draggable>
       <i>&darr;</i>
 
-      <div v-if="store.selectedObject.h_type!='connection'">
-        <input type="text"  name="" v-model="store.selectedObject.h_name">
-      </div>
-      <div v-else>
-        <input type="text" :value="getElementName(store.selectedObject)">
+      <div>
+        {{ getElementName(store.selectedObject) }}
       </div>
 
       <i>&darr;</i>
@@ -108,7 +105,7 @@ export default {
       )
     },
     getElementName(element){
-      return element.h_type=='connection' ?  element.source.h_name +' -> '+ element.target.h_name : element.h_name;
+      return element.h_type=='connection' ?  element.source.name +' -> '+ element.target.name : element.name;
     }
   }
 };

@@ -74,9 +74,13 @@ class THREEScene {
       }
     });
 
-    this.connections.forEach((item, i) => {
-      if (simIsHot) item.update()
-    });
+    if (simIsHot) {
+      this.connections.forEach((item, i) => {
+         item.update();
+         item.midPoint.lookAt(this.cameraController.camera.position)
+      });
+    }
+
 
 
     this.renderer.render(this.scene,this.cameraController.camera);
@@ -93,8 +97,8 @@ class THREEScene {
 
   importlinks(){
     this.forceSimulation.simulation.force('link').links().forEach((item, i) => {
-      const startObject = this.scene.getObjectByName(item.source.h_uuid)
-      const endObject = this.scene.getObjectByName(item.target.h_uuid)
+      const startObject = this.scene.getObjectByProperty('h_uuid',item.source.h_uuid)
+      const endObject = this.scene.getObjectByProperty('h_uuid',item.target.h_uuid)
       this.connections.push(new Connection(this.scene,startObject,endObject,item));
     });
 
@@ -174,7 +178,7 @@ class THREEScene {
   }
 
   onHashChange() {
-    const target = this.scene.getObjectByName(location.hash.substr(1));
+    const target = this.scene.getObjectByProperty('h_uuid',location.hash.substr(1));
     if (target) {
       this.cameraController.moveTo(target);
     }
@@ -183,6 +187,9 @@ class THREEScene {
   onCamMove(){
     this.planes.forEach((item, i) => {
       item.lookAt(this.cameraController.camera.position)
+    });
+    this.connections.forEach((item, i) => {
+      item.midPoint.lookAt(this.cameraController.camera.position)
     });
 
     if(this.lineHelper)  this.lineHelper.update();
@@ -205,32 +212,70 @@ class THREEScene {
     this.isConnecting=false;
     if(obj==this.lineHelper.startObject) return;
     const dist = confirm('Keep distance or unset Distance?') ? obj.position.distanceTo(this.lineHelper.startObject.position) : 100;
-    const l = {
-      "source" : this.lineHelper.startObject.h_uuid,
-      "target" : obj.h_uuid,
-      "distance" : dist,
-      "h_name":  '',
-      "h_type": 'connection',
-      "h_uuid":'_'+Date.now(),
-      'from':[],
-      'to':[],
-      'text':''
+    const center = new THREE.Vector3().copy(this.lineHelper.startObject).lerp(obj.position,0.5);
+    const node = {
+      h_uuid:'_'+Date.now()+makeid(5),
+      name: 'connection Node',
+      to:[],
+      from:[],
+      x:center.x,
+      y:center.y,
+      z:center.z,
+      h_type: 'connectionNode'
     }
+    const l = {
+      link1:
+        {
+          source : this.lineHelper.startObject.h_uuid,
+          target : node.h_uuid,
+          distance : dist/2,
+          name:  '',
+          h_type: 'connection',
+          h_uuid:'_'+Date.now()+makeid(5),
+          from:[],
+          to:[],
+          text:''
+        },
+      node:node,
+      link2:
+        {
+          source : node.h_uuid,
+          target : obj.h_uuid,
+          distance : dist/2,
+          name:  '',
+          h_type: 'connection',
+          h_uuid:'_'+Date.now()+makeid(5),
+          from:[],
+          to:[],
+          text:''
+        }
+    }
+
     // callBack to Graph.vue to update simulation data
     this.onLinkAdded(l);
-    this.connections.push(new Connection(this.scene,this.lineHelper.startObject,obj,l));
-
+    this.connections.push(new Connection(this.scene,this.lineHelper.startObject,obj,l,this.defaultMat));
   }
 }
 
 function createPlane(item,mat) {
   const geometry = new THREE.PlaneGeometry( 100, 100 );
   const plane = new THREE.Mesh( geometry, mat );
-  plane.name=item.h_uuid;
+  plane.name=item.name;
   plane.h_name=item.name;
   plane.h_uuid=item.h_uuid;
   plane.h_type=item.h_type;
   return plane;
+}
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() *
+ charactersLength));
+   }
+   return result;
 }
 
 export default THREEScene

@@ -10,7 +10,7 @@
     item-key="uuid"
   >
     <template #item="{ element }">
-      <div class="list-group-item" :type="element.type" v-if="element.h_name.includes(searchstring)" @dblclick="onDoubleClick($event,element)">
+      <div class="list-group-item" :type="element.type" v-if="getElementName(element).includes(searchstring)" @dblclick="onDoubleClick($event,element)">
         <span
           @click="store.selectedObject=element"
           :class="selectedObjectId==element.h_uuid ? 'selected': '' ">
@@ -70,7 +70,7 @@ export default {
       window.dispatchEvent(new HashChangeEvent("hashchange"));
     },
     getElementName(element){
-      return element.h_type=='connection' ?  element.source.h_name +' -> '+ element.target.h_name : element.h_name;
+      return element.h_type=='connection' ?  element.source.name +' -> '+ element.target.name : element.name;
     }
   }
 };

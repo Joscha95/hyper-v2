@@ -36,7 +36,6 @@ export default {
       })
     },
     filterBlocks(e){
-      console.log(e.value);
       this.searchstring=e.value
     },
     onChange(evt){
