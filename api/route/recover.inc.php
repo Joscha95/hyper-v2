@@ -12,7 +12,7 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 	$content = "
 		<p>To reset your password for $sender follow this link:</p>
 		<p>
-			<a href='https://hyper.leuys.com/api?r=pw&ah=$auth_hash'>Password reset</a>
+			<a href='http://localhost:8080/reset/$auth_hash'>Password reset</a>
 		</p>
 	";
 

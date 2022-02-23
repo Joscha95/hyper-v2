@@ -64,7 +64,6 @@ module.exports = {
 								})
 							}
 							this.state = 3
-							console.log(this.channel)
 						}else{
 							this.state = 3
 						}
@@ -83,6 +82,7 @@ module.exports = {
 				if(response.status === 200){
 					this.targetSlug = response.data.slug
 					this.$router.push(`/${response.data.slug}`)
+					this.state = 1
 				}else{
 					console.error(response.data)
 				}

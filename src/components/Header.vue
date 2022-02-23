@@ -2,7 +2,7 @@
 	<header>
 		<div id="logo">
 			(
-				<span id="channel_name" v-if="this.title">{{ title }}</span>
+				<span id="channel_name" v-if="this.$route.name=='Stage'">{{ title }}</span>
 			)
 			<sup id="app_name">{{ this.$root.appName }}</sup>
 		</div>
