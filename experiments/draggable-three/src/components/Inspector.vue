@@ -12,6 +12,7 @@
         :removeOnSpill="true"
         @spill="store.selectedObject.from=[]"
         item-key="h_uuid"
+        style="margin-top:.5em"
       >
         <template #item="{ element }">
           <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' " >
@@ -19,16 +20,18 @@
           </div>
         </template>
       </draggable>
-      <i>&darr;</i>
 
-      <div v-if="store.selectedObject.h_type=='connection'">
-        <input type="text"  name="" v-model="store.selectedObject.name">
+      <i>⇣</i>
+
+      <div v-if="store.selectedObject.h_type=='connection'" :type="store.selectedObject.h_type">
+        <input @focus="store.focused=true" @blur="store.focused=false" type="text"  name="" v-model="store.selectedObject.name">
       </div>
       <div v-else>
         {{ store.selectedObject.name }}
       </div>
 
-      <i>&darr;</i>
+      <i>⇣</i>
+
       <draggable
         class="dragArea list-group"
         :list="store.selectedObject.to"
@@ -47,10 +50,9 @@
           </div>
         </template>
       </draggable>
-      <br>
-      <div class="meta">
-        id: {{ store.selectedObject.id }}<br>
-        h_uuid: {{ store.selectedObject.h_uuid }}<br>
+
+      <div class="property-field">
+        <input type="checkbox" v-model="store.selectedObject.isFixed"> position fixed
       </div>
 
       <div class="" v-if="store.selectedObject.h_type=='group'">
@@ -66,11 +68,22 @@
       </div>
 
       <div class="" v-if="store.selectedObject.h_type=='connection'">
+        <div class="property-field block">
+          <span class="name" @click="store.selectedObject=connectedNodes.source">{{ connectedNodes.source.name }}</span>
+        </div>
+        <i class="rotate">↭</i>
+        <div class="property-field block">
+          <span class="name" @click="store.selectedObject=connectedNodes.target">{{ connectedNodes.target.name }}</span>
+        </div>
         <br>
-        <br>
-        <strong>text</strong><br>
-        <br>
-        <textarea rows="5" v-model="store.selectedObject.text" placeholder="say something about the connection"></textarea>
+        <textarea @focus="store.focused=true" @blur="store.focused=false" rows="5" v-model="store.selectedObject.content" placeholder="say something about the connection"></textarea>
+        <draggableNumber :value="linkDistance" v-model="linkDistance"/>
+
+      </div>
+      <br>
+      <div class="meta">
+        a_id: {{ store.selectedObject.a_id }}<br>
+        h_uuid: {{ store.selectedObject.h_uuid }}<br>
       </div>
     </div>
 
@@ -81,18 +94,82 @@
 
 <script>
 import draggable from "vuedraggable";
+import draggableNumber from '@/components/subcomponents/draggable-number.vue'
+import {Vector3} from 'three'
 
 let idGlobal = 8;
 export default {
   name: "Inspector",
   order: 3,
   components: {
-    draggable
+    draggable,draggableNumber
   },
   data() {
     return {
       store:this.$root.store
     };
+  },
+  computed:{
+    connectedNodes(){
+      let conNodes = null;
+      if (this.store.selectedObject.h_type=='connection') {
+        conNodes = {};
+        let id = this.store.selectedObject.sourceID
+        conNodes.source=this.store.sceneList.find((n) => n.h_uuid==id)
+        id = this.store.selectedObject.targetID;
+        conNodes.target=this.store.sceneList.find((n) => n.h_uuid==id)
+      }
+      return conNodes
+    },
+    linkDistance:{
+      get(){
+        return this.store.selectedObject.links[0].distance*2;
+      },
+      set(newVal){
+
+        const fac=newVal/this.linkDistance;
+
+        //calc new source position
+        let newPos = new Vector3(this.connectedNodes.source.x,this.connectedNodes.source.y,this.connectedNodes.source.z)
+        let centerPos= new Vector3(this.store.selectedObject.x,this.store.selectedObject.y,this.store.selectedObject.z)
+        centerPos.addScaledVector(newPos.sub(centerPos),fac);
+        this.connectedNodes.source.x=centerPos.x;
+        this.connectedNodes.source.y=centerPos.y;
+        this.connectedNodes.source.z=centerPos.z;
+
+        //calc new target position
+        newPos = new Vector3(this.connectedNodes.target.x,this.connectedNodes.target.y,this.connectedNodes.target.z)
+        centerPos= new Vector3(this.store.selectedObject.x,this.store.selectedObject.y,this.store.selectedObject.z)
+        centerPos.addScaledVector(newPos.sub(centerPos),fac);
+        this.connectedNodes.target.x=centerPos.x;
+        this.connectedNodes.target.y=centerPos.y;
+        this.connectedNodes.target.z=centerPos.z;
+
+        this.store.selectedObject.links.forEach((item) => item.distance=newVal/2);
+      }
+    },
+    nodeIsFixed(){
+      return this.store.selectedObject ? this.store.selectedObject.isFixed : false
+    },
+    nodeContent(){
+      return this.store.selectedObject ? this.store.selectedObject.content : '-'
+    }
+  },
+  watch:{
+    nodeIsFixed(newVal){
+      if (newVal) {
+        this.store.selectedObject.fx=this.store.selectedObject.x;
+        this.store.selectedObject.fy=this.store.selectedObject.y;
+        this.store.selectedObject.fz=this.store.selectedObject.z;
+      }else {
+        this.store.selectedObject.fx=null;
+        this.store.selectedObject.fy=null;
+        this.store.selectedObject.fz=null;
+      }
+    },
+    nodeContent(newVal){
+      this.store.selectedObject.domElement.innerHTML=newVal;
+    }
   },
   methods: {
     log(evt){
@@ -125,7 +202,7 @@ export default {
 }
 
 .list-group.empty:after{
-  content:'drag block here';
+  content:'chaining';
   color:var(--gray2);
   padding:10px;
   display:block;
@@ -135,12 +212,24 @@ export default {
   display:none;
 }
 
-input{
+.property-field{
+  padding:10px 0;
+  margin:0.5em 0;
+}
+
+.block{
+  border: var(--border);
+  cursor:pointer;
+}
+
+input[type="text"]{
   border-style:dashed;
-  padding:10px 0 10px 10px;
+  padding:10px 0;
   box-sizing:border-box;
   display:inline-block;
   width:100%;
+  color:inherit;
+  text-align:center
 }
 
 .sortable-chosen,
@@ -157,7 +246,14 @@ input{
 
 i{
   display: inline-block;
+  font-style:normal;
   margin:1em 0;
+}
+
+i.rotate{
+  transform:rotate(-90deg);
+  color:blue;
+  margin:.5em 0 ;
 }
 
 .widget-area{
@@ -174,6 +270,8 @@ textarea{
   box-sizing:border-box;
   resize:vertical;
   height:auto;
+  border-style:dashed;
+  font-family:inherit;
 }
 
 </style>

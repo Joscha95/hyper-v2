@@ -10,12 +10,13 @@
     item-key="uuid"
   >
     <template #item="{ element }">
-      <div class="list-group-item" :type="element.type" v-if="element.name.includes(searchstring)" @dblclick="onDoubleClick($event,element)">
-        <span
-          @click="store.selectedObject=element"
-          :class="selectedObjectId==element.h_uuid ? 'selected': '' ">
-          {{ element.name }}
-        </span>
+      <div class="list-group-item"
+      :class="selectedObjectId==element.h_uuid ? 'selected': '' "
+      :type="element.h_type" v-if="element.name.includes(searchstring)"
+      @dblclick="onDoubleClick($event,element)">
+
+        <span @click="store.selectedObject=element">{{ element.name }}</span>
+
         <nested-draggable v-if="element.h_type=='group'" :children="element.children ? element.children : []" />
       </div>
     </template>

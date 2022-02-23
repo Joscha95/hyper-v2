@@ -3,6 +3,7 @@ import FirstPersonController from './FirstPersonController.js'
 import Globe from './GlobeHelper.js'
 import LineHelper from './LineHelper.js'
 import Connection from './Connection.js'
+import {CSS3DRenderer,CSS3DObject} from './CSS3DRenderer.js'
 
 class THREEScene {
   constructor(domparent,forceSimulation,cameraSettings) {
@@ -20,9 +21,9 @@ class THREEScene {
     this.defaultMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
     this.mouse=new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
-    this.lineHelper=null;
+    this.lineHelper = null;
 
-    this.onLinkAdded=()=>{};
+    this.onLinkAdded = ()=>{};
 
     domparent.addEventListener('click',(e)=>this.onClick(e));
     domparent.addEventListener('mousemove',(e)=>this.onMousemove(e));
@@ -32,13 +33,28 @@ class THREEScene {
     this.globeHelper.position.copy(this.cameraController.camera.position);
     this.scene.add(this.globeHelper);
 
-    const helper= new THREE.GridHelper(3,3);
+    const helper = new THREE.GridHelper(3,3);
     helper.scale.setScalar(100);
     this.scene.add(helper);
+
+    this.cssRenderer = new CSS3DRenderer();
+    this.cssRenderer.setSize(window.innerWidth, window.innerHeight);
+    this.cssRenderer.domElement.style.position = 'fixed';
+    this.cssRenderer.domElement.style.top = '0px';
+    this.cssRenderer.domElement.style.left = '0px';
+    this.cssRenderer.domElement.style.pointerEvents = 'none';
+
+    document.querySelectorAll('.CSS3DRenderer').forEach((item, i) => {
+      item.remove()
+    });
+
+    this.cssRenderer.domElement.classList.add('CSS3DRenderer');
+    document.body.appendChild(this.cssRenderer.domElement);
 
     this.renderer=new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize( window.innerWidth,window.innerHeight );
     this.setRendererSize();
+
     window.onresize=()=>{
       this.setRendererSize();
     }
@@ -59,6 +75,7 @@ class THREEScene {
 
     this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setSize( this.width, this.height );
+		this.cssRenderer.setSize( this.width, this.height );
   }
 
   render(){
@@ -83,6 +100,7 @@ class THREEScene {
 
 
     this.renderer.render(this.scene,this.cameraController.camera);
+    this.cssRenderer.render(this.scene,this.cameraController.camera);
     window.requestAnimationFrame(()=> this.render());
   }
 
@@ -121,7 +139,7 @@ class THREEScene {
         return !planes.some((p) => n.h_uuid==p.h_uuid)
       });
     toAdd.forEach((item, i) => {
-        const plane=createPlane(item,this.defaultMat)
+        const plane=createPlane(item,this.defaultMat);
         this.planes.push(plane);
         this.scene.add(plane)
       });
@@ -221,7 +239,8 @@ class THREEScene {
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj)
 
     // callBack to Graph.vue to update simulation data
-    this.onLinkAdded(con.createNew());
+    const nl=con.createNew();
+    this.onLinkAdded(nl);
     this.connections.push(con);
     this.planes.push(middleNodePlane);
   }
@@ -230,6 +249,19 @@ class THREEScene {
 function createPlane(item,mat) {
   const geometry = new THREE.PlaneGeometry( 100, 100 );
   const plane = new THREE.Mesh( geometry, mat );
+  const d = document.createElement('DIV');
+
+  d.dataset.h_uuid=item.h_uuid;
+  d.classList.add('floating-blocks');
+  d.innerHTML=item.content||'( ͡° ͜ʖ ͡°)﻿';
+  const cssObj=new CSS3DObject(d);
+  
+  setTimeout(()=>{console.log(d.offsetHeight);},100)
+
+  cssObj.position.set(0, 0, 0);
+  plane.add(cssObj);
+  cssObj.position.set(0, 0, 0);
+  item.domElement=d;
   plane.name=item.name;
   plane.h_name=item.name;
   plane.h_uuid=item.h_uuid;

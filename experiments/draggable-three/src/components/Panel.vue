@@ -48,6 +48,7 @@ export default {
   --gray1:rgb(250,250,250);
   --gray2:rgb(230,230,230);
   --gray3:rgb(200,200,200);
+  --yellow:#fffbe9;
 }
 
 #panel {
@@ -98,11 +99,11 @@ header{
 
 .list-group-item span{
   cursor:pointer;
-  display:inline-block;
+  display:block;
   padding: 10px 0;
 }
 
-.list-group-item:active{
+.dragArea .list-group-item:active{
   cursor:grabbing;
 }
 
@@ -116,11 +117,20 @@ header{
 }
 
 .selected{
-  color:blue;
+  background-color:var(--yellow);
 }
 
-.list-group-item[type="content"] + .list-group-item[type="content"]{
+*[type="connection"]{
+  color:blue
+}
+
+.list-group-item[type*="con"] + .list-group-item[type*="con"]{
   border-top:0;
+}
+
+.floating-blocks{
+  pointer-events:none;
+  max-width:200px;
 }
 </style>
 
@@ -130,7 +140,8 @@ header{
 }
   header span{
     margin-right:1em;
-    opacity:.4
+    opacity:.4;
+    cursor:pointer;
   }
 
   .active{

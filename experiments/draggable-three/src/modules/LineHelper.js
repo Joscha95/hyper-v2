@@ -1,20 +1,20 @@
-import * as THREE from 'three'
+import {LineBasicMaterial,Vector3,BufferGeometry,Line,DynamicDrawUsage} from 'three'
 class LineHelper {
   constructor(startObject) {
     this.startObject=startObject;
-    this.endPosition=new THREE.Vector3();
-    const material = new THREE.LineBasicMaterial({color: 0x0000ff });
+    this.endPosition=new Vector3();
+    const material = new LineBasicMaterial({color: 0x0000ff });
 
     const points = [];
-    points.push( new THREE.Vector3( 0, 0, 0 ) );
-    points.push( new THREE.Vector3( 10, 10, 0 ) );
+    points.push( new Vector3( 0, 0, 0 ) );
+    points.push( new Vector3( 10, 10, 0 ) );
 
-    const geometry = new THREE.BufferGeometry().setFromPoints( points );
+    const geometry = new BufferGeometry().setFromPoints( points );
 
-    this.line=new THREE.Line( geometry, material );
+    this.line=new Line( geometry, material );
     this.linepositions=this.line.geometry.attributes.position;
     this.line.geometry.dynamic=true;
-    this.linepositions.usage = THREE.DynamicDrawUsage;
+    this.linepositions.usage = DynamicDrawUsage;
   }
 
   update(){
@@ -31,3 +31,6 @@ class LineHelper {
 }
 
 export default LineHelper
+
+
+

@@ -4,7 +4,8 @@ const store = reactive({
   selectedObject:null,
   scene:null,
   isDragging:false,
-  sceneList:[]
+  sceneList:[],
+  focused:false
 })
 
 export default store

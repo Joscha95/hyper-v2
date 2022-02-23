@@ -1,17 +1,18 @@
-import * as THREE from 'three'
+import {PerspectiveCamera,Vector3} from 'three'
+import {Math as THREEMath}  from 'three'
 
 class FirstPersonController {
   constructor(domElement,options={}) {
     this.enabled = true;
   	this.domElement = domElement;
-  	this.camera = new THREE.PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 50000);
+  	this.camera = new PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 50000);
     this.camera.position.set(300,100,0);
     this.camera.lookAt(0,0,0);
   	this.rotateSpeed = options.rotateSpeed || 0.15;
   	this.zoomSpeed = options.zoomSpeed || 1;
   	this.moveSpeed = options.moveSpeed || 0.1;
   	this.active = false;
-  	this.moveTarget = new THREE.Vector3(0,0,0);
+  	this.moveTarget = new Vector3(0,0,0);
 
   	this.domElement.addEventListener('wheel',(e)=> this.onMouseWheel(e));
     this.domElement.addEventListener('mousedown',(e)=> this.onMouseDown(e));
@@ -32,7 +33,7 @@ class FirstPersonController {
   	this.mousePressed = false
   	this.isDragging = false
     this.moveToTarget = false
-    this.direction = new THREE.Vector3()
+    this.direction = new Vector3()
     this.quatTarg=null
     this.quatCam=null
     this.keyPressed = false
@@ -89,7 +90,7 @@ class FirstPersonController {
   }
 
   moveTo(targetObj) {
-    let targetPos = new THREE.Vector3();
+    let targetPos = new Vector3();
     targetObj.getWorldPosition(targetPos);
     let posOffset = 0;
 
@@ -111,7 +112,7 @@ class FirstPersonController {
 
     // Position
     let targ = targetPos.clone();
-    var dir = new THREE.Vector3();
+    var dir = new Vector3();
     dir.subVectors( targ, this.camera.position ).normalize();
     targ.addScaledVector(dir,posOffset);
     this.moveTarget.copy(targ);
@@ -220,7 +221,7 @@ class FirstPersonController {
 				this.sendStartEvent();
 			}
 		}
-	  this.camera.rotateOnWorldAxis(new THREE.Vector3(0, 1,0), THREE.Math.degToRad(50*movementX));
+	  this.camera.rotateOnWorldAxis(new Vector3(0, 1,0), THREEMath.degToRad(50*movementX));
 	  this.camera.rotateX(movementY);
 	}
 

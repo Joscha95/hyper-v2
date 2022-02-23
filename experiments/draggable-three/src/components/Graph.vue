@@ -39,11 +39,23 @@ export default {
   computed:{
     links(){
       return this.graphData.links.length;
-    }
+    },
+    linkDistance(){
+      return this.graphData.links.reduce((oldVal,item) => oldVal+item.distance,0);
+    },
+    isFocused(){
+        return this.store.focused
+      }
   },
   watch:{
     links(){
         console.log('links changed');
+      },
+    linkDistance(){
+        this.forceSimulation.updateLinkDistances();
+      },
+    isFocused(){
+        this.THREEScene.cameraController.enabled=!this.store.focused;
       }
   },
   methods:{

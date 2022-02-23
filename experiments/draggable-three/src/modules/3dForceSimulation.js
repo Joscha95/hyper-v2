@@ -53,6 +53,11 @@ class ForceSimulation {
   getNodeById(h_uuid){
     return this.nodeMap.get(h_uuid);
   }
+
+  updateLinkDistances(){
+    this.simulation.nodes(this.graphData.nodes);
+    this.reheat();
+  }
 }
 
 export default ForceSimulation

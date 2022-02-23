@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import {LineBasicMaterial,BufferGeometry,Line,DynamicDrawUsage,Vector3} from 'three'
 
 class Connection {
   constructor(scene,startObject,middleObject,endObject) {
@@ -7,15 +7,15 @@ class Connection {
     this.endObject = endObject;
     this.scene = scene;
 
-    const material = new THREE.LineBasicMaterial({color: 0x0000ff });
+    const material = new LineBasicMaterial({color: 0x0000ff });
 
-    let geometry = new THREE.BufferGeometry().setFromPoints( [this.startObject.position,this.middleObject.position,this.endObject.position] );
+    let geometry = new BufferGeometry().setFromPoints( [this.startObject.position,this.middleObject.position,this.endObject.position] );
 
-    this.line=new THREE.Line( geometry, material );
+    this.line=new Line( geometry, material );
     this.line.h_type='connection';
     this.linepositions=this.line.geometry.attributes.position;
     this.line.geometry.dynamic=true;
-    this.linepositions.usage = THREE.DynamicDrawUsage;
+    this.linepositions.usage = DynamicDrawUsage;
     this.scene.add(this.line)
   }
 
@@ -32,24 +32,27 @@ class Connection {
   }
 
   createNew(){
-    const center = new THREE.Vector3().copy(this.startObject.position).lerp(this.endObject.position,0.5);
+    const center = new Vector3().copy(this.startObject.position).lerp(this.endObject.position,0.5);
     const dist = this.startObject.position.distanceTo(this.endObject.position)
+    
     const node = {
       h_uuid:'H'+Date.now()+makeid(5),
       name: this.startObject.name+' ↭ '+this.endObject.name,
       to:[],
       val:1,
       from:[],
-      text:'',
+      content:'',
+      initDistance:dist,
+      isFixed:false,
       x:center.x,
       y:center.y,
       z:center.z,
-      source : this.startObject,
-      target : this.endObject,
       sourceID : this.startObject.h_uuid,
       targetID : this.endObject.h_uuid,
       h_type: 'connection'
     }
+
+    this.middleObject.name = node.name;
 
     this.middleObject.h_uuid=node.h_uuid;
 

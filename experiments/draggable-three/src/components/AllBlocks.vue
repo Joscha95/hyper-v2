@@ -67,7 +67,8 @@ export default {
         name: name,
         to:[],
         from:[],
-        children:[],
+        isFixed:false,
+        content:'( ͡° ͜ʖ ͡°)',
         h_type: 'content'
       };
     },

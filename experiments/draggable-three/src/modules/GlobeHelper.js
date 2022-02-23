@@ -1,20 +1,21 @@
-import * as THREE from 'three'
+import {LineBasicMaterial,Vector3,BufferGeometry,Line,Group}  from 'three'
+
 
 function drawCircle(circleRadius, circleSegments, circleColor, y=0 )
 {
-	const circleMat = new THREE.LineBasicMaterial( { color: circleColor } );
+	const circleMat = new LineBasicMaterial( { color: circleColor } );
 	const points = [];
 	const divisions = 360 / circleSegments;
 	for(let i=0; i<=(360/divisions); i++){
-		points.push( new THREE.Vector3( Math.cos((i*divisions)*(Math.PI/180))*circleRadius, y, Math.sin((i*divisions)*(Math.PI/180))*circleRadius ));
+		points.push( new Vector3( Math.cos((i*divisions)*(Math.PI/180))*circleRadius, y, Math.sin((i*divisions)*(Math.PI/180))*circleRadius ));
 	}
-	const circleGeo = new THREE.BufferGeometry().setFromPoints( points );
-	return new THREE.Line( circleGeo, circleMat );
+	const circleGeo = new BufferGeometry().setFromPoints( points );
+	return new Line( circleGeo, circleMat );
 }
 
 const Globe = function drawGlobe ( radius, nLat=15, nLon=32, segments=32, color='white' ) {
 
-	const Circles = new THREE.Group();
+	const Circles = new Group();
 	Circles.hyperType='GlobeHelper';
 	nLat = nLat + 1 ;
 
