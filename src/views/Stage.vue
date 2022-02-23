@@ -1,5 +1,8 @@
 <template>
-	<button @click="update">update scene</button>
+	<button @click="update">update</button>
+	<input type="password" v-model.trim="password">
+	<button @click="save">save</button>
+	<button @click="recover">recover</button>
 </template>
 
 <script>
@@ -14,7 +17,9 @@ export default {
 			channelId: false,
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
-			channel: false
+			channel: false,
+			password: '',
+			scene: {demokey: Date.now()} // TBD: kommt von three
 		}
 	},
 	mounted() {

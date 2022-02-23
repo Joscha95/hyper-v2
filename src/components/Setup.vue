@@ -12,9 +12,9 @@
 		</section>
 		<section id="user_data" v-if="advance">
 			<label><strong>Mail</strong> (only used for password retrieval)</label>
-			<input type="email" v-model.trim="email" :class="{ valid: validEmail }" required><br>
+			<input type="email" v-model.trim="email" :class="{ valid: validEmail }" maxlength="255" required><br>
 			<label><strong>Password</strong> (for managing the hyper)<span id="pwLInd">{{ password.length }} > {{ passwordMinLength-1 }}</span></label>
-			<input type="password" v-model.trim="password" :class="{ valid: password.length>passwordMinLength-1 }" minlength="{{ passwordMinLength }}" required>
+			<input type="password" v-model.trim="password" :class="{ valid: password.length>passwordMinLength-1 }" minlength="{{ passwordMinLength }}" maxlength="255" required>
 		</section>
 		<button type="submit" :disabled="!channel" v-if="!advance">Next</button>
 		<button type="submit" :disabled="!valid" v-if="advance">Create hyper</button>

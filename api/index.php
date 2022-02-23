@@ -14,8 +14,17 @@ switch ($_GET['r']) {
 	case 'g':
 		include_once('route/get.inc.php');
 		break;
+	case 's':
+		include_once('route/save.inc.php');
+		break;
 	case 'cs':
 		include_once('route/changeslug.inc.php');
+		break;
+	case 'r':
+		include_once('route/recover.inc.php');
+		break;
+	case 'pw':
+		include_once('route/reset.inc.php');
 		break;
 	default:
 		$error = [404,'Bad Request','Wrong route.'];

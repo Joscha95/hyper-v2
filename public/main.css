@@ -61,6 +61,10 @@ input.valid {
 	background-color: rgb(243, 255, 237);
 	color: var(--main-darkgray-color);
 }
+input:not(.valid, :focus) {
+	background-color: var(--main-faintgray-color);
+	color: black;
+}
 label {
 	color: var(--main-darkgray-color);
 	margin-bottom: 0.5rem;

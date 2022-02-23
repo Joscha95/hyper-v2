@@ -1,8 +1,8 @@
 <script>
 module.exports = {
 	methods: {
-		
-		
+
+
 		get(){
 			this.axios.get(process.env.VUE_APP_API_URL+'?r=g&s='+this.$route.params.slug)
 			.then(response => {
@@ -26,7 +26,7 @@ module.exports = {
 				this.state = -1
 			})
 		},
-		
+
 
 		update(){
 			// only proceed when no update is currently in progress
@@ -72,8 +72,8 @@ module.exports = {
 				})
 			}
 		},
-		
-		
+
+
 		rename(){
 			this.axios.post(
 				process.env.VUE_APP_API_URL + '?r=cs',
@@ -90,13 +90,63 @@ module.exports = {
 				console.error(error)
 			})
 		},
-		
-		
+
+
 		save(){
-			
+			if(this.password) {
+				if( this.state == 2 ) {
+					this.$root.notify('Update in progress.')
+				} else {
+					this.axios.post(
+						process.env.VUE_APP_API_URL + '?r=s',
+						{ id: this.sceneId, password: this.password, scene: this.channel }, 
+						{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
+					).then(response => { 
+						if(response.status === 200){
+							this.$root.notify(response.data.message, 'success')
+						}else{
+							console.error(response.data)
+						}
+					}).catch(error => {
+						if(error.response.status === 400){
+							this.$root.notify(error.response.data.description, 'error')
+						}else{
+							console.error(error)
+						}
+					})	
+				}	
+			} else {
+				this.$root.notify('Please enter a password.')
+			}
+		},
+
+
+		recover(){
+			var email = prompt('Please enter the mail address for this scene.')
+			if( email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ){
+				this.axios.post(
+					process.env.VUE_APP_API_URL + '?r=r',
+					{ id: this.sceneId, email: email }, 
+					{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
+				).then(response => { 
+					if(response.status === 200){
+						this.$root.notify(response.data.message, 'success')
+					}else{
+						console.error(response.data)
+					}
+				}).catch(error => {
+					if(error.response.status === 400){
+						this.$root.notify(error.response.data.description, 'error')
+					}else{
+						console.error(error)
+					}
+				})
+			} else {
+				this.$root.notify('The entered address it not a valid mail address.', 'error')
+			}
 		}
-		
-		
+
+
 	}
 }
 </script>
