@@ -2,21 +2,19 @@
 
 if( $data=json_decode(file_get_contents('php://input')) ) {
 
-	$email = filter_var($data->email, FILTER_SANITIZE_EMAIL);
-	$password = password_hash($data->password, PASSWORD_BCRYPT);
-	$channel_id = intval($data->channel->id);
-	$slug = urlencode($data->channel->slug);
-	
+	$scene_id = intval($data->id);
+	$slug = urlencode($data->slug);
+	$slug_part = explode('_', $slug);
+	if( !isset($slug_part[1]) ) $slug_part[1]=1;
+
 	$query = "
-		INSERT INTO scenes (email, password, channel_id) VALUES ('$email', '$password', '$channel_id');
-		SET @scene_id = LAST_INSERT_ID();
 		SET @number = (SELECT COUNT(id) FROM slugs WHERE string = '$slug')+1;
-		INSERT INTO slugs (scene_id, string, number) VALUES (@scene_id, '$slug', @number );
+		INSERT INTO slugs (scene_id, string, number) VALUES ($scene_id, '$slug', @number );
 		SET @slug_id = LAST_INSERT_ID();
-		UPDATE scenes SET slug_id = @slug_id WHERE id = @scene_id;
+		UPDATE scenes SET slug_id = @slug_id WHERE id = $scene_id;
 		SELECT @number;
 	";
-	
+
 	$mysqli->autocommit(FALSE);
 	$mysqli->begin_transaction();
 	$mysqli->multi_query($query);
@@ -35,7 +33,7 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 		$mysqli->commit();
 		$response = array('slug' => $slug.$counter);
 	}
-	
+
 } else {
 	$error = [400,'Bad Request','No data.'];
 }

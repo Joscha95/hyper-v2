@@ -12,9 +12,9 @@
 		</section>
 		<section id="user_data" v-if="advance">
 			<label><strong>Mail</strong> (only used for password retrieval)</label>
-			<input type="email" v-model.trim="email" :class="{ valid: validEmail }" required><br>
+			<input type="email" v-model.trim="email" :class="{ valid: validEmail }" maxlength="255" required><br>
 			<label><strong>Password</strong> (for managing the hyper)<span id="pwLInd">{{ password.length }} > {{ passwordMinLength-1 }}</span></label>
-			<input type="password" v-model.trim="password" :class="{ valid: password.length>passwordMinLength-1 }" minlength="{{ passwordMinLength }}" required>
+			<input type="password" v-model.trim="password" :class="{ valid: password.length>passwordMinLength-1 }" minlength="{{ passwordMinLength }}" maxlength="255" required>
 		</section>
 		<button type="submit" :disabled="!channel" v-if="!advance">Next</button>
 		<button type="submit" :disabled="!valid" v-if="advance">Create hyper</button>
@@ -77,7 +77,7 @@ export default {
 		async searchChannel(slug) {
 			this.message = 'searching...'
 			try {
-				const res = await fetch(`https://api.are.na/v2/channels/${slug}?per=15`)
+				const res = await fetch(`https://api.are.na/v2/channels/${slug}?per=0`)
 				const result = (await res.json())
 				if(result.id){
 					this.message = 'Channel: '
@@ -114,16 +114,16 @@ export default {
 					{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 				)
 				.then(response => { 
-					// if scene file has been successfully written, route to scene view
-					if(response.status === 201){
+					if(response.status === 200){
 						this.$root.notify('Your hyperspace has been created', 'success')
-						//this.$router.push(`/${response.data.slug}`)
+						this.$router.push(`/${response.data.slug}`)
 					}else{
-						console.log(response.data)
+						this.$root.notify('Something went wrong', 'error')
+						console.error(response.data)
 					}
 				})
 				.catch(error => { 
-					// something went wrong writing the scene file
+					// something went wrong creating the scene
 					this.$root.notify(error, 'error')
 					console.error(error)
 				})

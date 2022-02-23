@@ -1,5 +1,8 @@
 <template>
-	<button @click="update">update scene</button>
+	<button @click="update">update</button>
+	<input type="password" v-model.trim="password">
+	<button @click="save">save</button>
+	<button @click="recover">recover</button>
 </template>
 
 <script>
@@ -10,62 +13,51 @@ export default {
 	data() {
 		return {
 			axios: require('axios').default,
-			scenePath: `scenes/${this.$route.params.slug}.json`,
-			baseSlug: ( this.$route.params.slug.indexOf('_')>0 ? this.$route.params.slug.substr(0, this.$route.params.slug.indexOf('_')) : this.$route.params.slug ),
+			sceneId: false,
 			channelId: false,
-			state: 0, // notfound=-1, setup=0, OK=1, updating=2, updated=3, renamed=4
-			channel: false
+			targetSlug: false,
+			state: 0, // setup=0, OK=1
+			channel: false,
+			password: '',
+			scene: {demokey: Date.now()} // TBD: kommt von three
 		}
 	},
 	mounted() {
-		// Check if scene file exists
-		this.axios.get(this.scenePath)
-		.then(response => {
-			this.channelId = response.data.channel.id
-			this.update()
-		})
-		.catch(error => {
-			console.error(error)
-			this.state = -1
-		})
+		this.get()
 	},
 	watch: {
 		channel() {
-			
-			/*
-				on change: hier wird erst nach der ersten update schleife ansigned
-				wenn das passiert, dann kann nach dem rename gefragt werden
-			
-				if( this.baseSlug != response.data.channel.slug ){
-				// bevor der ganze channel geupdatet wird, erstmal fragen ob channel umbenannt wurde. 
-				// wenn ja, scene file neu erstellen mit neuem slug und in alte scene file hinterlege : moved permanelty
-				this.$root.notify('The channel name has been changed.')
-				rename()
-			*/
-
 			this.$root.channelTitle = this.channel.title
 		},
 		state() {
 			switch (this.state) {
+				// NOT FOUND
 				case -1:
 					this.$root.notify('No hyperspace found.', 'error')
 					this.$router.push(`/not/found`)
 					break;
+				// UPDATING
 				case 2:
 					this.$root.channelTitle = 'loading...'
 					break;
+				// UPDATED
 				case 3:
 					this.$root.notify('Channel has been updated.', 'success')
-					console.log(this.channel)
 					break;
-				case 4:
-					this.$root.notify('The channel has been renamed')
+				// MOVED PERMANENTLY
+				case 4: 
+					this.$router.push(`/${this.targetSlug}`)
+					this.update()
+					break;
+				// CHANNEL RENAMED > SLUG CHANGED
+				case 5:
+					this.rename()
 					break;
 			}
 		}
 	},
 	methods: {
-		// for api functions see mixins
+		// for api functions see 'mixins/api.vue'
 	}
 }
 </script>
