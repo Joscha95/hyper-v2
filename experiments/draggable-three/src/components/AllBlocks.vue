@@ -25,6 +25,7 @@
 <script>
 import draggable from "vuedraggable";
 import searchbar from "@/components/subcomponents/searchbar.vue";
+import blocks from "@/cooking.js";
 
 let idGlobal = 8;
 export default {
@@ -35,12 +36,7 @@ export default {
   },
   data() {
     return {
-      blocks: [
-        { name: "dog 1", id: 1 },
-        { name: "dog 2", id: 2 },
-        { name: "dog 3", id: 3 },
-        { name: "dog 4", id: 4 }
-      ],
+      blocks: blocks.nodes,
       store:this.$root.$data.store,
       lastSelected:null,
       searchstring:''
@@ -68,7 +64,7 @@ export default {
         to:[],
         from:[],
         isFixed:false,
-        content:'( ͡° ͜ʖ ͡°)',
+        content:name,
         h_type: 'content'
       };
     },

@@ -131,6 +131,7 @@ header{
 .floating-blocks{
   pointer-events:none;
   max-width:200px;
+  font-size:2em;
 }
 </style>
 

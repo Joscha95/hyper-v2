@@ -235,7 +235,7 @@ class THREEScene {
     this.isConnecting=false;
     if(obj==this.lineHelper.startObject) return;
 
-    const middleNodePlane = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), this.defaultMat );
+    const middleNodePlane = new THREE.Object3D(); // empty object for positioning of node, only neded until reload
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj)
 
     // callBack to Graph.vue to update simulation data
@@ -246,7 +246,7 @@ class THREEScene {
   }
 }
 
-function createPlane(item,mat) {
+function createPlane(item,mat,cssResolution=.5) {
   const geometry = new THREE.PlaneGeometry( 100, 100 );
   const plane = new THREE.Mesh( geometry, mat );
   const d = document.createElement('DIV');
@@ -255,10 +255,24 @@ function createPlane(item,mat) {
   d.classList.add('floating-blocks');
   d.innerHTML=item.content||'( ͡° ͜ʖ ͡°)﻿';
   const cssObj=new CSS3DObject(d);
-  
-  setTimeout(()=>{console.log(d.offsetHeight);},100)
+  let iter = 0;
+  setPlaneGeomToDomWidth();
+
+  function setPlaneGeomToDomWidth() {
+    if (d.offsetWidth!=0 && d.offsetHeight!=0) {
+      plane.geometry.dispose();
+      plane.geometry=new THREE.PlaneGeometry( d.offsetWidth*cssResolution , d.offsetHeight*cssResolution );
+    }else if(iter<10) {
+      setTimeout(()=>{
+        iter++;
+        setPlaneGeomToDomWidth();
+      },10)
+    }
+
+  }
 
   cssObj.position.set(0, 0, 0);
+  cssObj.scale.set(cssResolution, cssResolution, cssResolution);
   plane.add(cssObj);
   cssObj.position.set(0, 0, 0);
   item.domElement=d;
