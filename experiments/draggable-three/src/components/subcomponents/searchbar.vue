@@ -23,12 +23,12 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style scoped>
 input{
   padding:10px;
   width: 100%;
-  margin: .5em 0;
   border-radius:0;
   border:var(--border);
+  margin: 0;
 }
 </style>

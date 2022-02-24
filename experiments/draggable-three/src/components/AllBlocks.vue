@@ -1,8 +1,10 @@
 <template>
   <div id="all-blocks">
-    <strong @click="show=!show">add blocks</strong>
-    <div class="widget-area" v-show="show">
-      <searchbar @search="filterBlocks" />
+    <div id="all-blocks-header">
+      <strong @click="show=!show" id="add-block-button">add blocks</strong>
+      <searchbar v-show="show" @search="filterBlocks" />
+    </div>
+    <div id="all-blocks-body" v-show="show">
       <draggable
         class="dragArea list-group"
         :list="blocks"
@@ -15,7 +17,7 @@
         item-key="id"
       >
         <template #item="{ element }">
-          <div class="list-group-item" v-show="element.name.includes(searchstring)">
+          <div class="list-group-item" v-show="element.name.toLowerCase().includes(searchstring)">
             <span>{{ element.name }}</span>
           </div>
         </template>
@@ -42,7 +44,7 @@ export default {
       store:this.$root.$data.store,
       lastSelected:null,
       searchstring:'',
-      show:false
+      show:true
     };
   },
   methods: {
@@ -77,22 +79,50 @@ export default {
       this.lastSelected.classList.add('selected-by-drag')
     },
     filterBlocks(e){
-      this.searchstring=e.value
+      this.searchstring=e.value.toLowerCase()
     }
   }
 };
 </script>
+<style>
+  :root {
+    --header-height: 5rem;
+  }
+</style>>
 <style scoped>
-#all-blocks{
-  position:fixed;
-  height:100%;
-  overflow-y:auto;
-  z-index:1;
-}
+  #all-blocks{
+    position:fixed;
+    height:100%;
+    z-index:1;
+    user-select:none;
+    top:0;
+    width:15rem;
+  }
+  #all-blocks-header{
+    position:absolute;
+    width: 100%;
+    display: flex;
+    align-content: space-between;
+    flex-wrap: wrap;
+    height: var(--header-height);
+  }
+  #all-blocks-body{
+    position:absolute;
+    width: 100%;
+    overflow-y:auto;
+    top: calc(var(--header-height) + 3px );
+    bottom: 0;
+    background: white;
+  }
+  #add-block-button{
+    padding: .5em;
+  }
   .list-group-item{
     background-color:white;
+    text-align: left;
+    box-sizing: border-box;
+    padding: 0 .3em;
   }
-
   .list-group-item + .list-group-item{
     border-top:0;
   }

@@ -54,6 +54,7 @@ input {
 }
 input:focus {
 	background-color: rgb(255, 255, 237);
+	outline-width: 0;
 }
 input.invalid {
 	background-color: var(--main-faintgray-color);

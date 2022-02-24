@@ -50,16 +50,15 @@ export default {
 
 <style lang="css">
  #canvas_dragtarget{
-   position: absolute;
+   position: fixed;
    background-color:transparent;
    top:0;
    left:0;
-   width:100vw;
-   height:100vh;
- }
- .drag-area{
+   width:100%;
    height:100%;
    opacity:0;
+ }
+ .drag-area{
    pointer-events:none;
  }
  .drag-area.active{
