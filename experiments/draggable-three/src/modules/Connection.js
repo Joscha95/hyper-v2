@@ -1,4 +1,5 @@
 import {LineBasicMaterial,BufferGeometry,Line,DynamicDrawUsage,Vector3} from 'three'
+import {makeid} from '@/modules/Helpers.js'
 
 class Connection {
   constructor(scene,startObject,middleObject,endObject) {
@@ -31,26 +32,17 @@ class Connection {
     this.scene.remove(this.line)
   }
 
-  createNew(){
+  unfocus(){
+    this.line.material.color.setHex( 0x0000ff );
+  }
+
+  focus(){
+    this.line.material.color.set( 'red' );
+  }
+
+  createNew(node){
     const center = new Vector3().copy(this.startObject.position).lerp(this.endObject.position,0.5);
     const dist = this.startObject.position.distanceTo(this.endObject.position)
-    
-    const node = {
-      h_uuid:'H'+Date.now()+makeid(5),
-      name: this.startObject.name+' ↭ '+this.endObject.name,
-      to:[],
-      val:1,
-      from:[],
-      content:'',
-      initDistance:dist,
-      isFixed:false,
-      x:center.x,
-      y:center.y,
-      z:center.z,
-      sourceID : this.startObject.h_uuid,
-      targetID : this.endObject.h_uuid,
-      h_type: 'connection'
-    }
 
     this.middleObject.name = node.name;
 
@@ -79,21 +71,11 @@ class Connection {
     }
 
     node.links=[l.link1,l.link2];
+    node.initDistance=dist;
 
     return l;
   }
 
-}
-
-function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() *
- charactersLength));
-   }
-   return result;
 }
 
 export default Connection

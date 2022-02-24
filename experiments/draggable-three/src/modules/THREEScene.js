@@ -1,9 +1,11 @@
 import * as THREE from 'three'
-import FirstPersonController from './FirstPersonController.js'
-import Globe from './GlobeHelper.js'
-import LineHelper from './LineHelper.js'
-import Connection from './Connection.js'
-import {CSS3DRenderer,CSS3DObject} from './CSS3DRenderer.js'
+import FirstPersonController from '@/modules/FirstPersonController.js'
+import Globe from '@/modules/GlobeHelper.js'
+import LineHelper from '@/modules/LineHelper.js'
+import Connection from '@/modules/Connection.js'
+import ContentBlock from '@/modules/ContentBlock.js'
+import {CSS3DRenderer,CSS3DObject} from '@/modules/CSS3DRenderer.js'
+import {makeid} from '@/modules/Helpers.js'
 
 class THREEScene {
   constructor(domparent,forceSimulation,cameraSettings) {
@@ -60,7 +62,6 @@ class THREEScene {
     }
 
     this.importNodes();
-    this.importlinks();
 
     domparent.appendChild(this.renderer.domElement);
     this.render();
@@ -85,7 +86,7 @@ class THREEScene {
     const simIsHot=this.forceSimulation.isHot;
     this.planes.forEach((item, i) => {
       simPos=this.forceSimulation.getNodeById(item.h_uuid);
-      item.position.set(simPos.x,simPos.y,simPos.z);
+      item.setPos(simPos);
       if (simIsHot) {
         item.lookAt(this.cameraController.camera.position)
       }
@@ -107,9 +108,7 @@ class THREEScene {
   importNodes(){
     const nodes = this.forceSimulation.simulation.nodes();
     nodes.forEach((item, i) => {
-      const plane=createPlane(item,this.defaultMat)
-      this.planes.push(plane);
-      this.scene.add(plane)
+      this.planes.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
     });
 
     nodes.filter((n) => n.h_type=='connection').forEach((item, i) => {
@@ -118,15 +117,6 @@ class THREEScene {
       const endObject=this.scene.getObjectByProperty('h_uuid',item.targetID);
       this.connections.push(new Connection(this.scene,startObject,middleObject,endObject));
     });
-
-  }
-
-  importlinks(){
-    // this.forceSimulation.simulation.force('link').links().forEach((item, i) => {
-    //   const startObject = this.scene.getObjectByProperty('h_uuid',item.source.h_uuid)
-    //   const endObject = this.scene.getObjectByProperty('h_uuid',item.target.h_uuid)
-    //   this.connections.push(new Connection(this.scene,startObject,endObject,item));
-    // });
 
   }
 
@@ -139,9 +129,7 @@ class THREEScene {
         return !planes.some((p) => n.h_uuid==p.h_uuid)
       });
     toAdd.forEach((item, i) => {
-        const plane=createPlane(item,this.defaultMat);
-        this.planes.push(plane);
-        this.scene.add(plane)
+        this.planes.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
       });
 
     // check which planes are in the scene but not in the simulation -> remove them from scene
@@ -177,7 +165,7 @@ class THREEScene {
 
   castRay(){
     this.raycaster.setFromCamera(this.mouse, this.cameraController.camera);
-    const intersects = this.raycaster.intersectObjects(this.planes);
+    const intersects = this.raycaster.intersectObjects(this.planes.map((p)=>p.plane));
     if (intersects.length > 0) {
       const targ = intersects[0].object;
       if (!this.isConnecting) {
@@ -241,63 +229,37 @@ class THREEScene {
     this.isConnecting=false;
     if(obj==this.lineHelper.startObject) return;
 
-    const middleNodePlane = new THREE.Object3D(); // empty object for positioning of node, only neded until reload
-    const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj)
-
-    // callBack to Graph.vue to update simulation data
-    const nl=con.createNew();
-    this.onLinkAdded(nl);
-    this.connections.push(con);
-    this.planes.push(middleNodePlane);
-  }
-}
-
-function createPlane(item,mat,cssResolution=.5) {
-  const geometry = new THREE.PlaneGeometry( 100, 100 );
-  const plane = new THREE.Mesh( geometry, mat );
-  const d = document.createElement('DIV');
-
-  d.dataset.h_uuid=item.h_uuid;
-  d.classList.add('floating-blocks');
-  d.innerHTML=item.content||'( ͡° ͜ʖ ͡°)﻿';
-  const cssObj=new CSS3DObject(d);
-  let iter = 0;
-  setPlaneGeomToDomWidth();
-
-  function setPlaneGeomToDomWidth() {
-    if (d.offsetWidth!=0 && d.offsetHeight!=0) {
-      plane.geometry.dispose();
-      plane.geometry=new THREE.PlaneGeometry( d.offsetWidth*cssResolution , d.offsetHeight*cssResolution );
-    }else if(iter<10) {
-      setTimeout(()=>{
-        iter++;
-        setPlaneGeomToDomWidth();
-      },10)
+    const center = new THREE.Vector3().copy(this.lineHelper.startObject.position).lerp(obj.position,0.5);
+    const node = {
+      h_uuid:'H'+Date.now()+makeid(5),
+      name: this.lineHelper.startObject.name+' ↭ '+obj.name,
+      to:[],
+      val:1,
+      from:[],
+      content:this.lineHelper.startObject.name+' ↭ '+obj.name,
+      initDistance:0,
+      isFixed:false,
+      x:center.x,
+      y:center.y,
+      z:center.z,
+      sourceID : this.lineHelper.startObject.h_uuid,
+      targetID : obj.h_uuid,
+      h_type: 'connection',
+      links:[]
     }
 
+    const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:.5});
+    const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane.plane, obj);
+    this.planes.push(middleNodePlane);
+
+    const nl=con.createNew(node);
+    this.connections.push(con);
+
+    // callBack to Graph.vue to update simulation data
+    this.onLinkAdded(nl);
+
+
   }
-
-  cssObj.position.set(0, 0, 0);
-  cssObj.scale.set(cssResolution, cssResolution, cssResolution);
-  plane.add(cssObj);
-  cssObj.position.set(0, 0, 0);
-  item.domElement=d;
-  plane.name=item.name;
-  plane.h_name=item.name;
-  plane.h_uuid=item.h_uuid;
-  plane.h_type=item.h_type;
-  return plane;
-}
-
-function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() *
- charactersLength));
-   }
-   return result;
 }
 
 export default THREEScene
