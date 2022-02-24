@@ -1,24 +1,26 @@
 <template>
-  <div class="widget-area">
-    <strong>all blocks</strong>
-    <searchbar @search="filterBlocks" />
-    <draggable
-      class="dragArea list-group"
-      :list="blocks"
-      :group="{ name: 'blocks', pull: 'clone', put: false }"
-      :sort="false"
-      :clone="cloneBlock"
-      @start="toggleCanvasDragTarget"
-      @end="toggleCanvasDragTarget"
-      @move="onMove"
-      item-key="id"
-    >
-      <template #item="{ element }">
-        <div class="list-group-item" v-show="element.name.includes(searchstring)">
-          <span>{{ element.name }}</span>
-        </div>
-      </template>
-    </draggable>
+  <div id="all-blocks">
+    <strong @click="show=!show">add blocks</strong>
+    <div class="widget-area" v-show="show">
+      <searchbar @search="filterBlocks" />
+      <draggable
+        class="dragArea list-group"
+        :list="blocks"
+        :group="{ name: 'arena-blocks', pull: 'clone', put: false }"
+        :sort="false"
+        :clone="cloneBlock"
+        @start="toggleCanvasDragTarget"
+        @end="toggleCanvasDragTarget"
+        @move="onMove"
+        item-key="id"
+      >
+        <template #item="{ element }">
+          <div class="list-group-item" v-show="element.name.includes(searchstring)">
+            <span>{{ element.name }}</span>
+          </div>
+        </template>
+      </draggable>
+    </div>
   </div>
 </template>
 
@@ -39,7 +41,8 @@ export default {
       blocks: blocks.nodes,
       store:this.$root.$data.store,
       lastSelected:null,
-      searchstring:''
+      searchstring:'',
+      show:false
     };
   },
   methods: {
@@ -80,6 +83,12 @@ export default {
 };
 </script>
 <style scoped>
+#all-blocks{
+  position:fixed;
+  height:100%;
+  overflow-y:auto;
+  z-index:1;
+}
   .list-group-item{
     background-color:white;
   }

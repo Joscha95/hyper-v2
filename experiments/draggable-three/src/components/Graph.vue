@@ -44,8 +44,11 @@ export default {
       return this.graphData.links.reduce((oldVal,item) => oldVal+item.distance,0);
     },
     isFocused(){
-        return this.store.focused
-      }
+      return this.store.focused
+    },
+    currentItem(){
+        return this.store.selectedObject
+    }
   },
   watch:{
     links(){
@@ -55,8 +58,11 @@ export default {
         this.forceSimulation.updateLinkDistances();
       },
     isFocused(){
-        this.THREEScene.cameraController.enabled=!this.store.focused;
-      }
+      this.THREEScene.cameraController.enabled=!this.store.focused;
+    },
+    currentItem(){
+      this.THREEScene.focusItem(this.store.selectedObject.h_uuid,this.store.selectedObject.h_type)
+    }
   },
   methods:{
     blockAdded(b){

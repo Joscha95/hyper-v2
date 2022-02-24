@@ -4,7 +4,7 @@
     :class="store.isDragging ? 'active' : ''"
     id="canvas_dragtarget"
     :list="store.sceneList"
-    :group="{ name: ['blocks'],pull:false,put:true}"
+    :group="{ name: 'arena-blocks',pull:false,put:true}"
     @add="added"
     @change="changed"
     item-key="uuid"

@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import AllBlocks from '@/components/AllBlocks.vue';
 import Inspector from '@/components/Inspector.vue';
 import SceneList from '@/components/SceneList.vue';
 import collapsable from '@/components/subcomponents/collapsable.vue';
@@ -20,7 +19,6 @@ import collapsable from '@/components/subcomponents/collapsable.vue';
 export default {
   name: 'Panel',
   components: {
-    AllBlocks,
     Inspector,
     collapsable,
     SceneList
@@ -28,8 +26,7 @@ export default {
   data(){
     return{
       widgets:[
-        {component:'AllBlocks', display: 'blocks', show:true},
-        {component:'SceneList', display: 'scene',show:false},
+        {component:'SceneList', display: 'scene',show:true},
         {component:'Inspector', display: 'object',show:false},
       ]
     }
@@ -59,6 +56,7 @@ export default {
   right:0;
   top:0;
   height:100vh;
+  z-index:1;
 }
 
 #panel-inner{

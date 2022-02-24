@@ -2,7 +2,7 @@
   <draggable
     class="dragArea list-group"
     :list="children"
-    :group="{ name: ['blocks','object'],pull:onPull,put:true}"
+    :group="{ name: 'object',pull:onPull,put:true}"
     @move="onMove"
     @end="onEnd"
     @change="onChange"
