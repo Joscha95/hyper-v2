@@ -2,9 +2,10 @@
 	--main-faintgray-color: #f3f3f3;
 	--main-lightgray-color: lightgray;
 	--main-gray-color: #aaaaaa;
+	--main-mediumgray-color: #6d6d6d;
 	--main-darkgray-color: #333;
 	--main-success-color: #17ac10;;
-	--main-error-color: #ff7635;
+	--main-error-color: #ff5e00;
 }
 
 html, body {
