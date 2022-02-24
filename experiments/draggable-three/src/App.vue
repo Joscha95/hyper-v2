@@ -1,11 +1,13 @@
 <template>
   <Graph/>
   <Panel/>
+  <AllBlocks/>
 </template>
 
 <script>
 import Graph from '@/components/Graph.vue'
 import Panel from '@/components/Panel.vue'
+import AllBlocks from '@/components/AllBlocks.vue'
 import store from '@/store.js';
 
 export default {
@@ -17,7 +19,8 @@ export default {
   },
   components: {
     Graph,
-    Panel
+    Panel,
+    AllBlocks
   }
 }
 </script>

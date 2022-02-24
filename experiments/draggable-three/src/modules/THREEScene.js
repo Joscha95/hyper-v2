@@ -195,6 +195,12 @@ class THREEScene {
     this.castRay();
   }
 
+  focusItem(h_uuid,h_type){
+    if(this.focusedItem) this.focusedItem.unfocus();
+    this.focusedItem = [...this.planes,...this.connections].find((e) => e.h_uuid==h_uuid);
+    if(this.focusedItem) this.focusedItem.focus();
+  }
+
   onMousemove(e){
     this.mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
     if (this.lineHelper) {
