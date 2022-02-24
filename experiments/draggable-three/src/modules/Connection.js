@@ -1,4 +1,4 @@
-import {LineBasicMaterial,BufferGeometry,Line,DynamicDrawUsage,Vector3} from 'three'
+import {LineBasicMaterial,BufferGeometry,Line,DynamicDrawUsage,Vector3,LineDashedMaterial} from 'three'
 import {makeid} from '@/modules/Helpers.js'
 
 class Connection {
@@ -8,22 +8,31 @@ class Connection {
     this.endObject = endObject;
     this.scene = scene;
 
-    const material = new LineBasicMaterial({color: 0x0000ff });
+    this.material = new LineBasicMaterial({color: 0x0000ff });
+    this.dashedMaterial=new LineDashedMaterial( {
+      	color: 0x0000ff,
+      	dashSize: 3,
+      	gapSize: 3,
+      } );
 
-    let geometry = new BufferGeometry().setFromPoints( [this.startObject.position,this.middleObject.position,this.endObject.position] );
+    const geometry = new BufferGeometry().setFromPoints( [this.startObject.position(),this.middleObject.position(),this.endObject.position()] );
 
-    this.line=new Line( geometry, material );
-    this.line.h_type='connection';
+    this.line=new Line( geometry, this.material );
+    this.line.computeLineDistances();
     this.linepositions=this.line.geometry.attributes.position;
     this.line.geometry.dynamic=true;
     this.linepositions.usage = DynamicDrawUsage;
-    this.scene.add(this.line)
+    this.scene.add(this.line);
+    this.positions=[]
   }
 
   update(){
-    this.linepositions.setXYZ(0,this.startObject.position.x,this.startObject.position.y,this.startObject.position.z);
-    this.linepositions.setXYZ(1,this.middleObject.position.x,this.middleObject.position.y,this.middleObject.position.z);
-    this.linepositions.setXYZ(2,this.endObject.position.x,this.endObject.position.y,this.endObject.position.z);
+    this.positions=[this.startObject.position(),this.middleObject.position(),this.endObject.position()];
+
+    this.positions.forEach((item, i) => {
+      this.linepositions.setXYZ(i,item.x,item.y,item.z);
+    });
+
     this.linepositions.needsUpdate = true;
     this.line.geometry.computeBoundingSphere();
   }
@@ -32,17 +41,18 @@ class Connection {
     this.scene.remove(this.line)
   }
 
-  unfocus(){
-    this.line.material.color.setHex( 0x0000ff );
+  blur(){
+    this.line.material=this.material;
   }
 
   focus(){
-    this.line.material.color.set( 'red' );
+    this.line.material=this.dashedMaterial;
+    this.line.computeLineDistances();
   }
 
   createNew(node){
-    const center = new Vector3().copy(this.startObject.position).lerp(this.endObject.position,0.5);
-    const dist = this.startObject.position.distanceTo(this.endObject.position)
+    const center = new Vector3().copy(this.startObject.position()).lerp(this.endObject.position(),0.5);
+    const dist = this.startObject.position().distanceTo(this.endObject.position())
 
     this.middleObject.name = node.name;
 

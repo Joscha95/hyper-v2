@@ -19,7 +19,7 @@ export default {
       document.onmousemove=(em)=>{
         fac = em.shiftKey ? 10 : em.altKey ? .1 : 1;
         this._value+=(oldY-em.clientY)*fac;
-        this._value=Math.max(this._value,1);
+        this._value=Math.max(this._value,10);
         oldY=em.clientY;
         this.$emit('update:modelValue', this._value);
       }

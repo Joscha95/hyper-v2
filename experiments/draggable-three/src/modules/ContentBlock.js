@@ -7,11 +7,16 @@ class ContentBlock {
     this.contentItem = contentItem;
     this.h_uuid = this.contentItem.h_uuid;
     this.h_type=this.contentItem.h_type;
-    
+    this.name=this.contentItem.name;
+    this.cssRes=options.cssResolution;
+
     const geometry = new PlaneGeometry( 100, 100 );
     this.plane = new Mesh( geometry, mat );
     this.plane.visible=false;
     this.dom = document.createElement('DIV');
+
+    this.onBlur=()=>{};
+    this.onFocus=()=>{};
 
     this.dom.dataset.h_uuid=this.contentItem.h_uuid;
     this.dom.classList.add('floating-blocks');
@@ -23,7 +28,7 @@ class ContentBlock {
     function setPlaneGeomToDomWidth(scope) {
       if (scope.dom.offsetWidth!=0 && scope.dom.offsetHeight!=0) {
         scope.plane.geometry.dispose();
-        scope.plane.geometry=new PlaneGeometry( scope.dom.offsetWidth*options.cssResolution , scope.dom.offsetHeight*options.cssResolution );
+        scope.plane.geometry=new PlaneGeometry( scope.dom.offsetWidth*scope.cssRes , scope.dom.offsetHeight*scope.cssRes );
       }else if(iter<10) {
         setTimeout(()=>{
           iter++;
@@ -34,15 +39,11 @@ class ContentBlock {
     }
 
     cssObj.position.set(0, 0, 0);
-    cssObj.scale.set(options.cssResolution, options.cssResolution, options.cssResolution);
+    cssObj.scale.set(this.cssRes, this.cssRes, this.cssRes);
     this.plane.add(cssObj);
     cssObj.position.set(0, 0, 0);
     this.contentItem.domElement=this.dom;
     this.contentItem.sceneElement=this;
-    this.plane.name=this.contentItem.name;
-    this.plane.h_name=this.contentItem.name;
-    this.plane.h_uuid=this.contentItem.h_uuid;
-    this.plane.h_type=this.contentItem.h_type;
 
     this.scene.add(this.plane)
   }
@@ -55,24 +56,35 @@ class ContentBlock {
     this.plane.lookAt(pos)
   }
 
+  updatePlaneSize(){
+    this.plane.geometry.dispose();
+    this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
+  }
+
   setPos(pos){
     if(pos)this.plane.position.set(pos.x,pos.y,pos.z);
+  }
+
+  position(){
+    return this.plane.position;
   }
 
   dispose(){
     this.scene.remove(this.plane)
   }
 
-  // intersects(raycaster){
-  //   raycaster.intersectObject(this.plane);
-  // }
+  intersects(raycaster){
+    return raycaster.intersectObject(this.plane)[0] ? raycaster.intersectObject(this.plane)[0].distance : -1;
+  }
 
-  unfocus(){
+  blur(){
     this.plane.visible=false;
+    this.onBlur();
   }
 
   focus(){
     this.plane.visible=true;
+    this.onFocus();
   }
 
 }

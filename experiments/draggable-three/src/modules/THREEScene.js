@@ -18,7 +18,7 @@ class THREEScene {
     this.aspect=this.width/this.height;
     this.cameraController=new FirstPersonController(domparent,cameraSettings);
     this.cameraController.onmove=()=> this.onCamMove();
-    this.planes=[];
+    this.blocks=[];
     this.connections=[];
     this.defaultMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
     this.mouse=new THREE.Vector2();
@@ -31,7 +31,7 @@ class THREEScene {
     domparent.addEventListener('mousemove',(e)=>this.onMousemove(e));
     window.addEventListener('hashchange', (e)=>this.onHashChange(e));
 
-    this.globeHelper = new Globe(3000, 16, 32, 64, 'white'); // Radius, num lat, num lon, segments, color
+    this.globeHelper = new Globe(3000, 16, 32, 64, 'rgb(240,240,240)'); // Radius, num lat, num lon, segments, color
     this.globeHelper.position.copy(this.cameraController.camera.position);
     this.scene.add(this.globeHelper);
 
@@ -84,7 +84,7 @@ class THREEScene {
     this.forceSimulation.update();
     let simPos;
     const simIsHot=this.forceSimulation.isHot;
-    this.planes.forEach((item, i) => {
+    this.blocks.forEach((item, i) => {
       simPos=this.forceSimulation.getNodeById(item.h_uuid);
       item.setPos(simPos);
       if (simIsHot) {
@@ -108,28 +108,32 @@ class THREEScene {
   importNodes(){
     const nodes = this.forceSimulation.simulation.nodes();
     nodes.forEach((item, i) => {
-      this.planes.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
+      this.blocks.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
     });
 
+    // let startObject,middleObject,endObject,con;
     nodes.filter((n) => n.h_type=='connection').forEach((item, i) => {
-      const startObject=this.scene.getObjectByProperty('h_uuid',item.sourceID);
-      const middleObject=this.scene.getObjectByProperty('h_uuid',item.h_uuid)
-      const endObject=this.scene.getObjectByProperty('h_uuid',item.targetID);
-      this.connections.push(new Connection(this.scene,startObject,middleObject,endObject));
+      const startObject=this.blocks.find((p)=> p.h_uuid==item.sourceID);
+      const middleObject=this.blocks.find((p)=> p.h_uuid==item.h_uuid);
+      const endObject=this.blocks.find((p)=> p.h_uuid==item.targetID)
+      const con = new Connection(this.scene,startObject,middleObject,endObject)
+      middleObject.onFocus=()=>{con.focus()};
+      middleObject.onBlur=()=>{con.blur()};
+      this.connections.push(con);
     });
 
   }
 
   simDataChanged(){
     const nodes = this.forceSimulation.simulation.nodes();
-    const planes = this.planes;
+    const planes = this.blocks;
 
     // check which nodes are in the simulation but not in the scene -> add new plane to scene
     const toAdd =  nodes.filter((n)=>{
         return !planes.some((p) => n.h_uuid==p.h_uuid)
       });
     toAdd.forEach((item, i) => {
-        this.planes.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
+        this.blocks.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
       });
 
     // check which planes are in the scene but not in the simulation -> remove them from scene
@@ -137,7 +141,7 @@ class THREEScene {
       return !nodes.some((n)=>n.h_uuid==p.h_uuid)
     })
 
-    this.planes=planes.filter((p)=>{
+    this.blocks=planes.filter((p)=>{
       return nodes.some((n)=>n.h_uuid==p.h_uuid)
     })
 
@@ -165,9 +169,23 @@ class THREEScene {
 
   castRay(){
     this.raycaster.setFromCamera(this.mouse, this.cameraController.camera);
-    const intersects = this.raycaster.intersectObjects(this.planes.map((p)=>p.plane));
+    let dist=-1;
+    let _dist=0;
+    const intersects = this.blocks.filter((b) => {
+      _dist=b.intersects(this.raycaster);
+
+      if(_dist<0) {return false};
+      if (_dist<dist || dist<0) {
+        dist=_dist
+        return true;
+      }else {
+        return false;
+      }
+    });
+
+
     if (intersects.length > 0) {
-      const targ = intersects[0].object;
+      const targ = intersects[0];
       if (!this.isConnecting) {
         this.startConnection(targ);
       } else {
@@ -184,8 +202,8 @@ class THREEScene {
   }
 
   focusItem(h_uuid,h_type){
-    if(this.focusedItem) this.focusedItem.unfocus();
-    this.focusedItem = [...this.planes,...this.connections].find((e) => e.h_uuid==h_uuid);
+    if(this.focusedItem) this.focusedItem.blur();
+    this.focusedItem = this.blocks.find((e) => e.h_uuid==h_uuid);
     if(this.focusedItem) this.focusedItem.focus();
   }
 
@@ -198,14 +216,14 @@ class THREEScene {
   }
 
   onHashChange() {
-    const target = this.scene.getObjectByProperty('h_uuid',location.hash.substr(1));
+    const target = this.blocks.find((b)=>b.h_uuid==location.hash.substr(1));
     if (target) {
-      this.cameraController.moveTo(target);
+      this.cameraController.moveTo(target.plane);
     }
   }
 
   onCamMove(){
-    this.planes.forEach((item, i) => {
+    this.blocks.forEach((item, i) => {
       item.lookAt(this.cameraController.camera.position)
     });
 
@@ -229,7 +247,7 @@ class THREEScene {
     this.isConnecting=false;
     if(obj==this.lineHelper.startObject) return;
 
-    const center = new THREE.Vector3().copy(this.lineHelper.startObject.position).lerp(obj.position,0.5);
+    const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
     const node = {
       h_uuid:'H'+Date.now()+makeid(5),
       name: this.lineHelper.startObject.name+' ↭ '+obj.name,
@@ -249,15 +267,16 @@ class THREEScene {
     }
 
     const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:.5});
-    const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane.plane, obj);
-    this.planes.push(middleNodePlane);
+    const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj);
+    middleNodePlane.onFocus=()=>{con.focus()};
+    middleNodePlane.onBlur=()=>{con.blur()};
+    this.blocks.push(middleNodePlane);
 
     const nl=con.createNew(node);
     this.connections.push(con);
 
     // callBack to Graph.vue to update simulation data
     this.onLinkAdded(nl);
-
 
   }
 }

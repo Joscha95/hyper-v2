@@ -15,10 +15,12 @@ class LineHelper {
     this.linepositions=this.line.geometry.attributes.position;
     this.line.geometry.dynamic=true;
     this.linepositions.usage = DynamicDrawUsage;
+    this.startPos=new Vector3( 0, 0, 0 );
   }
 
   update(){
-    this.linepositions.setXYZ(0,this.startObject.position.x,this.startObject.position.y,this.startObject.position.z);
+    this.startPos=this.startObject.position();
+    this.linepositions.setXYZ(0,this.startPos.x,this.startPos.y,this.startPos.z);
     this.linepositions.setXYZ(1,this.endPosition.x,this.endPosition.y,this.endPosition.z);
     this.linepositions.needsUpdate = true;
     this.line.geometry.computeBoundingSphere();
