@@ -1,6 +1,6 @@
 <template>
 	<Notification :notification="this.notification" />
-	<Popup :popup="this.popup" />
+	<PopupBox :popupBox="this.popupBox" />
 	<Header :title="this.channelTitle" />
 	<main >
 		<router-view />
@@ -9,7 +9,7 @@
 
 <script>
 	import Notification from '@/components/Notification.vue'
-	import Popup from '@/components/Popup.vue'
+	import PopupBox from '@/components/PopupBox.vue'
 	import Header from '@/components/Header.vue'
 	
 	export default {
@@ -21,17 +21,17 @@
 				appName: 'hyper',
 				channelTitle: false,
 				notification: { id: false, text: '', type: '' },
-				popup: { body: '', headline: '' }
+				popupBox: { body: '', button: false }
 			}
 		},
 		methods: {
 			notify(text, type = 'default') {
 				this.notification = { id: Date.now(), text: text, type: type }
 			},
-			say(body, headline = false) {
-				this.popup = { body: body, headline: headline }
+			popup(body, button = false) {
+				this.popupBox = { body: body, button: button }
 			}
 		},
-		components: { Notification, Popup, Header }
+		components: { Notification, PopupBox, Header }
 	}
 </script>

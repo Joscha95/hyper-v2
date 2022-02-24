@@ -1,5 +1,5 @@
 <template>	
-	<div id="notification" :class="[{show:notification.id}, notification.type]">{{ notification.text }}</div>
+	<div id="notification" @click="notification.id=false" :class="[{show:notification.id}, notification.type]">{{ notification.text }}</div>
 </template>
 
 <script>
@@ -34,6 +34,7 @@ export default {
 		transition: all .33s;
 		box-shadow: none;
 		box-sizing: content-box;
+		cursor: pointer;
 	}
 	#notification.show {
 		top: 1.5em;
