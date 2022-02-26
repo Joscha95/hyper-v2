@@ -32,7 +32,6 @@ class Connection {
     this.positions.forEach((item, i) => {
       this.linepositions.setXYZ(i,item.x,item.y,item.z);
     });
-
     this.linepositions.needsUpdate = true;
     this.line.geometry.computeBoundingSphere();
   }

@@ -1,14 +1,15 @@
 import * as THREE from 'three'
 import FirstPersonController from '@/modules/FirstPersonController.js'
+import {TransformControls} from '@/modules/TransformControls.js'
 import Globe from '@/modules/GlobeHelper.js'
 import LineHelper from '@/modules/LineHelper.js'
 import Connection from '@/modules/Connection.js'
 import ContentBlock from '@/modules/ContentBlock.js'
 import {CSS3DRenderer,CSS3DObject} from '@/modules/CSS3DRenderer.js'
-import {makeid} from '@/modules/Helpers.js'
+import {makeid,map} from '@/modules/Helpers.js'
 
 class THREEScene {
-  constructor(domparent,forceSimulation,cameraSettings) {
+  constructor(domparent,forceSimulation,cameraSettings,store) {
     this.scene = new THREE.Scene();
     this.forceSimulation=forceSimulation;
     this.forceSimulation.onDataChange=()=>{this.simDataChanged()};
@@ -24,10 +25,11 @@ class THREEScene {
     this.mouse=new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
     this.lineHelper = null;
+    this.store=store;
 
     this.onLinkAdded = ()=>{};
 
-    domparent.addEventListener('click',(e)=>this.onClick(e));
+    domparent.addEventListener('mousedown',(e)=>this.onClick(e));
     domparent.addEventListener('mousemove',(e)=>this.onMousemove(e));
     window.addEventListener('hashchange', (e)=>this.onHashChange(e));
 
@@ -57,6 +59,13 @@ class THREEScene {
     this.renderer.setSize( window.innerWidth,window.innerHeight );
     this.setRendererSize();
 
+    this.objectControls = new TransformControls(this.cameraController.camera, this.renderer.domElement);
+    this.objectControls.addEventListener('mouseDown', () => {this.objectTouched()});
+    this.objectControls.addEventListener('mouseUp', () => {this.objectReleased()});
+    this.objectControls.addEventListener('change', () => {this.objectChanged()});
+    this.objectControls.attachedContent=null;
+    this.scene.add(this.objectControls);
+
     window.onresize=()=>{
       this.setRendererSize();
     }
@@ -83,20 +92,33 @@ class THREEScene {
     this.cameraController.update();
     this.forceSimulation.update();
     let simPos;
-    const simIsHot=this.forceSimulation.isHot;
-    this.blocks.forEach((item, i) => {
-      simPos=this.forceSimulation.getNodeById(item.h_uuid);
-      item.setPos(simPos);
-      if (simIsHot) {
-        item.lookAt(this.cameraController.camera.position)
-      }
-    });
 
-    if (simIsHot) {
+    if (this.forceSimulation.isHot) {
+      this.blocks.forEach((item, i) => {
+        simPos=this.forceSimulation.getNodeById(item.h_uuid);
+        if (item.isDragged) {
+          if (!simPos.isFixed) {
+            simPos.x=item.position().x;
+            simPos.y=item.position().y;
+            simPos.z=item.position().z;
+          }else {
+            simPos.fx=item.position().x;
+            simPos.fy=item.position().y;
+            simPos.fz=item.position().z;
+          }
+
+          this.forceSimulation.reheat()
+        }else {
+          item.setPos(simPos);
+        }
+        item.lookAt(this.cameraController.camera.position)
+      });
+
       this.connections.forEach((item, i) => {
          item.update();
       });
     }
+
 
 
 
@@ -167,25 +189,15 @@ class THREEScene {
     return pos;
   }
 
-  castRay(){
-    this.raycaster.setFromCamera(this.mouse, this.cameraController.camera);
-    let dist=-1;
-    let _dist=0;
-    const intersects = this.blocks.filter((b) => {
-      _dist=b.intersects(this.raycaster);
+  castRay(point){
+    this.raycaster.setFromCamera(point, this.cameraController.camera);
+    return this.raycaster.intersectObjects(this.blocks.map((b)=>b.plane));
+  }
 
-      if(_dist<0) {return false};
-      if (_dist<dist || dist<0) {
-        dist=_dist
-        return true;
-      }else {
-        return false;
-      }
-    });
-
-
+  onClick(e){
+    const intersects = this.castRay(this.mouse);
     if (intersects.length > 0) {
-      const targ = intersects[0];
+      const targ = this.blocks.find((b)=> b.h_uuid==intersects[0].object.refID) ;
       if (!this.isConnecting) {
         this.startConnection(targ);
       } else {
@@ -194,17 +206,24 @@ class THREEScene {
 
     }else {
       if(this.lineHelper) this.disposeConnection();
-    }
-  }
+      if (this.cameraController.enabled) {
+        this.objectControls.detach();
+      }
 
-  onClick(e){
-    this.castRay();
+    }
   }
 
   focusItem(h_uuid,h_type){
     if(this.focusedItem) this.focusedItem.blur();
     this.focusedItem = this.blocks.find((e) => e.h_uuid==h_uuid);
-    if(this.focusedItem) this.focusedItem.focus();
+    if(this.focusedItem) {
+      this.focusedItem.focus();
+      if(this.focusedItem.h_type=='connection') {
+        this.objectControls.detach();
+        return;
+      }
+      this.objectControls.attach(this.focusedItem);
+    }
   }
 
   onMousemove(e){
@@ -226,8 +245,29 @@ class THREEScene {
     this.blocks.forEach((item, i) => {
       item.lookAt(this.cameraController.camera.position)
     });
+    const intersects = this.castRay(new THREE.Vector2());
+    if (intersects.length > 0 && intersects[0].distance<600) {
+      this.store.activeChainElement=intersects[0].object.refID;
+    }else {
+      this.store.activeChainElement = undefined;
+    }
 
     if(this.lineHelper)  this.lineHelper.update();
+  }
+
+  objectTouched() {
+    this.cameraController.enabled = false;
+    this.objectControls.attachedContent.isDragged=true;
+    this.forceSimulation.reheat();
+  }
+
+  objectReleased() {
+    this.cameraController.enabled = true;
+    this.objectControls.attachedContent.isDragged=false;
+  }
+
+  objectChanged(e) {
+
   }
 
   startConnection(obj){

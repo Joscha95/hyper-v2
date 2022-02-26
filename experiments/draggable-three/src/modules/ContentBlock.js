@@ -13,6 +13,8 @@ class ContentBlock {
     const geometry = new PlaneGeometry( 100, 100 );
     this.plane = new Mesh( geometry, mat );
     this.plane.visible=false;
+    this.plane.refID=this.h_uuid;
+    this.isDragged=false;
     this.dom = document.createElement('DIV');
 
     this.onBlur=()=>{};
@@ -20,6 +22,7 @@ class ContentBlock {
 
     this.dom.dataset.h_uuid=this.contentItem.h_uuid;
     this.dom.classList.add('floating-blocks');
+    this.dom.classList.add(this.contentItem.h_type);
     this.dom.innerHTML=this.contentItem.content||'( ͡° ͜ʖ ͡°)﻿';
     const cssObj=new CSS3DObject(this.dom);
     let iter = 0;
@@ -71,10 +74,6 @@ class ContentBlock {
 
   dispose(){
     this.scene.remove(this.plane)
-  }
-
-  intersects(raycaster){
-    return raycaster.intersectObject(this.plane)[0] ? raycaster.intersectObject(this.plane)[0].distance : -1;
   }
 
   blur(){

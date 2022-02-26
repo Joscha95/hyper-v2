@@ -129,7 +129,16 @@ header{
 .floating-blocks{
   pointer-events:none;
   max-width:200px;
-  font-size:2em;
+  font-size:1em;
+  background-color:#e3e3e3;
+  padding:5px;
+}
+
+.floating-blocks.connection{
+  background-color:white;
+  border:1px blue solid;
+  font-size:.8em;
+  padding:5px;
 }
 </style>
 
