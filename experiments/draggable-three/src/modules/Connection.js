@@ -1,4 +1,4 @@
-import {LineBasicMaterial,BufferGeometry,Line,DynamicDrawUsage,Vector3,LineDashedMaterial} from 'three'
+import {LineBasicMaterial,BufferGeometry,Line,DynamicDrawUsage,Vector3,LineDashedMaterial,ConeGeometry,MeshBasicMaterial,Mesh} from 'three'
 import {makeid} from '@/modules/Helpers.js'
 
 class Connection {
@@ -17,6 +17,15 @@ class Connection {
 
     const geometry = new BufferGeometry().setFromPoints( [this.startObject.position(),this.middleObject.position(),this.endObject.position()] );
 
+    const cgeometry = new ConeGeometry( 2, 5, 3 );
+    cgeometry.rotateX(Math.PI * 0.5);
+    const material = new MeshBasicMaterial( {color: 0x0000ff} );
+    this.cones = [new Mesh( cgeometry, material ),new Mesh( cgeometry, material )];
+    this.cones.forEach((item, i) => {
+      scene.add(item)
+    });
+
+
     this.line=new Line( geometry, this.material );
     this.line.computeLineDistances();
     this.linepositions=this.line.geometry.attributes.position;
@@ -28,9 +37,13 @@ class Connection {
 
   update(){
     this.positions=[this.startObject.position(),this.middleObject.position(),this.endObject.position()];
-
+    let con;
     this.positions.forEach((item, i) => {
       this.linepositions.setXYZ(i,item.x,item.y,item.z);
+      if(con = this.cones[i]) {
+        con.position.copy(item.clone()).lerp(this.positions[i+1],.5);
+        con.lookAt(this.positions[i+1])
+      }
     });
     this.linepositions.needsUpdate = true;
     this.line.geometry.computeBoundingSphere();
@@ -65,7 +78,7 @@ class Connection {
           distance : dist/2,
           name:  '',
           h_type: 'connection',
-          h_uuid:'H'+Date.now()+makeid(5),
+          h_uuid: makeid(5),
         },
       node:node,
       link2:
@@ -75,7 +88,7 @@ class Connection {
           distance : dist/2,
           name:  '',
           h_type: 'connection',
-          h_uuid:'H'+Date.now()+makeid(5),
+          h_uuid: makeid(5),
         }
     }
 

@@ -32,6 +32,7 @@ class THREEScene {
     domparent.addEventListener('mousedown',(e)=>this.onClick(e));
     domparent.addEventListener('mousemove',(e)=>this.onMousemove(e));
     window.addEventListener('hashchange', (e)=>this.onHashChange(e));
+    window.addEventListener('keydown', (e)=>this.onKeyDown(e));
 
     this.globeHelper = new Globe(3000, 16, 32, 64, 'rgb(240,240,240)'); // Radius, num lat, num lon, segments, color
     this.globeHelper.position.copy(this.cameraController.camera.position);
@@ -74,6 +75,8 @@ class THREEScene {
 
     domparent.appendChild(this.renderer.domElement);
     this.render();
+
+    if(store.selectedObject) this.focusItem(store.selectedObject.h_uuid,store.selectedObject.h_type)
   }
 
   setRendererSize(){
@@ -208,9 +211,57 @@ class THREEScene {
       if(this.lineHelper) this.disposeConnection();
       if (this.cameraController.enabled) {
         this.objectControls.detach();
+        if(this.store.selectedObject) this.store.selectedObject.sceneElement.blur();
+        this.store.selectedObject=null;
       }
 
     }
+  }
+
+  onKeyDown(event) {
+
+    // if ((editMode) &&
+    //     (event.which == 83 && (event.ctrlKey||event.metaKey) || (event.which == 19))){
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   saveScene();
+    //   return;
+    // }
+    switch (event.keyCode) {
+      case 37:
+        // left arrow
+        history.go(-1);
+        break;
+      case 39:
+        // right arrow
+        history.go(+1);
+        break;
+      case 67:
+        // c
+          const targ = this.objectControls.object;
+          if( targ) this.cameraController.moveTo(targ);
+        break;
+      case 69:
+        // e editmode
+      case 84:
+        // t
+        // if (!editMode) break;
+        // this.objectControls.setMode('translate');
+        break;
+      case 77:
+        // m
+        // if (!editMode) break;
+        // this.objectControls.setMode('translate');
+        break;
+      case 76:
+        // l add lookout
+        break;
+      case 88:
+        // x delete
+        break;
+      default:
+    }
+
   }
 
   focusItem(h_uuid,h_type){

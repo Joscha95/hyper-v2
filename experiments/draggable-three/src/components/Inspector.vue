@@ -1,5 +1,5 @@
 <template>
-    <div class="widget-area" v-if="store.selectedObject" >
+    <div class="widget-area" v-if="store.selectedObject!=null" >
       <strong>object</strong><br>
       <draggable
         class="dragArea list-group"
@@ -157,6 +157,7 @@ export default {
   },
   watch:{
     nodeIsFixed(newVal){
+      if (!this.store.selectedObject) return;
       if (newVal) {
         this.store.selectedObject.fx=this.store.selectedObject.x;
         this.store.selectedObject.fy=this.store.selectedObject.y;
@@ -168,7 +169,8 @@ export default {
       }
     },
     nodeContent(newVal){
-      this.store.selectedObject.domElement.innerHTML=newVal;
+      if (!this.store.selectedObject) return;
+      this.store.selectedObject.sceneElement.setContent(newVal)
     }
   },
   methods: {

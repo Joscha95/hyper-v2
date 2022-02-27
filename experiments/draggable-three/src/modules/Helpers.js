@@ -6,7 +6,7 @@ function makeid(length) {
       result += characters.charAt(Math.floor(Math.random() *
  charactersLength));
    }
-   return result;
+   return 'H'+Date.now()+result;
 }
 
 function map (number, inMin, inMax, outMin, outMax) {

@@ -45,7 +45,6 @@ class ContentBlock {
     cssObj.scale.set(this.cssRes, this.cssRes, this.cssRes);
     this.plane.add(cssObj);
     cssObj.position.set(0, 0, 0);
-    this.contentItem.domElement=this.dom;
     this.contentItem.sceneElement=this;
 
     this.scene.add(this.plane)
@@ -84,6 +83,12 @@ class ContentBlock {
   focus(){
     this.plane.visible=true;
     this.onFocus();
+  }
+
+  setContent(c){
+    this.dom.innerHTML=c;
+    this.plane.geometry.dispose();
+    this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
   }
 
 }

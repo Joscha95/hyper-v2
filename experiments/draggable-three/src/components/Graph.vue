@@ -44,9 +44,6 @@ export default {
     CanvasDragtarget
   },
   computed:{
-    links(){
-      return this.graphData.links.length;
-    },
     linkDistance(){
       return this.graphData.links.reduce((oldVal,item) => oldVal+item.distance,0);
     },
@@ -61,17 +58,14 @@ export default {
     }
   },
   watch:{
-    links(){
-        console.log('links changed');
-      },
     linkDistance(){
         this.forceSimulation.updateLinkDistances();
       },
     isFocused(){
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
-    currentItem(){
-      this.THREEScene.focusItem(this.store.selectedObject.h_uuid,this.store.selectedObject.h_type)
+    currentItem(newVal){
+      if(newVal) this.THREEScene.focusItem(this.store.selectedObject.h_uuid,this.store.selectedObject.h_type)
     },
     currentActiveChainElement(newVal){
       if (newVal) this.lastValidChainElement=newVal

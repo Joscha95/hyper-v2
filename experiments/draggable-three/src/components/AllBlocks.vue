@@ -30,6 +30,7 @@
 import draggable from "vuedraggable";
 import searchbar from "@/components/subcomponents/searchbar.vue";
 import blocks from "@/cooking.js";
+import {makeid} from'@/modules/Helpers.js'
 
 let idGlobal = 8;
 export default {
@@ -64,7 +65,7 @@ export default {
     cloneBlock({ name,id }) {
       return {
         a_id: id,
-        h_uuid:'H'+Date.now(),
+        h_uuid: makeid(5),
         name: name,
         to:[],
         from:[],
