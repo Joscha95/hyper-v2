@@ -11,11 +11,11 @@
         @add="addedItem($event,'from')"
         :removeOnSpill="true"
         @spill="store.selectedObject.from=[]"
-        item-key="h_uuid"
+        item-key="h_id"
         style="margin-top:.5em"
       >
         <template #item="{ element }">
-          <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' " >
+          <div class="list-group-item" :class="store.selectedObject.h_id==element.h_id ? 'selected': '' " >
              <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.from=[]">x</span>
           </div>
         </template>
@@ -42,10 +42,10 @@
         @change="log"
 
         @add="addedItem($event,'to')"
-        item-key="h_uuid"
+        item-key="h_id"
       >
         <template #item="{ element }">
-          <div class="list-group-item" :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' ">
+          <div class="list-group-item" :class="store.selectedObject.h_id==element.h_id ? 'selected': '' ">
             <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.to=[]">x</span>
           </div>
         </template>
@@ -62,7 +62,7 @@
         <br>
         <div  class="list-group-item"
               v-for="(element,index) in store.selectedObject.children"
-              :class="store.selectedObject.h_uuid==element.h_uuid ? 'selected': '' ">
+              :class="store.selectedObject.h_id==element.h_id ? 'selected': '' ">
           <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="removeChildFromGroup($event,index)">x</span>
         </div>
       </div>
@@ -83,7 +83,7 @@
       <br>
       <div class="meta">
         a_id: {{ store.selectedObject.a_id }}<br>
-        h_uuid: {{ store.selectedObject.h_uuid }}<br>
+        h_id: {{ store.selectedObject.h_id }}<br>
       </div>
     </div>
 
@@ -115,9 +115,9 @@ export default {
       if (this.store.selectedObject.h_type=='connection') {
         conNodes = {};
         let id = this.store.selectedObject.sourceID
-        conNodes.source=this.store.sceneList.find((n) => n.h_uuid==id)
+        conNodes.source=this.store.sceneList.find((n) => n.h_id==id)
         id = this.store.selectedObject.targetID;
-        conNodes.target=this.store.sceneList.find((n) => n.h_uuid==id)
+        conNodes.target=this.store.sceneList.find((n) => n.h_id==id)
       }
       return conNodes
     },

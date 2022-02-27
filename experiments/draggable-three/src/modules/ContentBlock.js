@@ -5,7 +5,7 @@ class ContentBlock {
   constructor(scene,contentItem,mat,options={cssResolution:.5}) {
     this.scene = scene;
     this.contentItem = contentItem;
-    this.h_uuid = this.contentItem.h_uuid;
+    this.h_id = this.contentItem.h_id;
     this.h_type=this.contentItem.h_type;
     this.name=this.contentItem.name;
     this.cssRes=options.cssResolution;
@@ -13,14 +13,14 @@ class ContentBlock {
     const geometry = new PlaneGeometry( 100, 100 );
     this.plane = new Mesh( geometry, mat );
     this.plane.visible=false;
-    this.plane.refID=this.h_uuid;
+    this.plane.refID=this.h_id;
     this.isDragged=false;
     this.dom = document.createElement('DIV');
 
     this.onBlur=()=>{};
     this.onFocus=()=>{};
 
-    this.dom.dataset.h_uuid=this.contentItem.h_uuid;
+    this.dom.dataset.h_id=this.contentItem.h_id;
     this.dom.classList.add('floating-blocks');
     this.dom.classList.add(this.contentItem.h_type);
     this.dom.innerHTML=this.contentItem.content||'( ͡° ͜ʖ ͡°)﻿';

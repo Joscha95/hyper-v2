@@ -76,7 +76,7 @@ class THREEScene {
     domparent.appendChild(this.renderer.domElement);
     this.render();
 
-    if(store.selectedObject) this.focusItem(store.selectedObject.h_uuid,store.selectedObject.h_type)
+    if(store.selectedObject) this.focusItem(store.selectedObject.h_id,store.selectedObject.h_type)
   }
 
   setRendererSize(){
@@ -98,7 +98,7 @@ class THREEScene {
 
     if (this.forceSimulation.isHot) {
       this.blocks.forEach((item, i) => {
-        simPos=this.forceSimulation.getNodeById(item.h_uuid);
+        simPos=this.forceSimulation.getNodeById(item.h_id);
         if (item.isDragged) {
           if (!simPos.isFixed) {
             simPos.x=item.position().x;
@@ -138,9 +138,9 @@ class THREEScene {
 
     // let startObject,middleObject,endObject,con;
     nodes.filter((n) => n.h_type=='connection').forEach((item, i) => {
-      const startObject=this.blocks.find((p)=> p.h_uuid==item.sourceID);
-      const middleObject=this.blocks.find((p)=> p.h_uuid==item.h_uuid);
-      const endObject=this.blocks.find((p)=> p.h_uuid==item.targetID)
+      const startObject=this.blocks.find((p)=> p.h_id==item.sourceID);
+      const middleObject=this.blocks.find((p)=> p.h_id==item.h_id);
+      const endObject=this.blocks.find((p)=> p.h_id==item.targetID)
       const con = new Connection(this.scene,startObject,middleObject,endObject)
       middleObject.onFocus=()=>{con.focus()};
       middleObject.onBlur=()=>{con.blur()};
@@ -155,7 +155,7 @@ class THREEScene {
 
     // check which nodes are in the simulation but not in the scene -> add new plane to scene
     const toAdd =  nodes.filter((n)=>{
-        return !planes.some((p) => n.h_uuid==p.h_uuid)
+        return !planes.some((p) => n.h_id==p.h_id)
       });
     toAdd.forEach((item, i) => {
         this.blocks.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
@@ -163,11 +163,11 @@ class THREEScene {
 
     // check which planes are in the scene but not in the simulation -> remove them from scene
     const toRemove = planes.filter((p)=>{
-      return !nodes.some((n)=>n.h_uuid==p.h_uuid)
+      return !nodes.some((n)=>n.h_id==p.h_id)
     })
 
     this.blocks=planes.filter((p)=>{
-      return nodes.some((n)=>n.h_uuid==p.h_uuid)
+      return nodes.some((n)=>n.h_id==p.h_id)
     })
 
     toRemove.forEach((item, i) => {
@@ -200,7 +200,7 @@ class THREEScene {
   onClick(e){
     const intersects = this.castRay(this.mouse);
     if (intersects.length > 0) {
-      const targ = this.blocks.find((b)=> b.h_uuid==intersects[0].object.refID) ;
+      const targ = this.blocks.find((b)=> b.h_id==intersects[0].object.refID) ;
       if (!this.isConnecting) {
         this.startConnection(targ);
       } else {
@@ -264,9 +264,9 @@ class THREEScene {
 
   }
 
-  focusItem(h_uuid,h_type){
+  focusItem(h_id,h_type){
     if(this.focusedItem) this.focusedItem.blur();
-    this.focusedItem = this.blocks.find((e) => e.h_uuid==h_uuid);
+    this.focusedItem = this.blocks.find((e) => e.h_id==h_id);
     if(this.focusedItem) {
       this.focusedItem.focus();
       if(this.focusedItem.h_type=='connection') {
@@ -286,7 +286,7 @@ class THREEScene {
   }
 
   onHashChange() {
-    const target = this.blocks.find((b)=>b.h_uuid==location.hash.substr(1));
+    const target = this.blocks.find((b)=>b.h_id==location.hash.substr(1));
     if (target) {
       this.cameraController.moveTo(target.plane);
     }
@@ -340,7 +340,7 @@ class THREEScene {
 
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
     const node = {
-      h_uuid:'H'+Date.now()+makeid(5),
+      h_id:'H'+Date.now()+makeid(5),
       name: this.lineHelper.startObject.name+' ↭ '+obj.name,
       to:[],
       val:1,
@@ -351,8 +351,8 @@ class THREEScene {
       x:center.x,
       y:center.y,
       z:center.z,
-      sourceID : this.lineHelper.startObject.h_uuid,
-      targetID : obj.h_uuid,
+      sourceID : this.lineHelper.startObject.h_id,
+      targetID : obj.h_id,
       h_type: 'connection',
       links:[]
     }

@@ -68,27 +68,27 @@ class Connection {
 
     this.middleObject.name = node.name;
 
-    this.middleObject.h_uuid=node.h_uuid;
+    this.middleObject.h_id=node.h_id;
 
     const l = {
       link1:
         {
-          source : this.startObject.h_uuid,
-          target : node.h_uuid,
+          source : this.startObject.h_id,
+          target : node.h_id,
           distance : dist/2,
           name:  '',
           h_type: 'connection',
-          h_uuid: makeid(5),
+          h_id: makeid(5),
         },
       node:node,
       link2:
         {
-          source : node.h_uuid,
-          target : this.endObject.h_uuid,
+          source : node.h_id,
+          target : this.endObject.h_id,
           distance : dist/2,
           name:  '',
           h_type: 'connection',
-          h_uuid: makeid(5),
+          h_id: makeid(5),
         }
     }
 

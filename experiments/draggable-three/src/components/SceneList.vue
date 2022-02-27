@@ -28,7 +28,7 @@ export default {
     addGroup: function() {
       this.store.sceneList.push({
         name:"new Group",
-        h_uuid:'_'+Date.now(),
+        h_id:'_'+Date.now(),
         h_type:'group',
         children:[],
         from:[],

@@ -65,7 +65,7 @@ export default {
     cloneBlock({ name,id }) {
       return {
         a_id: id,
-        h_uuid: makeid(5),
+        h_id: makeid(5),
         name: name,
         to:[],
         from:[],

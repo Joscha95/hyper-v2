@@ -11,7 +11,7 @@
   >
     <template #item="{ element }">
       <div class="list-group-item"
-      :class="selectedObjectId==element.h_uuid ? 'selected': '' "
+      :class="selectedObjectId==element.h_id ? 'selected': '' "
       :type="element.h_type" v-if="element.name.includes(searchstring)"
       @dblclick="onDoubleClick($event,element)">
 
@@ -43,7 +43,7 @@ export default {
   },
   computed:{
     selectedObjectId(){
-      return this.store.selectedObject ? this.store.selectedObject.h_uuid : ''
+      return this.store.selectedObject ? this.store.selectedObject.h_id : ''
     }
   },
   components: {
@@ -67,7 +67,7 @@ export default {
       this.lastSelected=null;
     },
     onDoubleClick(e,element){
-      window.location.hash=element.h_uuid;
+      window.location.hash=element.h_id;
       window.dispatchEvent(new HashChangeEvent("hashchange"));
     },
     getElementName(element){

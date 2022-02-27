@@ -4,9 +4,9 @@
   <div oncontextmenu="return false;" id="scene" ref="scene"></div>
 
   <div id="chain_navigator" :class="currentActiveChainElement?'show':''" v-if="lastValidChainElement" >
-   <a v-if = "lastValidChainElement.from[0]" :href="'#'+lastValidChainElement.from[0].h_uuid"> {{ lastValidChainElement.from[0].name }} ⇢ </a>
+   <a v-if = "lastValidChainElement.from[0]" :href="'#'+lastValidChainElement.from[0].h_id"> {{ lastValidChainElement.from[0].name }} ⇢ </a>
     {{ lastValidChainElement.name }}
-  <a v-if = "lastValidChainElement.to[0]" :href="'#'+lastValidChainElement.from[0].h_uuid"> ⇢ {{ lastValidChainElement.to[0].name }} </a>
+  <a v-if = "lastValidChainElement.to[0]" :href="'#'+lastValidChainElement.from[0].h_id"> ⇢ {{ lastValidChainElement.to[0].name }} </a>
   </div>
 
 </template>
@@ -54,7 +54,7 @@ export default {
         return this.store.selectedObject
     },
     currentActiveChainElement(){
-      return this.store.activeChainElement ? this.store.sceneList.find((n)=>n.h_uuid==this.store.activeChainElement ) : undefined;
+      return this.store.activeChainElement ? this.store.sceneList.find((n)=>n.h_id==this.store.activeChainElement ) : undefined;
     }
   },
   watch:{
@@ -65,7 +65,7 @@ export default {
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
     currentItem(newVal){
-      if(newVal) this.THREEScene.focusItem(this.store.selectedObject.h_uuid,this.store.selectedObject.h_type)
+      if(newVal) this.THREEScene.focusItem(this.store.selectedObject.h_id,this.store.selectedObject.h_type)
     },
     currentActiveChainElement(newVal){
       if (newVal) this.lastValidChainElement=newVal

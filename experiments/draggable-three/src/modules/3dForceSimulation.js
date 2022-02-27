@@ -14,26 +14,26 @@ class ForceSimulation {
     this.simulation.numDimensions(3)
     this.simulation.nodes(this.graphData.nodes)
     this.simulation.force('link', d3Force3d.forceLink(this.graphData.links)
-                    .id((d) => { return d.h_uuid; })
+                    .id((d) => { return d.h_id; })
                     .distance((l) => l.distance))
     .force('charge', d3Force3d.forceManyBody())
     //.force('center', d3Force3d.forceCenter())
     //.force('dagRadial', null);
-    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_uuid,n]))
+    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_id,n]))
   }
 
   setNodes(nodes){
     this.simulation.nodes(this.graphData.nodes);
     this.reheat();
     this.onDataChange()
-    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_uuid,n]))
+    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_id,n]))
   }
 
   addLink(link){
     this.graphData.links.push(link)
     this.simulation.force('link',
       d3Force3d.forceLink(this.graphData.links)
-      .id((l) => { return l.h_uuid; })
+      .id((l) => { return l.h_id; })
       .distance((l)=>l.distance))
 
     this.reheat();
@@ -50,8 +50,8 @@ class ForceSimulation {
     this.simulation.tick();
   }
 
-  getNodeById(h_uuid){
-    return this.nodeMap.get(h_uuid);
+  getNodeById(h_id){
+    return this.nodeMap.get(h_id);
   }
 
   updateLinkDistances(){
