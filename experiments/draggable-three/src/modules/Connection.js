@@ -38,6 +38,7 @@ class Connection {
   update(){
     this.positions=[this.startObject.position(),this.middleObject.position(),this.endObject.position()];
     let con;
+    
     this.positions.forEach((item, i) => {
       this.linepositions.setXYZ(i,item.x,item.y,item.z);
       if(con = this.cones[i]) {

@@ -1,5 +1,6 @@
 import {PlaneGeometry,Mesh} from 'three'
 import {CSS3DObject} from '@/modules/CSS3DRenderer.js'
+import Toolbar from '@/modules/Toolbar.js'
 
 class ContentBlock {
   constructor(scene,contentItem,mat,options={cssResolution:.5}) {
@@ -15,10 +16,16 @@ class ContentBlock {
     this.plane.visible=false;
     this.plane.refID=this.h_id;
     this.isDragged=false;
+    this.isFocused
     this.dom = document.createElement('DIV');
+
+    this.toolbox;
 
     this.onBlur=()=>{};
     this.onFocus=()=>{};
+    this.onStartLink=()=>{};
+
+    this.domRect;
 
     this.dom.dataset.h_id=this.contentItem.h_id;
     this.dom.classList.add('floating-blocks');
@@ -50,8 +57,9 @@ class ContentBlock {
     this.scene.add(this.plane)
   }
 
-  update(){
-
+  updateToolBox(){
+    this.domRect=this.dom.getBoundingClientRect();
+    if(this.toolbox) this.toolbox.setPos(this.domRect.right,this.domRect.top)
   }
 
   lookAt(pos){
@@ -64,7 +72,12 @@ class ContentBlock {
   }
 
   setPos(pos){
-    if(pos)this.plane.position.set(pos.x,pos.y,pos.z);
+    this.plane.position.set(pos.x,pos.y,pos.z);
+    this.updateToolBox()
+  }
+
+  startLink(){
+    this.onStartLink(this);
   }
 
   position(){
@@ -78,11 +91,32 @@ class ContentBlock {
   blur(){
     this.plane.visible=false;
     this.onBlur();
+    if(this.toolbox)this.toolbox.dispose();
+    this.toolbox=undefined;
+    this.dom.classList.remove('focus')
   }
 
   focus(){
     this.plane.visible=true;
     this.onFocus();
+    this.dom.classList.add('focus')
+    this.toolbox=new Toolbar([
+      {text:'☍',tooltip:'make a new connection'},{text:'↮',tooltip:'make node fixed/dynamic'}],
+      [()=>{this.startLink()},()=>{this.toggleFixed()}]);
+    this.updateToolBox()
+  }
+
+  toggleFixed(){
+    this.contentItem.isFixed=!this.contentItem.isFixed;
+    if (this.contentItem.isFixed) {
+      this.contentItem.fx=this.contentItem.x;
+      this.contentItem.fy=this.contentItem.y;
+      this.contentItem.fz=this.contentItem.z;
+    }else {
+      this.contentItem.fx=null;
+      this.contentItem.fy=null;
+      this.contentItem.fz=null;
+    }
   }
 
   setContent(c){
@@ -92,6 +126,8 @@ class ContentBlock {
   }
 
 }
+
+
 
 
 export default ContentBlock

@@ -140,6 +140,10 @@ header{
   font-size:.8em;
   padding:5px;
 }
+
+.floating-blocks.focus{
+  background-color:transparent;
+}
 </style>
 
 <style scoped>

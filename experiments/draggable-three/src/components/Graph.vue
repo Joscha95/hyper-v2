@@ -2,6 +2,9 @@
   <CanvasDragtarget @blockAdded="blockAdded"/>
 
   <div oncontextmenu="return false;" id="scene" ref="scene"></div>
+  <div id="toolbox_wrapper">
+
+  </div>
 
   <div id="chain_navigator" :class="currentActiveChainElement?'show':''" v-if="lastValidChainElement" >
    <a v-if = "lastValidChainElement.from[0]" :href="'#'+lastValidChainElement.from[0].h_id"> {{ lastValidChainElement.from[0].name }} ⇢ </a>
@@ -65,7 +68,8 @@ export default {
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
     currentItem(newVal){
-      if(newVal) this.THREEScene.focusItem(this.store.selectedObject.h_id,this.store.selectedObject.h_type)
+      if(!newVal) return;
+      this.THREEScene.focusItem(this.store.selectedObject.h_id,this.store.selectedObject.h_type)
     },
     currentActiveChainElement(newVal){
       if (newVal) this.lastValidChainElement=newVal
@@ -104,6 +108,12 @@ export default {
   z-index:-1;
 }
 
+#toolbox_wrapper{
+  position:fixed;
+  z-index:10;
+}
+
+
 #chain_navigator{
   position:fixed;
   bottom:0;
@@ -124,4 +134,30 @@ a{
   text-decoration:none;
 }
 
+</style>
+
+<style media="screen">
+  .toolbox{
+    position:fixed;
+    background-color:white;
+    box-shadow:0 0 5px rgba(0,0,0,0.3);
+    transform: translate(15%);
+  }
+
+  .toolbox div{
+    cursor:pointer;
+    padding:1em;
+  }
+
+  .toolbox div:hover{
+    background-color:rgb(250,250,250)
+  }
+  
+  .toolbox div:active{
+    background-color:rgb(240,240,240)
+  }
+
+  .toolbox div + div{
+    border-top:solid 1px black;
+  }
 </style>

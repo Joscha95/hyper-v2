@@ -26,6 +26,7 @@ class THREEScene {
     this.raycaster = new THREE.Raycaster();
     this.lineHelper = null;
     this.store=store;
+    this.blockGeometries=[];
 
     this.onLinkAdded = ()=>{};
 
@@ -97,29 +98,29 @@ class THREEScene {
     let simPos;
 
     if (this.forceSimulation.isHot) {
-      this.blocks.forEach((item, i) => {
-        simPos=this.forceSimulation.getNodeById(item.h_id);
-        if (item.isDragged) {
+      for (const block of this.blocks) {
+        simPos=this.forceSimulation.getNodeById(block.h_id);
+        if (block.isDragged) {
           if (!simPos.isFixed) {
-            simPos.x=item.position().x;
-            simPos.y=item.position().y;
-            simPos.z=item.position().z;
+            simPos.x=block.position().x;
+            simPos.y=block.position().y;
+            simPos.z=block.position().z;
           }else {
-            simPos.fx=item.position().x;
-            simPos.fy=item.position().y;
-            simPos.fz=item.position().z;
+            simPos.fx=block.position().x;
+            simPos.fy=block.position().y;
+            simPos.fz=block.position().z;
           }
 
           this.forceSimulation.reheat()
         }else {
-          item.setPos(simPos);
+          block.setPos(simPos);
         }
-        item.lookAt(this.cameraController.camera.position)
-      });
+        block.lookAt(this.cameraController.camera.position)
+      }
 
-      this.connections.forEach((item, i) => {
-         item.update();
-      });
+      for (const connection of this.connections) {
+        connection.update();
+      }
     }
 
 
@@ -132,8 +133,11 @@ class THREEScene {
 
   importNodes(){
     const nodes = this.forceSimulation.simulation.nodes();
+    let nn;
     nodes.forEach((item, i) => {
-      this.blocks.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
+      nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5})
+      nn.onStartLink=(ele)=>{this.startConnection(ele)};
+      this.blocks.push(nn);
     });
 
     // let startObject,middleObject,endObject,con;
@@ -147,6 +151,7 @@ class THREEScene {
       this.connections.push(con);
     });
 
+    this.updateBlockGeomArray();
   }
 
   simDataChanged(){
@@ -157,8 +162,11 @@ class THREEScene {
     const toAdd =  nodes.filter((n)=>{
         return !planes.some((p) => n.h_id==p.h_id)
       });
+    let nn;
     toAdd.forEach((item, i) => {
-        this.blocks.push(new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5}));
+      nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5})
+      nn.onStartLink=(ele)=>{this.startConnection(ele)};
+      this.blocks.push(nn);
       });
 
     // check which planes are in the scene but not in the simulation -> remove them from scene
@@ -173,6 +181,11 @@ class THREEScene {
     toRemove.forEach((item, i) => {
       this.scene.remove(item)
     });
+    this.updateBlockGeomArray();
+  }
+
+  updateBlockGeomArray(){
+    this.blockGeometries=this.blocks.map((b)=>b.plane);
   }
 
   getWorldPosition(x,y,offset=500){
@@ -194,7 +207,7 @@ class THREEScene {
 
   castRay(point){
     this.raycaster.setFromCamera(point, this.cameraController.camera);
-    return this.raycaster.intersectObjects(this.blocks.map((b)=>b.plane));
+    return this.raycaster.intersectObjects(this.blockGeometries);
   }
 
   onClick(e){
@@ -202,7 +215,8 @@ class THREEScene {
     if (intersects.length > 0) {
       const targ = this.blocks.find((b)=> b.h_id==intersects[0].object.refID) ;
       if (!this.isConnecting) {
-        this.startConnection(targ);
+        this.store.selectedObject=targ.contentItem
+        //this.startConnection(targ);
       } else {
         this.finishConnection(targ);
       }
@@ -232,6 +246,7 @@ class THREEScene {
         // left arrow
         history.go(-1);
         break;
+
       case 39:
         // right arrow
         history.go(+1);
@@ -259,6 +274,10 @@ class THREEScene {
       case 88:
         // x delete
         break;
+      case 27:
+        // esc
+        if(this.lineHelper) this.disposeConnection();
+        break;
       default:
     }
 
@@ -283,6 +302,7 @@ class THREEScene {
       this.lineHelper.endPosition = this.getWorldPosition(event.clientX,event.clientY,1.3);
       this.lineHelper.update();
     }
+    this.hoveredItem = this.castRay(this.mouse)[0] ? this.castRay(this.mouse)[0].object : undefined ;
   }
 
   onHashChange() {
@@ -294,11 +314,17 @@ class THREEScene {
 
   onCamMove(){
     this.blocks.forEach((item, i) => {
-      item.lookAt(this.cameraController.camera.position)
+      item.lookAt(this.cameraController.camera.position);
+      item.updateToolBox();
     });
     const intersects = this.castRay(new THREE.Vector2());
-    if (intersects.length > 0 && intersects[0].distance<600) {
-      this.store.activeChainElement=intersects[0].object.refID;
+    if (intersects[0] && intersects[0].distance<600) {
+      const targ = intersects[0].object;
+      if (this.store.activeChainElement!=targ.refID) {
+        this.store.activeChainElement=targ.refID;
+        console.log(targ.refID);
+      }
+
     }else {
       this.store.activeChainElement = undefined;
     }
@@ -326,6 +352,11 @@ class THREEScene {
     this.lineHelper = new LineHelper(obj);
     this.scene.add(this.lineHelper.line);
     this.isConnecting=true;
+
+    if (this.lineHelper) {
+      this.lineHelper.endPosition = this.getWorldPosition(event.clientX,event.clientY,1.3);
+      this.lineHelper.update();
+    }
   }
 
   disposeConnection(){
@@ -340,7 +371,7 @@ class THREEScene {
 
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
     const node = {
-      h_id:'H'+Date.now()+makeid(5),
+      h_id:makeid(5),
       name: this.lineHelper.startObject.name+' ↭ '+obj.name,
       to:[],
       val:1,
@@ -361,6 +392,7 @@ class THREEScene {
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj);
     middleNodePlane.onFocus=()=>{con.focus()};
     middleNodePlane.onBlur=()=>{con.blur()};
+    middleNodePlane.onStartLink=(ele)=>{this.startConnection(ele)};
     this.blocks.push(middleNodePlane);
 
     const nl=con.createNew(node);
@@ -368,6 +400,7 @@ class THREEScene {
 
     // callBack to Graph.vue to update simulation data
     this.onLinkAdded(nl);
+    this.updateBlockGeomArray();
 
   }
 }
