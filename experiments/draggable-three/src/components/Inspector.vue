@@ -52,7 +52,7 @@
       </draggable>
 
       <div class="property-field">
-        <input type="checkbox" v-model="store.selectedObject.isFixed"> position fixed
+        <toggle on="↔" off="↮" tooltipOn="make node fixed" tooltipOff="make node dynamic" :bool="store.selectedObject.isFixed" v-model="store.selectedObject.isFixed"/>
       </div>
 
       <div class="" v-if="store.selectedObject.h_type=='group'">
@@ -95,6 +95,7 @@
 <script>
 import draggable from "vuedraggable";
 import draggableNumber from '@/components/subcomponents/draggable-number.vue'
+import toggle from '@/components/subcomponents/toggle.vue'
 import {Vector3} from 'three'
 
 let idGlobal = 8;
@@ -102,7 +103,9 @@ export default {
   name: "Inspector",
   order: 3,
   components: {
-    draggable,draggableNumber
+    draggable,
+    draggableNumber,
+    toggle
   },
   data() {
     return {

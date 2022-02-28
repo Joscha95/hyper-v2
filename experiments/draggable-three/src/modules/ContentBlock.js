@@ -101,8 +101,13 @@ class ContentBlock {
     this.onFocus();
     this.dom.classList.add('focus')
     this.toolbox=new Toolbar([
-      {text:'☍',tooltip:'make a new connection'},{text:'↮',tooltip:'make node fixed/dynamic'}],
-      [()=>{this.startLink()},()=>{this.toggleFixed()}]);
+      {text:'☍',tooltip:'make a new connection'},
+      {text:'↮',tooltip:'make node fixed/dynamic'}
+    ],
+    [
+      ()=>{this.startLink()},
+      ()=>{this.toggleFixed()}
+    ]);
     this.updateToolBox()
   }
 
