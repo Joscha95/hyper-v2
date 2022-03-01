@@ -72,7 +72,7 @@ export default {
         from:[],
         isFixed:false,
         content:item.content,
-        image:item.image.display.url,
+        imageUrl:item.image.thumb.url,
         h_type: 'content'
       };
     },

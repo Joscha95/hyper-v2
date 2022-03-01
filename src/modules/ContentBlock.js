@@ -32,7 +32,7 @@ class ContentBlock {
     this.dom.dataset.h_id=this.contentItem.h_id;
     this.dom.classList.add('floating-blocks');
     this.dom.classList.add(this.contentItem.h_type);
-    this.dom.innerHTML=this.contentItem.content||'( ͡° ͜ʖ ͡°)﻿';
+    this.updateDisplayElement();
     const cssObj=new CSS3DObject(this.dom);
     let iter = 0;
     setPlaneGeomToDomWidth(this);
@@ -129,10 +129,30 @@ class ContentBlock {
     this.toolbox.updateField('isFixed',this.contentItem.isFixed)
   }
 
-  setContent(c){
-    this.dom.innerHTML=c;
+  setContent(){
+    this.updateDisplayElement();
     this.plane.geometry.dispose();
     this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
+  }
+
+  updateDisplayElement(){
+    let ele;
+    switch (this.contentItem.class) {
+      case 'Link':
+      case 'Image':
+      case 'Media':
+        ele=document.createElement('IMG');
+        ele.src=this.contentItem.imageUrl;
+        break;
+      case'Connection':
+      case'Text':
+      default:
+        ele=document.createElement('P');
+        ele.innerHTML=this.contentItem.content
+    }
+
+    this.dom.innerHTML='';
+    this.dom.appendChild(ele);console.log(this.contentItem.class);
   }
 
 }
