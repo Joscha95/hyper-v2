@@ -1,4 +1,9 @@
 <template>
+
+
+
+
+
 	<!--<button @click="update">update</button>
 	<input type="password" v-model.trim="password">
 	<button @click="save">save</button>
@@ -45,7 +50,7 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					break;
 				// MOVED PERMANENTLY
-				case 4: 
+				case 4:
 					this.$root.popup(`
 						The site has been moved due to a renaming of the Are.na channel. You have been forwared to the new address:
 						<strong><a href="#">${window.location.origin}/${this.targetSlug}</a></strong>`, 'OK'
