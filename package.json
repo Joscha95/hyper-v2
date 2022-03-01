@@ -8,12 +8,9 @@
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^2.3.4",
-    "are.na": "^0.1.5",
     "axios": "^0.25.0",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.12",
-    "vue-toast-notification": "^3.0.0",
-    "vue-toastification": "^2.0.0-rc.5"
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@vue/cli-service": "~4.5.0",
