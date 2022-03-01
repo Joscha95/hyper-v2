@@ -1,8 +1,8 @@
 <template>
-	<button @click="update">update</button>
+	<!--<button @click="update">update</button>
 	<input type="password" v-model.trim="password">
 	<button @click="save">save</button>
-	<button @click="recover">recover</button>
+	<button @click="recover">recover</button>-->
 </template>
 
 <script>
