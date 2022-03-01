@@ -16,7 +16,7 @@
 <script>
 import ForceSimulation from '@/modules/3dForceSimulation.js';
 import THREEScene from '@/modules/THREEScene.js';
-import CanvasDragtarget from '@/components/CanvasDragtarget.vue';
+import CanvasDragtarget from '@/components/stage/CanvasDragtarget.vue';
 
 export default {
   data(){

@@ -9,8 +9,11 @@
   "dependencies": {
     "@kyvg/vue3-notification": "^2.3.4",
     "axios": "^0.25.0",
+    "d3-force-3d": "^3.0.3",
+    "three": "^0.138.2",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@vue/cli-service": "~4.5.0",

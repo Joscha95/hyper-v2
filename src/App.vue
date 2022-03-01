@@ -11,17 +11,19 @@
 	import Notification from '@/components/Notification.vue'
 	import PopupBox from '@/components/PopupBox.vue'
 	import Header from '@/components/Header.vue'
-	
+	import store from '@/store.js';
+
 	export default {
 		setup() {
-			
+
 		},
 		data() {
 			return {
 				appName: 'hyper',
 				channelTitle: false,
 				notification: { id: false, text: '', type: '' },
-				popupBox: { body: '', button: false }
+				popupBox: { body: '', button: false },
+				store,
 			}
 		},
 		methods: {

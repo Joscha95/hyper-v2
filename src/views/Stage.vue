@@ -1,8 +1,7 @@
 <template>
-
-
-
-
+	<Graph/>
+  <Panel/>
+  <AllBlocks :blocks="channel.contents"/>
 
 	<!--<button @click="update">update</button>
 	<input type="password" v-model.trim="password">
@@ -11,6 +10,11 @@
 </template>
 
 <script>
+import Graph from '@/components/stage/Graph.vue'
+import Panel from '@/components/stage/Panel.vue'
+import AllBlocks from '@/components/stage/AllBlocks.vue'
+
+
 export default {
 	mixins: [
 		require('@/mixins/api.vue')
@@ -27,12 +31,18 @@ export default {
 			scene: {demokey: Date.now()} // TBD: kommt von three
 		}
 	},
+	components: {
+    Graph,
+    Panel,
+    AllBlocks
+  },
 	mounted() {
 		this.get()
 	},
 	watch: {
 		channel() {
-			this.$root.channelTitle = this.channel.title
+			this.$root.channelTitle = this.channel.title;
+			console.log(this.channel);
 		},
 		state() {
 			switch (this.state) {

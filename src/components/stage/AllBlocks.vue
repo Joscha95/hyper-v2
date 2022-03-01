@@ -17,8 +17,8 @@
         item-key="id"
       >
         <template #item="{ element }">
-          <div class="list-group-item" v-show="element.name.toLowerCase().includes(searchstring)">
-            <span>{{ element.name }}</span>
+          <div class="list-group-item" v-show="element.title.toLowerCase().includes(searchstring)">
+            <span>{{ element.title }}</span>
           </div>
         </template>
       </draggable>
@@ -28,8 +28,8 @@
 
 <script>
 import draggable from "vuedraggable";
-import searchbar from "@/components/subcomponents/searchbar.vue";
-import blocks from "@/cooking.js";
+import searchbar from "@/components/stage/subcomponents/searchbar.vue";
+// import blocks from "@/cooking.js";
 import {makeid} from'@/modules/Helpers.js'
 
 let idGlobal = 8;
@@ -39,9 +39,9 @@ export default {
     draggable,
     searchbar
   },
+  props:['blocks'],
   data() {
     return {
-      blocks: blocks.nodes,
       store:this.$root.$data.store,
       lastSelected:null,
       searchstring:'',
@@ -62,15 +62,17 @@ export default {
         default:
       }
     },
-    cloneBlock({ name,id }) {
+    cloneBlock(item) {
       return {
-        a_id: id,
+        a_id: item.id,
         h_id: makeid(5),
-        name: name,
+        name: item.title,
+        class: item.class,
         to:[],
         from:[],
         isFixed:false,
-        content:name,
+        content:item.content,
+        image:item.image.display.url,
         h_type: 'content'
       };
     },

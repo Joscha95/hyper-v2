@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import nested from "@/components/subcomponents/nested-draggable.vue";
-import searchbar from "@/components/subcomponents/searchbar.vue";
+import nested from "@/components/stage/subcomponents/nested-draggable.vue";
+import searchbar from "@/components/stage/subcomponents/searchbar.vue";
 
 let idGlobal = 8;
 export default {

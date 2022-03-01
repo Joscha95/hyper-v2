@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import Inspector from '@/components/Inspector.vue';
-import SceneList from '@/components/SceneList.vue';
-import collapsable from '@/components/subcomponents/collapsable.vue';
+import Inspector from '@/components/stage/Inspector.vue';
+import SceneList from '@/components/stage/SceneList.vue';
+import collapsable from '@/components/stage/subcomponents/collapsable.vue';
 
 
 export default {

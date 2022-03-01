@@ -96,8 +96,8 @@
 
 <script>
 import draggable from "vuedraggable";
-import draggableNumber from '@/components/subcomponents/draggable-number.vue'
-import toggle from '@/components/subcomponents/toggle.vue'
+import draggableNumber from '@/components/stage/subcomponents/draggable-number.vue'
+import toggle from '@/components/stage/subcomponents/toggle.vue'
 import {Vector3} from 'three'
 
 let idGlobal = 8;
