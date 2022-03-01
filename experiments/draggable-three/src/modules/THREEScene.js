@@ -181,7 +181,7 @@ class THREEScene {
     this.blocks=planes.filter((p)=>{
       return nodes.some((n)=>n.h_id==p.h_id)
     })
-    this.objectControls.detach();
+    if(this.objectControls.attachedContent && toRemove.some((b)=>b.h_id==this.objectControls.attachedContent.h_id)) this.objectControls.detach();
     let indices = [];
     toRemove.forEach((item, i) => {
       item.dispose();

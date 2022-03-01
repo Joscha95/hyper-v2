@@ -143,6 +143,7 @@ a{
     box-shadow:0 0 5px rgba(0,0,0,0.3);
     transform: translate(15%);
     border-radius: 5px;
+    overflow:hidden;
   }
 
   .toolbox div{
@@ -153,11 +154,11 @@ a{
   }
 
   .toolbox div:hover{
-    background-color:rgb(250,250,250)
+    background-color:rgb(245,245,245)
   }
 
   .toolbox div:active{
-    background-color:rgb(240,240,240)
+    background-color:rgb(235,235,235)
   }
 
   .toolbox div + div{
