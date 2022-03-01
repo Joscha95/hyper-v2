@@ -42,6 +42,7 @@ export default {
  box-sizing:border-box;
  display:block;
  border: 1px solid;
+ border-radius: 5px;
 }
 
 .slider:after {

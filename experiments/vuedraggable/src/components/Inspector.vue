@@ -4,7 +4,7 @@
       <br>
       <br>
       <draggable
-        class="dragArea list-group"
+        class="dragArea"
         :class="store.selectedObject.from.length==0 ? 'empty' : ''"
         :list="store.selectedObject.from "
         :group="{ name: 'object', pull:'clone', put:true}"
@@ -26,7 +26,7 @@
 
       <i>&darr;</i>
       <draggable
-        class="dragArea list-group"
+        class="dragArea"
         :list="store.selectedObject.to"
         :class="store.selectedObject.to.length==0 ? 'empty' : ''"
         :removeOnSpill="true"

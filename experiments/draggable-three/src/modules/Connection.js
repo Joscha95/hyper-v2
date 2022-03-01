@@ -8,12 +8,20 @@ class Connection {
     this.endObject = endObject;
     this.scene = scene;
 
+    this.onDispose=()=>{}
+
     this.material = new LineBasicMaterial({color: 0x0000ff });
     this.dashedMaterial=new LineDashedMaterial( {
       	color: 0x0000ff,
       	dashSize: 3,
       	gapSize: 3,
       } );
+
+
+    this.middleObject.onDispose=()=>{this.dispose()};
+
+    this.startObject.connections.push(this.middleObject.contentItem);
+    this.endObject.connections.push(this.middleObject.contentItem);
 
     const geometry = new BufferGeometry().setFromPoints( [this.startObject.position(),this.middleObject.position(),this.endObject.position()] );
 
@@ -38,7 +46,7 @@ class Connection {
   update(){
     this.positions=[this.startObject.position(),this.middleObject.position(),this.endObject.position()];
     let con;
-    
+
     this.positions.forEach((item, i) => {
       this.linepositions.setXYZ(i,item.x,item.y,item.z);
       if(con = this.cones[i]) {
@@ -51,7 +59,16 @@ class Connection {
   }
 
   dispose(){
-    this.scene.remove(this.line)
+    //this.middleObject.dispose();
+    this.scene.remove(this.line);
+    this.cones.forEach((item, i) => {
+      this.scene.remove(item)
+    });
+
+    this.startObject.connections.splice(this.startObject.connections.indexOf(this.middleObject.contentItem),1);
+    this.endObject.connections.splice(this.startObject.connections.indexOf(this.middleObject.contentItem),1);
+    console.log('disposed');
+
   }
 
   blur(){

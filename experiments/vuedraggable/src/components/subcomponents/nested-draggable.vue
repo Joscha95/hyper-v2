@@ -1,6 +1,6 @@
 <template>
   <draggable
-    class="dragArea list-group"
+    class="dragArea"
     :list="children"
     :group="{ name: ['blocks','object'],pull:onPull,put:true}"
     @move="onMove"

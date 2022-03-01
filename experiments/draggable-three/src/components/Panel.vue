@@ -97,8 +97,12 @@ header{
 
 .list-group-item span{
   cursor:pointer;
-  display:block;
+  display:inline-block;
   padding: 10px 0;
+}
+
+.delete{
+  color:var(--main-error-color);
 }
 
 .dragArea .list-group-item:active{
@@ -107,7 +111,6 @@ header{
 
 .list-group{
   min-height:2.5em;
-  background-color:var(--gray1)
 }
 
 .selected-by-drag{
@@ -129,7 +132,7 @@ header{
 .floating-blocks{
   pointer-events:none;
   max-width:200px;
-  font-size:1em;
+  font-size:3em;
   background-color:#e3e3e3;
   padding:5px;
 }
@@ -137,7 +140,7 @@ header{
 .floating-blocks.connection{
   background-color:white;
   border:1px blue solid;
-  font-size:.8em;
+  font-size:1.5em;
   padding:5px;
 }
 

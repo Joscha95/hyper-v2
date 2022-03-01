@@ -2,14 +2,13 @@
   <CanvasDragtarget @blockAdded="blockAdded"/>
 
   <div oncontextmenu="return false;" id="scene" ref="scene"></div>
-  <div id="toolbox_wrapper">
 
-  </div>
+  <div id="toolbox_wrapper"></div>
 
   <div id="chain_navigator" :class="currentActiveChainElement?'show':''" v-if="lastValidChainElement" >
-   <a v-if = "lastValidChainElement.from[0]" :href="'#'+lastValidChainElement.from[0].h_id"> {{ lastValidChainElement.from[0].name }} ⇢ </a>
+    <a v-if = "lastValidChainElement.from[0]" :href="'#'+lastValidChainElement.from[0].h_id"> {{ lastValidChainElement.from[0].name }} ⇢ </a>
     {{ lastValidChainElement.name }}
-  <a v-if = "lastValidChainElement.to[0]" :href="'#'+lastValidChainElement.from[0].h_id"> ⇢ {{ lastValidChainElement.to[0].name }} </a>
+    <a v-if = "lastValidChainElement.to[0]" :href="'#'+lastValidChainElement.from[0].h_id"> ⇢ {{ lastValidChainElement.to[0].name }} </a>
   </div>
 
 </template>
@@ -58,6 +57,9 @@ export default {
     },
     currentActiveChainElement(){
       return this.store.activeChainElement ? this.store.sceneList.find((n)=>n.h_id==this.store.activeChainElement ) : undefined;
+    },
+    nodesLength(){
+      return this.graphData.nodes.length
     }
   },
   watch:{
@@ -73,6 +75,12 @@ export default {
     },
     currentActiveChainElement(newVal){
       if (newVal) this.lastValidChainElement=newVal
+    },
+    nodesLength(){
+      this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
+      this.forceSimulation.updateGraph()
+      console.log('nodes',this.graphData.nodes.length);
+      console.log('links',this.graphData.links.length);
     }
   },
   methods:{
@@ -83,18 +91,9 @@ export default {
       ele.y=pos.y
       ele.z=pos.z
       ele.val=1
-
-      //this.graphData.nodes.push(ele)
-      this.forceSimulation.setNodes(this.graphData.nodes)
     },
     linkAdded(l){
       this.graphData.nodes.push(l.node)
-      this.forceSimulation.setNodes(this.graphData.nodes)
-
-      this.graphData.links.push(l.link1);
-      this.graphData.links.push(l.link2);
-      this.forceSimulation.addLink(l.link1);
-      this.forceSimulation.addLink(l.link2);
     }
   }
 }
@@ -110,7 +109,8 @@ export default {
 
 #toolbox_wrapper{
   position:fixed;
-  z-index:10;
+  z-index:1;
+  user-select:none;
 }
 
 
@@ -142,17 +142,20 @@ a{
     background-color:white;
     box-shadow:0 0 5px rgba(0,0,0,0.3);
     transform: translate(15%);
+    border-radius: 5px;
   }
 
   .toolbox div{
     cursor:pointer;
-    padding:1em;
+    padding:1em 0;
+    width:45px;
+    text-align:center
   }
 
   .toolbox div:hover{
     background-color:rgb(250,250,250)
   }
-  
+
   .toolbox div:active{
     background-color:rgb(240,240,240)
   }

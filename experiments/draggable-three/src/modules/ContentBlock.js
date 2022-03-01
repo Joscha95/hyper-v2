@@ -3,7 +3,7 @@ import {CSS3DObject} from '@/modules/CSS3DRenderer.js'
 import Toolbar from '@/modules/Toolbar.js'
 
 class ContentBlock {
-  constructor(scene,contentItem,mat,options={cssResolution:.5}) {
+  constructor(scene,contentItem,mat,options={cssResolution:.2}) {
     this.scene = scene;
     this.contentItem = contentItem;
     this.h_id = this.contentItem.h_id;
@@ -16,7 +16,8 @@ class ContentBlock {
     this.plane.visible=false;
     this.plane.refID=this.h_id;
     this.isDragged=false;
-    this.isFocused
+    this.isFocused;
+    this.connections=[]
     this.dom = document.createElement('DIV');
 
     this.toolbox;
@@ -24,6 +25,7 @@ class ContentBlock {
     this.onBlur=()=>{};
     this.onFocus=()=>{};
     this.onStartLink=()=>{};
+    this.onDispose=()=>{};
 
     this.domRect;
 
@@ -37,8 +39,7 @@ class ContentBlock {
 
     function setPlaneGeomToDomWidth(scope) {
       if (scope.dom.offsetWidth!=0 && scope.dom.offsetHeight!=0) {
-        scope.plane.geometry.dispose();
-        scope.plane.geometry=new PlaneGeometry( scope.dom.offsetWidth*scope.cssRes , scope.dom.offsetHeight*scope.cssRes );
+        scope.updatePlaneSize();
       }else if(iter<10) {
         setTimeout(()=>{
           iter++;
@@ -85,7 +86,10 @@ class ContentBlock {
   }
 
   dispose(){
+    this.onDispose();
     this.scene.remove(this.plane)
+    this.dom.remove()
+    if(this.toolbox) this.toolbox.dispose();
   }
 
   blur(){
@@ -101,8 +105,8 @@ class ContentBlock {
     this.onFocus();
     this.dom.classList.add('focus')
     this.toolbox=new Toolbar([
-      {text:'☍',tooltip:'make a new connection'},
-      {text:'↮',tooltip:'make node fixed/dynamic'}
+      {name:'connection',text:'☍',tooltip:'make a new connection'},
+      {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic'}
     ],
     [
       ()=>{this.startLink()},
@@ -122,6 +126,7 @@ class ContentBlock {
       this.contentItem.fy=null;
       this.contentItem.fz=null;
     }
+    this.toolbox.updateField('isFixed',this.contentItem.isFixed)
   }
 
   setContent(c){

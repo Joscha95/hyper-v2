@@ -22,15 +22,14 @@ class ForceSimulation {
     this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_id,n]))
   }
 
-  setNodes(nodes){
+  updateNodes(){
     this.simulation.nodes(this.graphData.nodes);
     this.reheat();
     this.onDataChange()
     this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_id,n]))
   }
 
-  addLink(link){
-    this.graphData.links.push(link)
+  updateLinks(){
     this.simulation.force('link',
       d3Force3d.forceLink(this.graphData.links)
       .id((l) => { return l.h_id; })
@@ -39,6 +38,30 @@ class ForceSimulation {
     this.reheat();
     this.onDataChange()
   }
+
+  updateGraph(){
+    this.simulation.nodes(this.graphData.nodes);
+    this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_id,n]))
+
+    this.simulation.force('link',
+      d3Force3d.forceLink(this.graphData.links)
+      .id((l) => { return l.h_id; })
+      .distance((l)=>l.distance))
+
+    this.reheat();
+    this.onDataChange()
+  }
+
+  // addLink(link){
+  //   this.graphData.links.push(link)
+  //   this.simulation.force('link',
+  //     d3Force3d.forceLink(this.graphData.links)
+  //     .id((l) => { return l.h_id; })
+  //     .distance((l)=>l.distance))
+  //
+  //   this.reheat();
+  //   this.onDataChange()
+  // }
 
   reheat(){
     this.simulation.alpha(1);

@@ -16,7 +16,7 @@
       >
         <template #item="{ element }">
           <div class="list-group-item" :class="store.selectedObject.h_id==element.h_id ? 'selected': '' " >
-             <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.from=[]">x</span>
+             <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.from=[]" class="delete">×</span>
           </div>
         </template>
       </draggable>
@@ -46,15 +46,15 @@
       >
         <template #item="{ element }">
           <div class="list-group-item" :class="store.selectedObject.h_id==element.h_id ? 'selected': '' ">
-            <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.to=[]">x</span>
+            <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="store.selectedObject.to=[]" class="delete">×</span>
           </div>
         </template>
       </draggable>
 
       <div class="property-field">
-        <toggle on="↔" off="↮" tooltipOn="make node fixed" tooltipOff="make node dynamic" :bool="store.selectedObject.isFixed" v-model="store.selectedObject.isFixed"/>
+        <toggle off="↔" on="⥿" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="store.selectedObject.isFixed" v-model="store.selectedObject.isFixed"/>
       </div>
-
+      <!-- off="↔" on="⥿"  off="⌱" on="⌖"-->
       <div class="" v-if="store.selectedObject.h_type=='group'">
         <br>
         <br>
@@ -63,7 +63,7 @@
         <div  class="list-group-item"
               v-for="(element,index) in store.selectedObject.children"
               :class="store.selectedObject.h_id==element.h_id ? 'selected': '' ">
-          <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="removeChildFromGroup($event,index)">x</span>
+          <span class="name" @click="store.selectedObject=element">{{ element.name }}</span> <span @click="removeChildFromGroup($event,index)" class="delete">×</span>
         </div>
       </div>
 
@@ -80,7 +80,9 @@
         <draggableNumber :value="linkDistance" v-model="linkDistance"/>
 
       </div>
-      <br>
+      <div class="deleteItem delete" @click="removeItem">
+        delete
+      </div>
       <div class="meta">
         a_id: {{ store.selectedObject.a_id }}<br>
         h_id: {{ store.selectedObject.h_id }}<br>
@@ -170,6 +172,7 @@ export default {
         this.store.selectedObject.fy=null;
         this.store.selectedObject.fz=null;
       }
+      this.store.selectedObject.sceneElement.toolbox.updateField('isFixed',newVal)
     },
     nodeContent(newVal){
       if (!this.store.selectedObject) return;
@@ -183,6 +186,10 @@ export default {
     addedItem(evt,list){
       const ele = this.store.selectedObject[list][evt.newIndex];
       this.store.selectedObject[list]=[ele];
+    },
+    removeItem(){
+      this.store.sceneList.splice(this.store.sceneList.indexOf(this.store.selectedObject),1);
+      this.store.selectedObject=undefined;
     },
     removeChildFromGroup(evt,index){
       this.store.sceneList.push(
@@ -239,7 +246,7 @@ input[type="text"]{
 
 .sortable-chosen,
 .sortable-ghost{
-  color:red;
+  color:var(--main-error-color);
 }
 
 .meta{
@@ -277,6 +284,21 @@ textarea{
   height:auto;
   border-style:dashed;
   font-family:inherit;
+}
+
+.deleteItem{
+  cursor:pointer;
+  background-color:rgba(255, 94, 0,.05);
+  padding:.5em;
+  display:inline-block;
+  border: 1px solid;
+  border-radius:5px;
+}
+.deleteItem:hover{
+  background-color:rgba(255, 94, 0,.2);
+}
+.deleteItem:active{
+  background-color:rgba(255, 94, 0,.3);
 }
 
 </style>

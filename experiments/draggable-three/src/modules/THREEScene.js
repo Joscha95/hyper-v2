@@ -28,6 +28,8 @@ class THREEScene {
     this.store=store;
     this.blockGeometries=[];
 
+    this.scale_factor=.2;
+
     this.onLinkAdded = ()=>{};
 
     domparent.addEventListener('mousedown',(e)=>this.onClick(e));
@@ -135,7 +137,7 @@ class THREEScene {
     const nodes = this.forceSimulation.simulation.nodes();
     let nn;
     nodes.forEach((item, i) => {
-      nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5})
+      nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
       nn.onStartLink=(ele)=>{this.startConnection(ele)};
       this.blocks.push(nn);
     });
@@ -146,6 +148,8 @@ class THREEScene {
       const middleObject=this.blocks.find((p)=> p.h_id==item.h_id);
       const endObject=this.blocks.find((p)=> p.h_id==item.targetID)
       const con = new Connection(this.scene,startObject,middleObject,endObject)
+      con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1)}
+
       middleObject.onFocus=()=>{con.focus()};
       middleObject.onBlur=()=>{con.blur()};
       this.connections.push(con);
@@ -164,7 +168,7 @@ class THREEScene {
       });
     let nn;
     toAdd.forEach((item, i) => {
-      nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:.5})
+      nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
       nn.onStartLink=(ele)=>{this.startConnection(ele)};
       this.blocks.push(nn);
       });
@@ -177,10 +181,20 @@ class THREEScene {
     this.blocks=planes.filter((p)=>{
       return nodes.some((n)=>n.h_id==p.h_id)
     })
-
+    this.objectControls.detach();
+    let indices = [];
     toRemove.forEach((item, i) => {
-      this.scene.remove(item)
+      item.dispose();
+      item.connections.forEach((con, i) => {
+        indices.push(this.store.sceneList.indexOf(con))
+      });
     });
+    indices=indices.filter((i)=> i>0 )
+    console.log('to remove',indices);
+
+    for (var i = indices.length -1; i >= 0; i--)
+        this.store.sceneList.splice(indices[i],1);
+
     this.updateBlockGeomArray();
   }
 
@@ -388,7 +402,7 @@ class THREEScene {
       links:[]
     }
 
-    const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:.5});
+    const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:this.scale_factor});
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj);
     middleNodePlane.onFocus=()=>{con.focus()};
     middleNodePlane.onBlur=()=>{con.blur()};
@@ -396,6 +410,7 @@ class THREEScene {
     this.blocks.push(middleNodePlane);
 
     const nl=con.createNew(node);
+    con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1);console.log(this.store.sceneList);}
     this.connections.push(con);
 
     // callBack to Graph.vue to update simulation data

@@ -4,7 +4,7 @@
     <br>
     <br>
     <draggable
-      class="dragArea list-group"
+      class="dragArea"
       :list="blocks"
       :group="{ name: 'blocks', pull: 'clone', put: false }"
       :sort="false"
