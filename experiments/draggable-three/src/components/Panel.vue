@@ -133,6 +133,7 @@ header{
   pointer-events:none;
   max-width:200px;
   font-size:3em;
+  line-height:1.5;
   background-color:#e3e3e3;
   padding:5px;
 }
