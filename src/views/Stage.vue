@@ -1,6 +1,5 @@
 <template>
-	<!--<Graph :api-state="state" />-->
-	<Graph/>
+	<Graph ref="threescene"/>
     <Panel/>
     <AllBlocks :blocks="channel.contents"/>
 	<!--<button @click="update">update</button>
@@ -59,7 +58,8 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.$root.channelTitle = this.channel.title
 					this.state = 1
-					console.log(this.channel)
+					console.log(this.channel);
+					this.$refs.threescene.updateContents(this.channel.contents);
 					break;
 				// MOVED PERMANENTLY
 				case 4:
@@ -75,7 +75,7 @@ export default {
 					this.rename()
 					break;
 			}
-			
+
 		}
 	},
 	methods: {

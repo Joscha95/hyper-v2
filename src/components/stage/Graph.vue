@@ -96,7 +96,7 @@ export default {
       this.graphData.nodes.push(l.node)
     },
     updateContents(allBlocks){
-
+      console.log(true);
     }
   }
 }
