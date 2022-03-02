@@ -96,7 +96,17 @@ export default {
       this.graphData.nodes.push(l.node)
     },
     updateContents(allBlocks){
-      console.log(true);
+      let a_block;
+      this.graphData.nodes.forEach((item)=>{
+        if(item.h_type=='connection') return;
+        a_block = allBlocks.find((b) => b.id == item.a_id);
+        if(!a_block) return;
+        item.name= a_block.title
+        item.content = a_block.content
+        item.imageUrl = a_block.image ? a_block.image.thumb.url : '',
+        item.sceneElement.updateDisplayElement();
+      })
+
     }
   }
 }

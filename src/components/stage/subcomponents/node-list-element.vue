@@ -116,7 +116,7 @@ export default {
       if(this.element.sceneElement.toolbox) this.element.sceneElement.toolbox.updateField('isFixed',newVal)
     },
     nodeContent(newVal){
-      this.element.sceneElement.setContent(newVal)
+      this.element.sceneElement.updateDisplayElement();
     },
     selectedObject(){
       this.editmode=false

@@ -19,7 +19,7 @@ html, body {
 	margin: 0;
 	overflow: hidden;
 }
-* { 
+* {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -95,6 +95,9 @@ button {
 	cursor: pointer;
 	border: 1px solid var(--main-gray-color);
 	color: var(--main-darkgray-color);
+
+	position:relative;
+	z-index:100;
 }
 button:hover, button:hover {
 	border: 1px solid black;

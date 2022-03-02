@@ -132,12 +132,6 @@ class ContentBlock {
     this.toolbox.updateField('isFixed',this.contentItem.isFixed)
   }
 
-  setContent(){
-    this.updateDisplayElement();
-    this.plane.geometry.dispose();
-    this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
-  }
-
   updateDisplayElement(){
     let ele;
     switch (this.contentItem.class) {
@@ -156,6 +150,9 @@ class ContentBlock {
 
     this.dom.innerHTML='';
     this.dom.appendChild(ele);
+
+    this.plane.geometry.dispose();
+    this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
   }
 
 }
