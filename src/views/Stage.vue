@@ -1,8 +1,7 @@
 <template>
 	<Graph ref="threescene"/>
     <Panel/>
-    <AllBlocks :blocks="channel.contents"/>
-	<button @click="update">update</button>
+    <AllBlocks @update="update" :blocks="channel.contents"/>
 	<button @click="save">save</button>
 	<input type="password" v-model.trim="password">
 	<!--<input type="password" v-model.trim="password">

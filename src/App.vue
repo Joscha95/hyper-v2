@@ -14,9 +14,6 @@
 	import store from '@/store.js';
 
 	export default {
-		setup() {
-
-		},
 		data() {
 			return {
 				appName: 'hyper',

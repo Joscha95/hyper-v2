@@ -1,5 +1,5 @@
 :root {
-	--header-height: 5rem;
+	--header-height: 6rem;
 	--panel-witdh: 15rem;
 	--thumbs-witdh: 5em;
 }
@@ -12,15 +12,16 @@
 	z-index:1;
 	user-select:none;
 	top:0;
+	left: 1em;
 	width: var(--panel-witdh);
 }
 #all_blocks_header {
 	position:absolute;
 	width: 100%;
-	display: flex;
 	align-content: space-between;
 	flex-wrap: wrap;
 	height: var(--header-height);
+	display: flex;
 }
 #all_blocks_body {
 	position:absolute;
@@ -31,11 +32,34 @@
 	background: white;
 }
 #add_block_button {
-	padding: .5em;
+	width: 100%;
+	height: 50%;
 }
 
 #all_blocks_controls {
-	display: flex;
+	position: relative;
+	width: 100%;
+	margin-bottom: .1rem;
+}
+#refresh_button, #all_blocks_controls .searchbar {
+}
+#refresh_button {
+	padding: 0;
+	margin: 0;
+	height: 2.3rem;
+	width: 4rem;
+}
+#all_blocks_controls .searchbar {
+	right: 0;
+	position: absolute;
+	top: 0;
+	width: calc( 100% - 4rem - 4px );
+	transition: width .1s;
+	z-index: 100;
+	border: 1px solid var(--main-gray-color);
+}
+#all_blocks_controls .searchbar:focus {
+	width: 100%;
 }
 
 
@@ -54,6 +78,9 @@
 	border-top-color: transparent;
 	color: var(--main-mediumgray-color);
 	position: relative;
+}
+.draggable_list_item:first-child {
+	border-top-color: var(--main-lightgray-color);
 }
 .draggable_list_item:before {
 	content:'';

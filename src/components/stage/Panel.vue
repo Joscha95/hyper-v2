@@ -1,8 +1,8 @@
 <template>
   <collapsable id="panel">
-    <header>
+    <div id="panel_header">
       <span v-for="widget in widgets" @click="widget.show=!widget.show" :class="{active:widget.show}">{{ widget.display }}</span>
-    </header>
+    </div>
     <br>
     <div id="panel-inner">
       <component v-for="widget in activeWidgets" :is="widget.component"/>
@@ -71,7 +71,7 @@ export default {
   opacity:0.3;
 }
 
-header{
+#panel_header{
   text-align:center
 }
 
