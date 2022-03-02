@@ -2,7 +2,7 @@
   <div id="all_blocks">
     <div id="all_blocks_header">
       <strong @click="show=!show" id="add_block_button">add blocks</strong>
-      <searchbar v-show="show" @search.trim="filterBlocks" />
+      <searchbar v-show="show" @search="filterBlocks" />
         <!--  ↻ ⌕ -->
     </div>
     <div id="all_blocks_body" v-show="show">
@@ -18,7 +18,7 @@
         item-key="id"
       >
         <template #item="{ element }">
-          <div class="draggable_list_item" v-show="element.title.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring)">
+          <div class="draggable_list_item" :class="{no_thumb:!element.image}" v-show="element.title.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring)">
             <div class="draggable_list_item_thumb" v-if="element.image">
               <img :src="element.image.thumb.url">
             </div>
@@ -87,8 +87,8 @@ export default {
       this.lastSelected=evt.to;
       this.lastSelected.classList.add('selected-by-drag')
     },
-    filterBlocks(e){
-      this.searchstring=e.value ? e.value.toLowerCase() : '';
+    filterBlocks(e) {
+      this.searchstring = e.value ? e.value.toLowerCase().trim() : '';
     }
   }
 };

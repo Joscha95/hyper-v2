@@ -44,6 +44,16 @@
 	cursor: pointer;
 	border-top-color: transparent;
 	color: var(--main-mediumgray-color);
+	position: relative;
+}
+.draggable_list_item:before {
+	content:'';
+	position: absolute;
+	height:100%;
+	width: 2em;
+	background: linear-gradient(90deg,rgba(255,255,255,0), rgba(255,255,255,1) 90%);
+	right: 0;
+	z-index: 1;
 }
 .draggable_list_item_content {
 	overflow: hidden;
@@ -56,8 +66,11 @@
 	box-sizing: border-box;
 }
 .draggable_list_item:hover .draggable_list_item_content span {
-	transform: translateX( calc(-100% + (var(--panel-witdh) - var(--thumbs-witdh)) ) );
+	transform: translateX( calc(-100% + (var(--panel-witdh) - var(--thumbs-witdh) - 2px ) ) );
 	transition: transform 5s linear;
+}
+.draggable_list_item.no_thumb:hover .draggable_list_item_content span {
+	transform: translateX( calc(-100% + ( var(--panel-witdh) - 2px ) ) );
 }
 .draggable_list_item:hover {
 	border: 1px solid black;
