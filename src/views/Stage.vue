@@ -59,6 +59,10 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.$root.channelTitle = this.channel.title
 					this.state = 1
+					
+					
+					console.log( this.block(6580615).title ) // RETURNS BLOCK BY ID
+					
 					break;
 				// MOVED PERMANENTLY
 				case 4:
