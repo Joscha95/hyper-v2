@@ -40,16 +40,15 @@ export default {
 		this.get()
 	},
 	watch: {
-		channel() {
-			this.$root.channelTitle = this.channel.title;
-			console.log(this.channel);
-		},
 		state() {
 			switch (this.state) {
 				// NOT FOUND
 				case -1:
 					this.$root.notify('No hyperspace found.', 'error')
 					this.$router.push(`/not/found`)
+					break;
+				// OK > do nothing
+				case 1:
 					break;
 				// UPDATING
 				case 2:
@@ -58,6 +57,8 @@ export default {
 				// UPDATED
 				case 3:
 					this.$root.notify('Channel has been updated.', 'success')
+					this.$root.channelTitle = this.channel.title
+					this.state = 1
 					break;
 				// MOVED PERMANENTLY
 				case 4:
