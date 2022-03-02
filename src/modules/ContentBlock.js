@@ -40,9 +40,11 @@ class ContentBlock {
     let isLoaded=false;
     setPlaneGeomToDomWidth(this);
     function setPlaneGeomToDomWidth(scope) {
-      isLoaded = img ? img.offsetWidth!=0 && img.offsetHeight!=0 : scope.dom.offsetWidth!=0 && scope.dom.offsetHeight!=0
+      isLoaded = img ? img.naturalWidth!=0 && img.naturalHeight!=0 : scope.dom.offsetWidth!=0 && scope.dom.offsetHeight!=0;
+      const width = img ? img.naturalWidth : scope.dom.offsetWidth;
+      const height = img ? img.naturalHeight : scope.dom.offsetHeight;
       if (isLoaded) {
-        scope.updatePlaneSize();
+        scope.updatePlaneSize(width,height);
       }else if(iter<100) {
         setTimeout(()=>{
           iter++;
@@ -70,9 +72,9 @@ class ContentBlock {
     this.plane.lookAt(pos)
   }
 
-  updatePlaneSize(){
+  updatePlaneSize(width,height){
     this.plane.geometry.dispose();
-    this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
+    this.plane.geometry=new PlaneGeometry( width*this.cssRes , height*this.cssRes );
   }
 
   setPos(pos){
