@@ -2,8 +2,10 @@
   <div id="all_blocks">
     <div id="all_blocks_header">
       <strong @click="show=!show" id="add_block_button">add blocks</strong>
-      <searchbar v-show="show" @search="filterBlocks" />
-        <!--  ↻ ⌕ -->
+      <div id="all_blocks_controls" v-show="show">
+        <button id="refresh_blocks_button" @click="update" title="Refresh blocks">↻</button>
+        <searchbar id="blocks_search_input" @search="filterBlocks" />
+      </div>
     </div>
     <div id="all_blocks_body" v-show="show">
       <draggable

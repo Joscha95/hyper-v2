@@ -3,6 +3,9 @@
 	--panel-witdh: 15rem;
 	--thumbs-witdh: 5em;
 }
+
+
+
 #all_blocks {
 	position:fixed;
 	height:100%;
@@ -30,6 +33,12 @@
 #add_block_button {
 	padding: .5em;
 }
+
+#all_blocks_controls {
+	display: flex;
+}
+
+
 .draggable_list_item {
 	border: 1px solid var(--main-lightgray-color);
 	background-color:white;
@@ -50,7 +59,7 @@
 	content:'';
 	position: absolute;
 	height:100%;
-	width: 2em;
+	width: 1.5em;
 	background: linear-gradient(90deg,rgba(255,255,255,0), rgba(255,255,255,1) 90%);
 	right: 0;
 	z-index: 1;

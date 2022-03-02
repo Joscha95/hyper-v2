@@ -2,7 +2,7 @@
 	<Graph ref="threescene"/>
     <Panel/>
     <AllBlocks :blocks="channel.contents"/>
-	<button @click="update">update</button>
+	<!--<button @click="update">update</button>-->
 	<!--<input type="password" v-model.trim="password">
 	<button @click="save">save</button>
 	<button @click="recover">recover</button>-->
