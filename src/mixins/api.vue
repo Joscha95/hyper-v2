@@ -71,6 +71,11 @@ module.exports = {
 				})
 			}
 		},
+		
+		
+		block(id){
+			return this.channel.contents.find(block => this.channel.contents.id = id)
+		},
 
 
 		rename(){
