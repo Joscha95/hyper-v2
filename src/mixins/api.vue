@@ -33,7 +33,7 @@ module.exports = {
 			if( this.state != 2 ){
 				this.state = 2
 				const checkSlug = ( this.targetSlug.indexOf('_')>0 ? this.targetSlug.substr(0, this.targetSlug.indexOf('_')) : this.targetSlug )
-				this.axios.get(`https://api.are.na/v2/channels/${this.channelId}?per=100`)
+				this.axios.get(`https://api.are.na/v2/channels/${this.channelId}?per=100&sort=desc`)
 				.then(response => {
 					// the first 100 blocks have been recieved
 					// check if channel has been renamed
@@ -53,7 +53,7 @@ module.exports = {
 						if( this.channel.length > 100 ){
 							const page = Math.ceil(this.channel.length/100)
 							for (let i = 2; i <= page; i++) {
-								this.axios.get(`https://api.are.na/v2/channels/${this.channel.id}?page=${i}&per=100`)
+								this.axios.get(`https://api.are.na/v2/channels/${this.channel.id}?page=${i}&per=100&sort=desc`)
 								.then(response => {
 									this.channel.contents = [...this.channel.contents, ...response.data.contents]
 								})
@@ -63,8 +63,10 @@ module.exports = {
 									this.$router.push(`/oh/no`)
 								})
 							}
+							this.channel.contents.reverse()
 							this.state = 3
 						}else{
+							this.channel.contents.reverse()
 							this.state = 3
 						}
 					}	
