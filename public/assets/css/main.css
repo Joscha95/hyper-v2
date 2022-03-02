@@ -1,0 +1,108 @@
+:root {
+	--main-faintgray-color: #f3f3f3;
+	--main-lightgray-color: lightgray;
+	--main-gray-color: #aaaaaa;
+	--main-mediumgray-color: #6d6d6d;
+	--main-darkgray-color: #333;
+	--main-success-color: #17ac10;;
+	--main-error-color: #ff5e00;
+}
+
+html, body {
+	position: fixed;
+	font-family: Arial, sans-serif;
+	color: var(--main-darkgray-color);
+	font-size: 1em;
+	line-height: 1em;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+* { 
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+img {
+	vertical-align: middle;
+}
+
+/* BASIC */
+
+a, a:visited {
+	color: inherit;
+	text-decoration-style: dotted;
+}
+a:hover, a:focus, a:active {
+	color: black;
+	text-decoration-style: solid;
+}
+
+.page {
+	max-width: 600px;
+	padding: 1rem;
+	margin: 0 auto;
+}
+
+
+/* FORMS */
+
+input {
+	border: 1px solid black;
+	height: 2.3rem;
+	border-radius: 1px;
+	font-size: 1rem;
+	padding: 0 0.6em;
+	background-color: white;
+	display: inline-block;
+	color: black;
+	box-sizing: border-box;
+}
+input:focus {
+	background-color: rgb(255, 255, 237);
+}
+input.invalid {
+	background-color: var(--main-faintgray-color);
+	color: black;
+}
+input.valid {
+	background-color: rgb(243, 255, 237);
+	color: var(--main-darkgray-color);
+}
+input:not(.valid, :focus) {
+	background-color: var(--main-faintgray-color);
+	color: black;
+}
+label {
+	color: var(--main-darkgray-color);
+	margin-bottom: 0.5rem;
+	font-size: 0.7em;
+}
+button {
+	display: inline-block;
+	background: white;
+	border: 0;
+	height: 2.7em;
+	border-radius: 8px;
+	padding: 0 3em;
+	font-weight: bold;
+	font-size: 1em;
+	margin-top: 2em;
+	cursor: pointer;
+	border: 1px solid var(--main-gray-color);
+	color: var(--main-darkgray-color);
+}
+button:hover, button:hover {
+	border: 1px solid black;
+	color: black;
+}
+button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover{
+	color: var(--main-darkgray-color);
+	cursor: auto;
+	border: 1px solid var(--main-gray-color);
+	background-color: var(--main-lightgray-color);
+}

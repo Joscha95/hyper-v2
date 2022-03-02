@@ -1,5 +1,6 @@
 <template>
-	<Graph :api-state="state" />
+	<!--<Graph :api-state="state" />-->
+	<Graph/>
     <Panel/>
     <AllBlocks :blocks="channel.contents"/>
 	<!--<button @click="update">update</button>
@@ -58,6 +59,7 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.$root.channelTitle = this.channel.title
 					this.state = 1
+					console.log(this.channel)
 					break;
 				// MOVED PERMANENTLY
 				case 4:
@@ -81,3 +83,6 @@ export default {
 	}
 }
 </script>
+<style>
+	@import "/assets/css/stage.css";
+</style>

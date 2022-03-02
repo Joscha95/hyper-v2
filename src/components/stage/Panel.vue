@@ -82,10 +82,6 @@ header{
   box-shadow: 0 0 2px #2196F3;
 }
 
-.dragArea{
-  text-align:center;
-}
-
 .dragArea .dragArea{
   width:90%;
   display:inline-block;
