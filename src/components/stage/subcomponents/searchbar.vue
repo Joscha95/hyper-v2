@@ -1,5 +1,5 @@
 <template lang="html">
-  <input  @focus="store.focused=true" @blur="blur" type="search" v-model="searchstring" placeholder="filter...">
+  <input @focus="store.focused=true" @blur="this.store.focused=false" type="search" v-model="searchstring" placeholder="filter...">
 </template>
 
 <script>
@@ -8,13 +8,6 @@ export default {
     return {
       searchstring:'',
       store:this.$root.store
-    }
-  },
-  methods:{
-    blur(){
-      this.searchstring='';
-      this.$emit('search',{value:''});
-      this.store.focused=false
     }
   },
   watch:{
