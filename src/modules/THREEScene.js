@@ -173,6 +173,18 @@ class THREEScene {
       this.blocks.push(nn);
       });
 
+    toAdd.filter((n) => n.h_type=='connection').forEach((item, i) => {
+      const startObject=this.blocks.find((p)=> p.h_id==item.sourceID);
+      const middleObject=this.blocks.find((p)=> p.h_id==item.h_id);
+      const endObject=this.blocks.find((p)=> p.h_id==item.targetID)
+      const con = new Connection(this.scene,startObject,middleObject,endObject)
+      con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1)}
+
+      middleObject.onFocus=()=>{con.focus()};
+      middleObject.onBlur=()=>{con.blur()};
+      this.connections.push(con);
+    });
+
     // check which planes are in the scene but not in the simulation -> remove them from scene
     const toRemove = planes.filter((p)=>{
       return !nodes.some((n)=>n.h_id==p.h_id)
@@ -190,7 +202,6 @@ class THREEScene {
       });
     });
     indices=indices.filter((i)=> i>0 )
-    console.log('to remove',indices);
 
     for (var i = indices.length -1; i >= 0; i--)
         this.store.sceneList.splice(indices[i],1);

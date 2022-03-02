@@ -82,8 +82,6 @@ export default {
     nodesLength(){
       this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
       this.forceSimulation.updateGraph()
-      console.log('nodes',this.graphData.nodes.length);
-      console.log('links',this.graphData.links.length);
     }
   },
   methods:{
@@ -109,14 +107,11 @@ export default {
         item.imageUrl = a_block.image ? a_block.image.thumb.url : '',
         item.sceneElement.updateDisplayElement();
       })
-      console.log(this.graphData.nodes);
-      console.log(this.graphData.links);
     },
     init(){
       this.graphData.nodes=this.$root.store.sceneList;
       this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
       this.forceSimulation.updateGraph();
-      console.log('init');
     }
   }
 }

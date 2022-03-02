@@ -47,7 +47,7 @@ class ContentBlock {
         setTimeout(()=>{
           iter++;
           setPlaneGeomToDomWidth(scope);
-        },10)
+        },100)
       }
 
     }
