@@ -106,7 +106,8 @@ export default {
         item.imageUrl = a_block.image ? a_block.image.thumb.url : '',
         item.sceneElement.updateDisplayElement();
       })
-
+      console.log(this.graphData.nodes);
+      console.log(this.graphData.links);
     }
   }
 }
