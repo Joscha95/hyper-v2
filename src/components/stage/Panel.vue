@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import Inspector from '@/components/stage/Inspector.vue';
 import SceneList from '@/components/stage/SceneList.vue';
 import collapsable from '@/components/stage/subcomponents/collapsable.vue';
 
@@ -19,15 +18,13 @@ import collapsable from '@/components/stage/subcomponents/collapsable.vue';
 export default {
   name: 'Panel',
   components: {
-    Inspector,
     collapsable,
     SceneList
   },
   data(){
     return{
       widgets:[
-        {component:'SceneList', display: 'scene',show:true},
-        {component:'Inspector', display: 'object',show:false},
+        {component:'SceneList', display: 'scene',show:true}
       ]
     }
   },
@@ -100,13 +97,20 @@ header{
   display:inline-block;
   padding: 10px 0;
 }
+.list-group-item .handle{
+  padding: 10px 0;
+}
 
 .delete{
   color:var(--main-error-color);
 }
 
-.dragArea .list-group-item:active{
+.dragArea .handle:active{
   cursor:grabbing;
+}
+
+.handle{
+  cursor:pointer;
 }
 
 .list-group{
@@ -131,11 +135,14 @@ header{
 
 .floating-blocks{
   pointer-events:none;
-  max-width:200px;
   font-size:3em;
   line-height:1.5;
   background-color:#e3e3e3;
   padding:5px;
+}
+
+.floating-blocks[contentclass="Text"]{
+  max-width:200px;
 }
 
 .floating-blocks.connection{

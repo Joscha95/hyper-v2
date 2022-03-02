@@ -32,15 +32,18 @@ class ContentBlock {
     this.dom.dataset.h_id=this.contentItem.h_id;
     this.dom.classList.add('floating-blocks');
     this.dom.classList.add(this.contentItem.h_type);
+    this.dom.dataset.contentclass=this.contentItem.class
     this.updateDisplayElement();
+    const img = this.dom.querySelector('IMG');
     const cssObj=new CSS3DObject(this.dom);
     let iter = 0;
+    let isLoaded=false;
     setPlaneGeomToDomWidth(this);
-
     function setPlaneGeomToDomWidth(scope) {
-      if (scope.dom.offsetWidth!=0 && scope.dom.offsetHeight!=0) {
+      isLoaded = img ? img.offsetWidth!=0 && img.offsetHeight!=0 : scope.dom.offsetWidth!=0 && scope.dom.offsetHeight!=0
+      if (isLoaded) {
         scope.updatePlaneSize();
-      }else if(iter<10) {
+      }else if(iter<100) {
         setTimeout(()=>{
           iter++;
           setPlaneGeomToDomWidth(scope);
@@ -152,7 +155,7 @@ class ContentBlock {
     }
 
     this.dom.innerHTML='';
-    this.dom.appendChild(ele);console.log(this.contentItem.class);
+    this.dom.appendChild(ele);
   }
 
 }

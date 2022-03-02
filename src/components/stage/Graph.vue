@@ -94,6 +94,9 @@ export default {
     },
     linkAdded(l){
       this.graphData.nodes.push(l.node)
+    },
+    updateContents(allBlocks){
+
     }
   }
 }

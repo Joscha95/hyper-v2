@@ -42,5 +42,6 @@ export default {
     user-select:none;
     padding:10px 0;
     margin:.5em 0;
+    display:inline-block
   }
 </style>

@@ -18,8 +18,9 @@ export default {
  position: relative;
  display: inline-block;
  width: auto;
- height: 34px;
  user-select:none;
+ vertical-align:middle;
+ color:inherit;
 }
 
 /* Hide default HTML checkbox */
@@ -58,13 +59,18 @@ export default {
  transition: .2s;
  z-index:0;
  box-sizing: border-box;
+ box-shadow: 0 0 5px rgba(0,0,0,0.5)
 }
 
 .slider>span{
   position:relative;
   z-index:1;
-  padding:.6em 1em;
+  padding:.2em 1em;
   display:inline-block;
+  color:rgba(0,0,0,.5);
+}
+.slider>span.active{
+  color:black
 }
 
 input:checked + .slider {
