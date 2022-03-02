@@ -402,6 +402,7 @@ class THREEScene {
       links:[]
     }
 
+
     const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:this.scale_factor});
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj);
     middleNodePlane.onFocus=()=>{con.focus()};

@@ -4,6 +4,7 @@
     <AllBlocks :blocks="channel.contents"/>
 	<button @click="update">update</button>
 	<button @click="save">save</button>
+	<input type="password" v-model.trim="password">
 	<!--<input type="password" v-model.trim="password">
 	<button @click="save">save</button>
 	<button @click="recover">recover</button>-->
@@ -27,8 +28,9 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			password: '',
-			scene: {demokey: Date.now()} // TBD: kommt von three
+			password: '12345678',
+			initScene:[],
+			needsInit:true
 		}
 	},
 	components: {
@@ -40,7 +42,8 @@ export default {
 		this.get()
 	},
 	watch: {
-		state() {
+		state(newState) {
+			document.body.classList = ['state_'+newState];
 			switch (this.state) {
 				// NOT FOUND
 				case -1:
@@ -59,7 +62,10 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.$root.channelTitle = this.channel.title
 					this.state = 1
-					console.log(this.channel);
+
+					this.$root.store.sceneList=this.initScene;
+					if(this.needsInit) this.$refs.threescene.init();
+					this.needsInit=false;
 					this.$refs.threescene.updateContents(this.channel.contents);
 					break;
 				// MOVED PERMANENTLY

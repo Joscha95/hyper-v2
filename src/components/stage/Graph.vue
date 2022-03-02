@@ -60,6 +60,9 @@ export default {
     },
     nodesLength(){
       return this.graphData.nodes.length
+    },
+    sceneList(){
+      return this.$root.store.sceneList
     }
   },
   watch:{
@@ -108,6 +111,12 @@ export default {
       })
       console.log(this.graphData.nodes);
       console.log(this.graphData.links);
+    },
+    init(){
+      this.graphData.nodes=this.$root.store.sceneList;
+      this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
+      this.forceSimulation.updateGraph();
+      console.log('init');
     }
   }
 }
