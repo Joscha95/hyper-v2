@@ -1,6 +1,6 @@
 <template>
       <div v-if="isConnection && editmode" :type="element.h_type">
-        <textarea @focus="store.focused=true" @blur="store.focused=false"  v-model="element.content" placeholder="say something about the connection"></textarea>
+        <textarea @focus="store.focused=true" @blur="store.focused=false" rows="5" v-model="element.content" placeholder="say something about the connection"></textarea>
       </div>
       <div v-else @click="store.selectedObject=element" class="handle">
         {{ element.name }}
