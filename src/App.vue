@@ -27,7 +27,6 @@
 		methods: {
 			notify(text, type = 'default') {
 				this.notification = { id: Date.now(), text: text, type: type }
-				console.log(this.$route.name);
 			},
 			popup(body, button = false) {
 				this.popupBox = { body: body, button: button }
