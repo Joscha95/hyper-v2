@@ -115,6 +115,9 @@ module.exports = {
 						x: n.x,
 						y: n.y,
 						z: n.z,
+						fx: n.fx,
+						fy: n.fy,
+						fz: n.fz,
 						h_type: n.h_type,
 					}
 

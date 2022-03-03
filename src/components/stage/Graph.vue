@@ -141,7 +141,7 @@ export default {
         z:pos.z
       }
 
-      this.store.push(node)
+      this.store.sceneList.push(node)
     },
     init(){
       this.graphData.nodes=this.$root.store.sceneList;

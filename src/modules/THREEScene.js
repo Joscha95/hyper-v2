@@ -5,6 +5,7 @@ import Globe from '@/modules/GlobeHelper.js'
 import LineHelper from '@/modules/LineHelper.js'
 import PolarGrid from '@/modules/PolarGrid.js'
 import Connection from '@/modules/Connection.js'
+import Lookout from '@/modules/Lookout.js'
 import ContentBlock from '@/modules/ContentBlock.js'
 import {CSS3DRenderer,CSS3DObject} from '@/modules/CSS3DRenderer.js'
 import {makeid,map,connectionName} from '@/modules/Helpers.js'
@@ -139,7 +140,11 @@ class THREEScene {
     const nodes = this.forceSimulation.simulation.nodes();
     let nn;
     nodes.forEach((item, i) => {
-      nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
+      if (item.h_type=='lookout') {
+        nn=new Lookout(this.scene,item)
+      } else {
+        nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
+      }
       nn.onStartLink=(ele)=>{this.startConnection(ele)};
       this.blocks.push(nn);
     });
@@ -170,7 +175,12 @@ class THREEScene {
       });
     let nn;
     toAdd.forEach((item, i) => {
-      nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
+      if (item.h_type=='lookout') {
+        nn=new Lookout(this.scene,item)
+        console.log(nn,item);
+      } else {
+        nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
+      }
       nn.onStartLink=(ele)=>{this.startConnection(ele)};
       this.blocks.push(nn);
       });

@@ -15,7 +15,7 @@
 
       <div v-if="store.selectedObject==element">
         <div class="node_properties" >
-          <toggle off="↔" on="⥿" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed"/>
+          <toggle v-if="element.h_type!='lookout'" off="↔" on="⥿" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed"/>
           <button v-if="isConnection" @click="editmode=!editmode" class="transparent_button">{{ editmode ? 'done' :'edit' }}</button>
         </div>
 
