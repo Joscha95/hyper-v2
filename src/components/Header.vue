@@ -33,13 +33,13 @@ export default {
 		color: var(--main-darkgray-color);
 		cursor: pointer;
 	}
-	#channel_name:hover:after {
+	#channel_name:hover:after, #channel_name.opened:after {
 		content: '▼';
 		font-size: .5em;
 		margin-left: .5em;
 		vertical-align: text-top;
 	}
-	#channel_name.opened:hover:after {
+	#channel_name.opened:after {
 		content: '▲';
 	}
 	.header_nav_link {
