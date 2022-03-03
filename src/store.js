@@ -9,7 +9,7 @@ const store = reactive({
   activeChainElement:undefined,
   connectionCount:0,
   unsavedChanges:-1,
-  isOrbit:true
+  isOrbit:false
 })
 
 export default store

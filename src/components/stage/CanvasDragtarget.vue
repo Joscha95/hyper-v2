@@ -66,10 +66,4 @@ export default {
    opacity:1;
    pointer-events:all;
  }
-
- #camera_toggle{
-   position:fixed;
-   bottom:0;
-   right:calc(var(--draggable-list-item-width) + 3rem);
- }
 </style>

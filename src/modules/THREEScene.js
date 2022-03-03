@@ -309,13 +309,13 @@ class THREEScene {
   }
 
   toggleCamMode(){
-    console.log(this.store.isOrbit);
-    if (this.store.isOrbit) {
+    if (!this.store.isOrbit) {
       this.cameraController.quitOrbit();
     }else {
       const bs = new THREE.Sphere()
       this.computeBounds().getBoundingSphere(bs);
       this.cameraController.initOrbit(bs);
+      console.log(this.store.isOrbit);
     }
   }
 
