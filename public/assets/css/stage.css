@@ -257,6 +257,7 @@
 .selected {
 	background-color: var(--main-lightyellow-color);
 	height: auto;
+	border-color: black;
 }
 .selected .drag_handle:before {
 	background: linear-gradient(90deg, rgba(255, 251, 233, 0), var(--main-lightyellow-color) 90%);
@@ -333,5 +334,6 @@ button.delete_button {
 }
 
 .floating-blocks.focus{
-	background-color:transparent;
+	background-color: var(--main-lightyellow-color);
+	box-shadow: 0 0 0 5px black;
 }
