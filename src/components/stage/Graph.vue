@@ -11,6 +11,7 @@
     <a v-if = "lastValidChainElement.to[0]" :href="'#'+lastValidChainElement.from[0].h_id"> ⇢ {{ lastValidChainElement.to[0].name }} </a>
   </div>
 
+
 </template>
 
 <script>
@@ -63,6 +64,9 @@ export default {
     },
     sceneList(){
       return this.$root.store.sceneList
+    },
+    isOrbit(){
+      return this.store.isOrbit
     }
   },
   watch:{
@@ -84,6 +88,9 @@ export default {
       this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
       this.forceSimulation.updateGraph()
       this.store.unsavedChanges++;
+    },
+    isOrbit(){
+      this.THREEScene.toggleCamMode();
     }
   },
   methods:{

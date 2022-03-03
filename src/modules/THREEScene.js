@@ -294,14 +294,7 @@ class THREEScene {
         break;
       case 79:
         // o see overview
-        if (this.cameraController.orbit) {
-          this.cameraController.quitOrbit();
-        }else {
-          const bs = new THREE.Sphere()
-          this.computeBounds().getBoundingSphere(bs);
-          this.cameraController.initOrbit(bs);
-        }
-
+        this.store.isOrbit = !this.store.isOrbit
         break;
       case 88:
         // x delete
@@ -313,6 +306,17 @@ class THREEScene {
       default:
     }
 
+  }
+
+  toggleCamMode(){
+    console.log(this.store.isOrbit);
+    if (this.store.isOrbit) {
+      this.cameraController.quitOrbit();
+    }else {
+      const bs = new THREE.Sphere()
+      this.computeBounds().getBoundingSphere(bs);
+      this.cameraController.initOrbit(bs);
+    }
   }
 
   focusItem(h_id,h_type){
