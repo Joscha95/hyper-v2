@@ -2,7 +2,7 @@
 	<header>
 		<div id="logo">
 			(
-				<span id="channel_name" v-if="this.$route.name=='Stage'">{{ title }}</span>
+				<span id="channel_name" @click="this.$root.showSource=!this.$root.showSource" v-if="this.$route.name=='Stage'">{{ title }}</span>
 			)
 			<sup id="app_name">{{ this.$root.appName }}</sup>
 		</div>
@@ -23,6 +23,7 @@ export default {
 		top: 1rem;
 		left: 1rem;
 		box-sizing: border-box;
+		z-index: var(--main-layer-two);
 	}
 	#logo {
 		display: inline;

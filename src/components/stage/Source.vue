@@ -1,13 +1,12 @@
 <template>
-  <div id="source">
+  <div id="source" v-if="this.$root.showSource">
     <div id="source_header">
-      <div @click="show=!show" id="add_block_button"></div>
-      <div class="list_controls" v-show="show">
+      <div class="list_controls">
         <button class="list_controls_button" @click="$emit('update')" title="Refresh blocks">↻</button>
         <searchbar @search="filterBlocks" title="Search blocks" />
       </div>
     </div>
-    <div id="source_body" v-show="show">
+    <div id="source_body">
       <draggable
         class="dragArea list_group"
         :list="blocks"
@@ -52,8 +51,7 @@ export default {
     return {
       store: this.$root.$data.store,
       lastSelected: null,
-      searchstring: '',
-      show: true
+      searchstring: ''
     };
   },
   methods: {
@@ -80,7 +78,7 @@ export default {
         from:[],
         isFixed:false,
         content:item.content,
-        imageUrl:item.image ? item.image.thumb.url : '',
+        imageUrl: item.image ? item.image.thumb.url : '',
         h_type: 'content'
       };
     },

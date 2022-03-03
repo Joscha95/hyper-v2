@@ -3,7 +3,13 @@
         <textarea @focus="store.focused=true" @blur="store.focused=false" rows="5" v-model="element.content" placeholder="say something about the connection"></textarea>
       </div>
       <div v-else @click="store.selectedObject=element" class="drag_handle">
-        {{ isConnection ? element.content : element.name == '' ? 'no title': element.name }}
+          <div class="draggable_list_item_thumb" v-if="element.imageUrl">
+            <img :src="element.imageUrl">
+          </div>
+          <div class="draggable_list_item_content">
+           <span v-if="element.name">{{ element.name }}</span>
+           <span v-else-if="element.class=='Text'">{{ element.content }}</span>
+          </div>
       </div>
 
       <div v-if="store.selectedObject==element">

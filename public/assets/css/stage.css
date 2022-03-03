@@ -14,7 +14,7 @@
 #source {
 	position:fixed;
 	bottom: 1rem;
-	z-index:1;
+	z-index: var(--main-layer-one);
 	user-select:none;
 	top:0;
 	left: 1rem;
@@ -23,7 +23,7 @@
 #source_header {
 	position:absolute;
 	width: 100%;
-	align-content: space-between;
+	align-items: flex-end;
 	flex-wrap: wrap;
 	height: var(--source-header-height);
 	display: flex;
@@ -97,18 +97,30 @@
 	overflow: hidden;
 	cursor: pointer;
 	position: relative;
-	min-height: 2rem;
-}
-#source .draggable_list_item {
+	min-height: 3rem;
 	white-space: nowrap;
-	height: 3rem;
 	font-size: .7em;
 	color: var(--main-mediumgray-color);
+}
+.drag_handle {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	overflow: hidden;
+	cursor: pointer;
+	position: relative;
+	min-height: 3rem;
+	white-space: nowrap;
+	font-size: .7em;
+	color: var(--main-mediumgray-color);
+}
+#source .draggable_list_item {
+	height: 3rem;
 }
 .draggable_list_item:first-child {
 	border-top-color: var(--main-lightgray-color);
 }
-#source .draggable_list_item:before {
+.draggable_list_item:before {
 	content:'';
 	position: absolute;
 	height:100%;
