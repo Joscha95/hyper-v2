@@ -37,8 +37,9 @@
 			</draggable>
 		</div>
 	</div>
-	<div id="camera_toggle" @click="store.isOrbit=!store.isOrbit">
-    {{store.isOrbit ? '⟴' :'⥁'}}
+	<div id="camera_toggle" >
+		<span @click="$emit('addLookout')">◅ </span>
+    <span @click="store.isOrbit=!store.isOrbit">{{store.isOrbit ? '⟴' :'⥁'}}</span>
   </div>
 </template>
 
@@ -57,7 +58,7 @@ export default {
 			show: true
 		}
 	},
-	emits: ['save'],
+	emits: ['save','addLookout'],
 	components:{ searchbar, draggable, nodeListElement },
 	computed:{
 		selectedObjectId(){
