@@ -3,6 +3,7 @@ import FirstPersonController from '@/modules/FirstPersonController.js'
 import {TransformControls} from '@/modules/TransformControls.js'
 import Globe from '@/modules/GlobeHelper.js'
 import LineHelper from '@/modules/LineHelper.js'
+import PolarGrid from '@/modules/PolarGrid.js'
 import Connection from '@/modules/Connection.js'
 import ContentBlock from '@/modules/ContentBlock.js'
 import {CSS3DRenderer,CSS3DObject} from '@/modules/CSS3DRenderer.js'
@@ -42,9 +43,9 @@ class THREEScene {
     this.globeHelper.position.copy(this.cameraController.camera.position);
     this.scene.add(this.globeHelper);
 
-    const helper = new THREE.GridHelper(3,3);
-    helper.scale.setScalar(100);
-    this.scene.add(helper);
+    const helper = new PolarGrid();
+    //helper.scale.setScalar(100);
+    this.scene.add(helper.group);
 
     this.cssRenderer = new CSS3DRenderer();
     this.cssRenderer.setSize(window.innerWidth, window.innerHeight);
@@ -260,13 +261,7 @@ class THREEScene {
 
   onKeyDown(event) {
 
-    // if ((editMode) &&
-    //     (event.which == 83 && (event.ctrlKey||event.metaKey) || (event.which == 19))){
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   saveScene();
-    //   return;
-    // }
+    if (this.store.focused) return
     switch (event.keyCode) {
       case 37:
         // left arrow

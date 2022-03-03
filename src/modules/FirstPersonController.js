@@ -10,8 +10,8 @@ class FirstPersonController {
     this.transformparent.add(this.camera);
     this.camera.rotation.y=Math.PI;
     scene.add(this.transformparent)
-    this.transformparent.position.set(300,100,0);
-    //this.transformparent.lookAt(0,0,0);
+    this.transformparent.position.set(0,300,-900);
+    this.transformparent.lookAt(0,200,0);
   	this.rotateSpeed = options.rotateSpeed || 0.15;
   	this.zoomSpeed = options.zoomSpeed || 1;
   	this.zoomSpeed *=-1;
@@ -155,7 +155,10 @@ class FirstPersonController {
   }
 
   quitOrbit(){
-    this.transformparent.position.copy(this.position())
+    this.moveToTarget=false;
+    this.camZtarg=0;
+    this.camera.getWorldPosition(this.cameraPos)
+    this.transformparent.position.copy(this.cameraPos)
     this.camera.position.set(0,0,0);
     this.orbit=false;
   }
