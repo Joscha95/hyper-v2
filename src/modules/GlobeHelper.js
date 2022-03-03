@@ -78,7 +78,7 @@ class Globe {
 
         void main() {
 
-          gl_FragColor = vec4(mix(color1, color2, vUv.y), 1.0);
+          gl_FragColor = vec4(mix(color1, color2, smoothstep(0.2,0.7,vUv.y)), 1.0);
         }
       `,
       side:BackSide

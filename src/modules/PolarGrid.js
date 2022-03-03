@@ -9,7 +9,7 @@ class PolarGrid {
 		let circleRadius;
 		const resolutions = [32,40,72,72];
 		for (var i = 0; i < resolutions.length; i++) {
-			circleRadius=i*100+100;
+			circleRadius=i*200+200;
 			const points = [];
 			const divisions = 360 / resolutions[i];
 			for(let j=0; j<=(360/divisions); j++){

@@ -38,7 +38,7 @@
 		</div>
 	</div>
 	<div id="camera_toggle" @click="store.isOrbit=!store.isOrbit">
-    {{store.isOrbit ? '0%' :'100%'}}
+    {{store.isOrbit ? '⟴' :'⥁'}}
   </div>
 </template>
 
