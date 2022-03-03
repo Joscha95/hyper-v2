@@ -98,7 +98,7 @@
 	position: relative;
 	min-height: 3rem;
 	white-space: nowrap;
-	font-size: .7em;	
+	font-size: .7em;
 	box-sizing: border-box;
 }
 #source .draggable_list_item {
@@ -203,7 +203,7 @@
 #editor_button #editor_button_indicator.close_button {
 	background: linear-gradient(45deg, transparent calc(50% - 1px), white calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), white calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(var(--main-gray-color), var(--main-gray-color));
 	color: transparent;
-	border: 3px solid var(--main-gray-color); 
+	border: 3px solid var(--main-gray-color);
 }
 #editor_button_indicator.all_clear {
 	background: var(--main-success-color);
@@ -216,7 +216,15 @@
 }
 
 
+#camera_toggle{
+	position:fixed;
+	bottom:1rem;
+	right:1rem;
+}
 
+#editor + #camera_toggle{
+	right:calc(var(--draggable-list-item-width) + 3rem);
+}
 
 
 .sortable-ghost{
