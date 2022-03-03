@@ -25,7 +25,7 @@ export default {
 		min-width: 24rem;
 		box-sizing: border-box;
 		padding: 1.8em 2em 1em 2em;
-		z-index: 1000;
+		z-index: var(--main-layer-overkill);
 		max-width: 80%;
 		border-radius: .4rem;
 		display: none;

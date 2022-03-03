@@ -16,6 +16,7 @@
 	--main-layer-two: 2;
 	--main-layer-three: 3;
 	--main-layer-four: 4;
+	--main-layer-overkill: 1000;
 }
 
 html, body {
