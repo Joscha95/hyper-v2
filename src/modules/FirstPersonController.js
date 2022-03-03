@@ -7,11 +7,8 @@ class FirstPersonController {
   	this.domElement = domElement;
   	this.camera = new PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 50000);
     this.transformparent = new Group();
-    console.log(this.camera.rotation);
     this.transformparent.add(this.camera);
     this.camera.rotation.y=Math.PI;
-    console.log(this.camera.rotation);
-    console.log(this.transformparent.rotation);
     scene.add(this.transformparent)
     this.transformparent.position.set(300,100,0);
     //this.transformparent.lookAt(0,0,0);
