@@ -29,7 +29,7 @@ class THREEScene {
     this.store=store;
     this.blockGeometries=[];
 
-    this.scale_factor=.2;
+    this.scale_factor = .2;
 
     this.onLinkAdded = ()=>{};
 
@@ -39,9 +39,10 @@ class THREEScene {
     window.addEventListener('hashchange', (e)=>this.onHashChange(e));
     window.addEventListener('keydown', (e)=>this.onKeyDown(e));
 
-    this.globeHelper = new Globe(7000, 16, 32, 64, 'rgb(240,240,240)'); // Radius, num lat, num lon, segments, color
-    this.globeHelper.position.copy(this.cameraController.position());
-    this.scene.add(this.globeHelper);
+    this.horizon = new Globe(7000, 16, 32, 64, 'rgb(240,240,240)').group; // Radius, num lat, num lon, segments, color
+    this.horizon.position.copy(this.cameraController.position());
+
+    this.scene.add(this.horizon);
 
     const helper = new PolarGrid();
     this.scene.add(helper.group);
@@ -360,7 +361,7 @@ class THREEScene {
     }
 
     if(this.lineHelper)  this.lineHelper.update();
-    this.globeHelper.position.copy(this.cameraController.position());
+    this.horizon.position.copy(this.cameraController.position());
   }
 
   objectTouched() {
@@ -440,16 +441,6 @@ class THREEScene {
     const max = new THREE.Vector3();
     for (const block of this.blocks) {
       const pos = block.position();
-      // min.set(
-      //   Math.min(min.x,pos.x),
-      //   Math.min(min.y,pos.y),
-      //   Math.min(min.z,pos.z)
-      // );
-      // max.set(
-      //   Math.max(max.x,pos.x),
-      //   Math.max(max.y,pos.y),
-      //   Math.max(max.z,pos.z)
-      // )
       min.min(pos)
       max.max(pos)
     }
