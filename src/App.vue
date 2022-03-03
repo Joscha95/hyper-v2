@@ -18,6 +18,7 @@
 			return {
 				appName: 'hyper',
 				channelTitle: false,
+				showSource: false,
 				notification: { id: false, text: '', type: '' },
 				popupBox: { body: '', button: false },
 				store,
