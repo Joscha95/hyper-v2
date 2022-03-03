@@ -19,7 +19,7 @@
         item-key="id"
       >
         <template #item="{ element }">
-          <div class="draggable_list_item" :class="{no_thumb:!element.image}" v-show="element.title.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring)">
+          <div class="draggable_list_item drag_handle" :class="{no_thumb:!element.image}" v-show="element.title.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring)">
             <div class="draggable_list_item_thumb" v-if="element.image">
               <img :src="element.image.thumb.url">
             </div>
