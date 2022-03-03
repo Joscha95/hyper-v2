@@ -15,35 +15,37 @@ export default {
 <style scoped>
 /* The toggle - the box around the slider */
 .toggle {
- position: relative;
- display: inline-block;
- width: auto;
- user-select:none;
- vertical-align:middle;
- color:inherit;
+  position: relative;
+  display: inline-block;
+  width: auto;
+  user-select:none;
+  vertical-align:top;
+  color:inherit;
+  height: 100%;
+  margin-bottom: 0;
 }
 
 /* Hide default HTML checkbox */
 .toggle input {
- display:none;
+  display:none;
 }
-
 /* The slider */
 .slider {
- position:relative;
- cursor: pointer;
- top: 0;
- left: 0;
- right: 0;
- bottom: 0;
- background-color: var(--gray2);
- -webkit-transition: .2s;
- transition: .2s;
- overflow:hidden;
- box-sizing:border-box;
- display:block;
- border: 1px solid;
- border-radius: 5px;
+  position:relative;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--main-faintgray-color);
+  -webkit-transition: .2s;
+  transition: .2s;
+  overflow:hidden;
+  box-sizing:border-box;
+  display:block;
+  border: 1px solid;
+  border-radius: 5px;
+  height: 100%;
 }
 
 .slider:after {
@@ -65,12 +67,18 @@ export default {
 .slider>span{
   position:relative;
   z-index:1;
-  padding:.2em 1em;
+  padding:.5em 1em;
   display:inline-block;
   color:rgba(0,0,0,.5);
+  box-sizing: content-box;
+  font-size: 1.2em;
+  text-indent: -.2em;
+}
+.slider span{
+  height: 100%;
 }
 .slider>span.active{
-  color:black
+  color:black;
 }
 
 input:checked + .slider {

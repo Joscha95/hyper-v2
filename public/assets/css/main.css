@@ -30,7 +30,7 @@ html, body {
 	margin: 0;
 	overflow: hidden;
 }
-*:not(input, textarea) {
+.Stage *:not(input, textarea) {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -98,20 +98,18 @@ button {
 	display: inline-block;
 	background: white;
 	border: 0;
-	height: 2.7em;
+	height: 2.3em;
 	border-radius: 8px;
 	padding: 0 3em;
 	font-weight: bold;
 	font-size: 1em;
-	margin-top: 2em;
 	cursor: pointer;
 	border: 1px solid var(--main-gray-color);
 	color: var(--main-darkgray-color);
-
 	position: relative;
 	z-index:100;
 }
-button:hover, button:hover {
+button:hover {
 	border: 1px solid black;
 	color: black;
 }
@@ -121,3 +119,20 @@ button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover
 	border: 1px solid var(--main-gray-color);
 	background-color: var(--main-lightgray-color);
 }
+button.transparent_button {
+	background: transparent;
+	font-weight: normal;
+	color: inherit;
+	padding: 0 1em;
+	border-color: inherit;
+}
+button.transparent_button:hover {
+	background: white;
+}
+
+
+
+
+
+
+
