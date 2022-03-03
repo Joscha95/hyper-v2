@@ -81,6 +81,13 @@
 
 /* DRAGGABLE LIST ITEMS */
 
+.drag_list:empty:after {
+	padding: 1em;
+	content: 'No blocks';
+	font-size: .7em;
+	color: var(--main-gray-color);
+	display: block;
+}
 .draggable_list_item {
 	border: 1px solid var(--main-lightgray-color);
 	border-top-color: transparent;
@@ -348,6 +355,7 @@ button.delete_button {
 	min-height: 1rem;
 	padding: 1rem;
 	text-align: center;
+	color: var(--main-connection-color);
 }
 .floating-blocks.connection p {
 	margin: 0;
