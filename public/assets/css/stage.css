@@ -327,9 +327,10 @@ button.delete_button {
 	font-size:3em;
 	line-height:1.5;
 	background-color:white;
-	padding:5px;
 }
-
+.floating-blocks p {
+	margin: 3rem;
+}
 .floating-blocks[contentclass="Text"]{
 	max-width:200px;
 }
@@ -338,7 +339,14 @@ button.delete_button {
 	background-color:white;
 	border:1px  var(--main-connection-color) solid;
 	font-size:1.5em;
-	padding:5px;
+	border-radius: 3rem;
+	min-width: 1rem;
+	min-height: 1rem;
+	padding: 1rem;
+	text-align: center;
+}
+.floating-blocks.connection p {
+	margin: 0;
 }
 
 .floating-blocks.focus{
