@@ -3,8 +3,8 @@
 		<div id="settings_button" title="Settings">⚙</div>
 		<div id="editor_button" @click="show=!show">
 			Editor
-			<span id="editor_button_indicator" :class="{close_button:show, all_clear:counter==0}">
-				{{this.counter}}
+			<span id="editor_button_indicator" :class="{close_button:show, all_clear:store.unsavedChanges==0}">
+				{{ store.unsavedChanges }}
 			</span>
 		</div>
 	</div>
@@ -51,8 +51,7 @@ export default {
 			store: this.$root.store,
 			searchstring: '',
 			lastSelected: null,
-			show: true,
-			counter: 0
+			show: true
 		}
 	},
 	emits: ['save'],
@@ -75,9 +74,6 @@ export default {
 		},
 		filterBlocks(e){
 			this.searchstring=e.value
-		},
-		onChange(evt){
-			this.$emit('change',evt)
 		},
 		onPull(evt){
 			return evt.options.group.name=='object' ? 'clone' :true;

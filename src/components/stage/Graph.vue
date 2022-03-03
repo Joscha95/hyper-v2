@@ -83,6 +83,7 @@ export default {
     nodesLength(){
       this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
       this.forceSimulation.updateGraph()
+      this.store.unsavedChanges++;
     }
   },
   methods:{

@@ -157,6 +157,7 @@ module.exports = {
 					).then(response => {
 						if(response.status === 200){
 							this.$root.notify(response.data.message, 'success')
+							this.$root.store.unsavedChanges=0;
 						}else{
 							console.error(response.data)
 						}

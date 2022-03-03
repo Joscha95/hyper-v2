@@ -14,7 +14,6 @@ class FirstPersonController {
     this.transformparent.lookAt(0,200,0);
   	this.rotateSpeed = options.rotateSpeed || 0.15;
   	this.zoomSpeed = options.zoomSpeed || 1;
-  	this.zoomSpeed *=-1;
   	this.moveSpeed = options.moveSpeed || 0.1;
   	this.active = false;
   	this.moveTarget = new Vector3(0,0,0);
@@ -254,9 +253,10 @@ class FirstPersonController {
 	  }
 
     if (this.orbit) {
-      this.camera.translateZ(-delta*this.zoomSpeed);
+      this.camera.translateZ(delta*this.zoomSpeed);
+      if(this.camera.position.z>-200) this.camera.position.setZ(-200);
     }else {
-      this.transformparent.translateZ(delta*this.zoomSpeed);
+      this.transformparent.translateZ(-delta*this.zoomSpeed);
     }
 
 		this.onmove();

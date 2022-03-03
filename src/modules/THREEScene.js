@@ -39,12 +39,11 @@ class THREEScene {
     window.addEventListener('hashchange', (e)=>this.onHashChange(e));
     window.addEventListener('keydown', (e)=>this.onKeyDown(e));
 
-    this.globeHelper = new Globe(3000, 16, 32, 64, 'rgb(240,240,240)'); // Radius, num lat, num lon, segments, color
-    this.globeHelper.position.copy(this.cameraController.camera.position);
+    this.globeHelper = new Globe(7000, 16, 32, 64, 'rgb(240,240,240)'); // Radius, num lat, num lon, segments, color
+    this.globeHelper.position.copy(this.cameraController.position());
     this.scene.add(this.globeHelper);
 
     const helper = new PolarGrid();
-    //helper.scale.setScalar(100);
     this.scene.add(helper.group);
 
     this.cssRenderer = new CSS3DRenderer();
@@ -361,6 +360,7 @@ class THREEScene {
     }
 
     if(this.lineHelper)  this.lineHelper.update();
+    this.globeHelper.position.copy(this.cameraController.position());
   }
 
   objectTouched() {
