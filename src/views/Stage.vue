@@ -1,11 +1,8 @@
 <template>
 	<Graph ref="threescene"/>
-    <Editor/>
+    <Editor @save="save"/>
     <Source @update="update" :blocks="channel.contents"/>
-	<button @click="save">save</button>
-	<input type="password" v-model.trim="password">
 	<!--<input type="password" v-model.trim="password">
-	<button @click="save">save</button>
 	<button @click="recover">recover</button>-->
 </template>
 

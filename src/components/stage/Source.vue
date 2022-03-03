@@ -1,13 +1,13 @@
 <template>
-  <div id="all_blocks">
-    <div id="all_blocks_header">
+  <div id="source">
+    <div id="source_header">
       <div @click="show=!show" id="add_block_button"></div>
-      <div id="all_blocks_controls" v-show="show" title="Search blocks">
+      <div id="source_controls" v-show="show">
         <button id="refresh_button" @click="$emit('update')" title="Refresh blocks">↻</button>
-        <searchbar @search="filterBlocks" />
+        <searchbar @search="filterBlocks" title="Search blocks" />
       </div>
     </div>
-    <div id="all_blocks_body" v-show="show">
+    <div id="source_body" v-show="show">
       <draggable
         class="dragArea list_group"
         :list="blocks"

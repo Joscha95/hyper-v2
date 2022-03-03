@@ -20,9 +20,8 @@ export default {
 <style>
 	header {
 		position: fixed;
-		top: 0;
-		left: 0;
-		padding: 1rem;
+		top: 1rem;
+		left: 1rem;
 		box-sizing: border-box;
 	}
 	#logo {
