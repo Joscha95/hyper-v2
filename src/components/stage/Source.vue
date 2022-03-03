@@ -2,8 +2,8 @@
   <div id="source">
     <div id="source_header">
       <div @click="show=!show" id="add_block_button"></div>
-      <div id="source_controls" v-show="show">
-        <button id="refresh_button" @click="$emit('update')" title="Refresh blocks">↻</button>
+      <div class="list_controls" v-show="show">
+        <button class="list_controls_button" @click="$emit('update')" title="Refresh blocks">↻</button>
         <searchbar @search="filterBlocks" title="Search blocks" />
       </div>
     </div>
@@ -50,10 +50,10 @@ export default {
   props:['blocks'],
   data() {
     return {
-      store:this.$root.$data.store,
-      lastSelected:null,
-      searchstring:'',
-      show:true
+      store: this.$root.$data.store,
+      lastSelected: null,
+      searchstring: '',
+      show: true
     };
   },
   methods: {

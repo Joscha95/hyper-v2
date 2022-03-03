@@ -1,5 +1,5 @@
 <template>
-  <div class="handle" @mousedown="mousedown" title="drag to change length of connection">
+  <div class="number_handle" @mousedown="mousedown" title="drag to change length of connection">
     ↤ {{ _value.toFixed(2) }} ↦
   </div>
 </template>
@@ -35,13 +35,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-  div{
-    color:blue;
-    cursor: row-resize;
-    user-select:none;
-    padding:10px 0;
-    margin:.5em 0;
-    display:inline-block
-  }
-</style>

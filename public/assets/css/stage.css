@@ -1,8 +1,9 @@
 :root {
 	--source-header-height: 6rem;
+	--source-header-margin: .5rem;
 	--source-witdh: 15rem;
 	--thumbs-witdh: 5em;
-	--editor-witdh: 16rem;
+	--editor-witdh: 18rem;
 }
 
 
@@ -12,11 +13,11 @@
 
 #source {
 	position:fixed;
-	height:100%;
+	bottom: 1rem;
 	z-index:1;
 	user-select:none;
 	top:0;
-	left: 1em;
+	left: 1rem;
 	width: var(--source-witdh);
 }
 #source_header {
@@ -31,62 +32,83 @@
 	position:absolute;
 	width: 100%;
 	overflow-y:auto;
-	top: calc(var(--source-header-height) + 3px );
-	bottom: 0;
-	background: white;
+	top: calc(var(--source-header-height) + var(--source-header-margin) );
+	max-height: calc(100% - var(--source-header-height) - 1rem + var(--source-header-margin) );
+	background: linear-gradient(var(--main-lightgray-color) 1px, transparent 1px calc(100% - 1px), var(--main-lightgray-color) calc(100% - 1px)), linear-gradient(90deg, var(--main-lightgray-color) 1px, white 1px calc(100% - 1px), var(--main-lightgray-color) calc(100% - 1px));
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }
 #add_block_button {
 	width: 100%;
 	height: 50%;
 }
 
-#source_controls {
+
+/* DRAGGABLE LIST CONTROLS */
+
+.list_controls {
 	position: relative;
 	width: 100%;
-	margin-bottom: .1rem;
 }
-#refresh_button, #source_controls .searchbar {
+#editor .list_controls {
+	text-align: right;
 }
-#refresh_button {
+.list_controls_button {
 	padding: 0;
 	margin: 0;
 	height: 2.3rem;
 	width: 4rem;
+	z-index: 0;
 }
-#source_controls .searchbar {
+#editor .list_controls_button {
+	width: 5rem;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+.list_controls .searchbar {
 	right: 0;
 	position: absolute;
 	top: 0;
-	width: calc( 100% - 4rem - 4px );
+	width: calc( 100% - 4rem - .5rem );
 	transition: width .1s;
 	z-index: 100;
 	border: 1px solid var(--main-gray-color);
+	text-align: left;
 }
-#source_controls .searchbar:focus {
+#editor .list_controls .searchbar {
+	left: 0;
+	right: auto;
+	width: calc( 100% - 5rem - .5rem );
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+.list_controls .searchbar:focus, #editor .list_controls .searchbar:focus {
 	width: 100%;
 }
 
 
+/* DRAGGABLE LIST ITEMS */
+
 .draggable_list_item {
 	border: 1px solid var(--main-lightgray-color);
+	border-top-color: transparent;
 	background-color:white;
 	box-sizing: border-box;
 	display: flex;
-	height: 3rem;
 	justify-content: flex-start;
 	align-items: center;
 	overflow: hidden;
-	white-space: nowrap;
-	font-size: .7em;
 	cursor: pointer;
-	border-top-color: transparent;
-	color: var(--main-mediumgray-color);
 	position: relative;
+	min-height: 2rem;
+}
+#source .draggable_list_item {
+	white-space: nowrap;
+	height: 3rem;
+	font-size: .7em;
+	color: var(--main-mediumgray-color);
 }
 .draggable_list_item:first-child {
 	border-top-color: var(--main-lightgray-color);
 }
-.draggable_list_item:before {
+#source .draggable_list_item:before {
 	content:'';
 	position: absolute;
 	height:100%;
@@ -141,6 +163,8 @@
 	width: var(--editor-witdh);
 	padding: 1rem;
 	padding-top: 4rem;
+	box-sizing: border-box;
+	box-shadow: 0 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 #editor_controls {
 	position:fixed;
@@ -189,91 +213,85 @@
 #settings_button {
 	font-size: 1.8em;
 }
+.editor_list {
+  margin-top: .5rem;
+}
+
+
+
+
 
 .sortable-ghost{
 	cursor:grab;
 	opacity:0.3;
 }
-
 .highlight{
 	box-shadow: 0 0 2px #2196F3;
 }
-
-.dragArea .dragArea{
-  width:90%;
-  display:inline-block;
+.editor_list_item{
+	border: 1px solid var(--main-lightgray-color);
+	border-top-color: transparent;
 }
-
-.list-group-item{
-  border: 1px solid rgb(230,230,230);
+.editor_list_item span{
+	cursor:pointer;
+	display:inline-block;
+	padding: 10px 0;
 }
-
-.list-group-item span{
-  cursor:pointer;
-  display:inline-block;
-  padding: 10px 0;
+.draggable_list_item .handle{
+	padding: 10px 0;
 }
-.list-group-item .handle{
-  padding: 10px 0;
-}
-
 .delete{
-  color:var(--main-error-color);
+	color:var(--main-error-color);
 }
-
 .dragArea .handle:active{
-  cursor:grabbing;
+	cursor:grabbing;
 }
-
-.handle{
-  cursor:pointer;
+.number_handle{
+	color: blue;
+	cursor: row-resize;
+	user-select: none;
+	padding: 10px 0;
+	margin: .5em 0;
+	display: inline-block
 }
-
-.list-group{
-  min-height:2.5em;
-}
-
 .selected-by-drag{
-  border:1px solid var(--main-connection-color) !important;
+	border:1px solid var(--main-connection-color) !important;
 }
-
 .selected{
-  background-color:var(--main-lightyellow-color);
+	background-color:var(--main-lightyellow-color);
+	height: auto;
 }
-
 *[type="connection"]{
-  color: var(--main-connection-color)
+	color: var(--main-connection-color)
+}
+.editor_list_item[type*="con"] + .editor_list_item[type*="con"]{
+	border-top:0;
 }
 
-.list-group-item[type*="con"] + .list-group-item[type*="con"]{
-  border-top:0;
-}
+
+
+
+
 
 .floating-blocks{
-  pointer-events:none;
-  font-size:3em;
-  line-height:1.5;
-  background-color:#e3e3e3;
-  padding:5px;
+	pointer-events:none;
+	font-size:3em;
+	line-height:1.5;
+	background-color:#e3e3e3;
+	padding:5px;
 }
 
 .floating-blocks[contentclass="Text"]{
-  max-width:200px;
+	max-width:200px;
 }
 
 .floating-blocks.connection{
-  background-color:white;
-  border:1px  var(--main-connection-color) solid;
-  font-size:1.5em;
-  padding:5px;
+	background-color:white;
+	border:1px  var(--main-connection-color) solid;
+	font-size:1.5em;
+	padding:5px;
 }
 
 .floating-blocks.focus{
-  background-color:transparent;
+	background-color:transparent;
 }
-
-.addgroup{
-	cursor:pointer;
-	font-size:.7em;
-	text-align:right;
-  }

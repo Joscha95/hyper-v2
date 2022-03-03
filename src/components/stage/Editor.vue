@@ -10,12 +10,12 @@
 	</div>
 	<div id="editor" v-if="show" :class="{opened:show}">
 		<div id="editor_inner">
-			<div>
+			<div class="list_controls">
 				<searchbar @search="filterBlocks" />
-				<button @click="$emit('update')">save</button>
+				<button class="list_controls_button" @click="$emit('save')">save</button>
 			</div>
 			<draggable
-			class="dragArea list-group"
+			class="dragArea editor_list"
 			:list="store.sceneList"
 			:group="{ name: 'object',pull:onPull,put:true}"
 			@move="onMove"
@@ -26,7 +26,7 @@
 			item-key="h_id"
 			>
 				<template #item="{ element }">
-					<div class="list-group-item"
+					<div class="draggable_list_item"
 					:class="selectedObjectId==element.h_id ? 'selected': '' "
 					:type="element.h_type" v-if="element.name.includes(searchstring)"
 					@dblclick="onDoubleClick($event,element)"
@@ -51,10 +51,11 @@ export default {
 			store: this.$root.store,
 			searchstring: '',
 			lastSelected: null,
-			show: false,
+			show: true,
 			counter: 0
 		}
 	},
+	emits: ['save'],
 	components:{ searchbar, draggable, nodeListElement },
 	computed:{
 		selectedObjectId(){
