@@ -17,6 +17,7 @@
 <script>
 import ForceSimulation from '@/modules/3dForceSimulation.js';
 import THREEScene from '@/modules/THREEScene.js';
+import {makeid} from '@/modules/Helpers.js';
 import CanvasDragtarget from '@/components/stage/CanvasDragtarget.vue';
 
 export default {
@@ -74,7 +75,6 @@ export default {
         this.forceSimulation.updateLinkDistances();
       },
     isFocused(){
-      console.log(this.store.focused);
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
     currentItem(newVal){
@@ -117,6 +117,31 @@ export default {
         item.imageUrl = a_block.image ? a_block.image.thumb.url : '',
         item.sceneElement.updateDisplayElement();
       })
+    },
+    addLookout(){
+      const quat = this.THREEScene.cameraController.quaternion();
+      const pos = this.THREEScene.cameraController.position();
+      const node = {
+        h_id: makeid(5),
+        name:'◅',
+        to:[],
+        from:[],
+        isFixed:true,
+        content:'',
+        h_type: 'lookout',
+        qw:quat.w,
+        qx:quat.x,
+        qy:quat.y,
+        qz:quat.z,
+        fx:pos.x,
+        fy:pos.y,
+        fz:pos.z,
+        x:pos.x,
+        y:pos.y,
+        z:pos.z
+      }
+
+      this.store.push(node)
     },
     init(){
       this.graphData.nodes=this.$root.store.sceneList;

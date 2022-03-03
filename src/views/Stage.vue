@@ -1,6 +1,6 @@
 <template>
-	<Graph ref="threescene"/>
-    <Editor @save="save"/>
+	<Graph ref="sceneComponent"/>
+    <Editor @save="save" @addLookout="addLookout"/>
     <Source @update="update" :blocks="channel.contents"/>
 	<!--<input type="password" v-model.trim="password">
 	<button @click="recover">recover</button>-->
@@ -61,9 +61,9 @@ export default {
 
 					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : [];
 					this.$root.store.connectionCount = this.initScene ? this.initScene.scene_data.connectionCount : 0;
-					if(this.needsInit) this.$refs.threescene.init();
+					if(this.needsInit) this.$refs.sceneComponent.init();
 					this.needsInit=false;
-					this.$refs.threescene.updateContents(this.channel.contents);
+					this.$refs.sceneComponent.updateContents(this.channel.contents);
 					break;
 				// MOVED PERMANENTLY
 				case 4:
@@ -83,7 +83,9 @@ export default {
 		}
 	},
 	methods: {
-		// for api functions see 'mixins/api.vue'
+		addLookout(){
+			this.$refs.sceneComponent.addLookout();
+		}
 	}
 }
 </script>
