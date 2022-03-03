@@ -1,6 +1,6 @@
 <template>
 	<Graph ref="threescene"/>
-    <Panel/>
+    <Editor/>
     <AllBlocks @update="update" :blocks="channel.contents"/>
 	<button @click="save">save</button>
 	<input type="password" v-model.trim="password">
