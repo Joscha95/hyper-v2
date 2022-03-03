@@ -1,170 +1,102 @@
 <template>
-  <collapsable id="panel">
-    <div id="panel_header">
-      <span v-for="widget in widgets" @click="widget.show=!widget.show" :class="{active:widget.show}">{{ widget.display }}</span>
-    </div>
-    <br>
-    <div id="panel-inner">
-      <component v-for="widget in activeWidgets" :is="widget.component"/>
-    </div>
-  </collapsable>
+	<div id="editor_controls">
+		<div id="settings_button" title="Settings">⚙</div>
+		<div id="editor_button" @click="show=!show">
+			Editor
+			<span id="editor_button_indicator" :class="{close_button:show, all_clear:counter==0}">
+				{{this.counter}}
+			</span>
+		</div>
+	</div>
+	<div id="editor" v-if="show" :class="{opened:show}">
+		<div id="editor_inner">
+			<div>
+				<searchbar @search="filterBlocks" />
+				<button @click="$emit('update')">save</button>
+			</div>
+			<draggable
+			class="dragArea list-group"
+			:list="store.sceneList"
+			:group="{ name: 'object',pull:onPull,put:true}"
+			@move="onMove"
+			@end="onEnd"
+			@change="onChange"
+			handle=".drag_handle"
+			animation="50"
+			item-key="h_id"
+			>
+				<template #item="{ element }">
+					<div class="list-group-item"
+					:class="selectedObjectId==element.h_id ? 'selected': '' "
+					:type="element.h_type" v-if="element.name.includes(searchstring)"
+					@dblclick="onDoubleClick($event,element)"
+					>
+						<node-list-element :element="element"/>
+					</div>
+				</template>
+			</draggable>
+		</div>
+	</div>
 </template>
 
 <script>
-import SceneList from '@/components/stage/SceneList.vue';
-import collapsable from '@/components/stage/subcomponents/collapsable.vue';
+import draggable from "vuedraggable";
+import searchbar from "@/components/stage/subcomponents/searchbar.vue";
+import nodeListElement from "@/components/stage/subcomponents/node-list-element.vue";
 
-
+let idGlobal = 8;
 export default {
-  name: 'Panel',
-  components: {
-    collapsable,
-    SceneList
-  },
-  data(){
-    return{
-      widgets:[
-        {component:'SceneList', display: 'scene',show:true}
-      ]
-    }
-  },
-  computed:{
-    activeWidgets(){
-      return this.widgets.filter((w)=> w.show)
-    }
-  }
-}
+	data(){
+		return{
+			store: this.$root.store,
+			searchstring: '',
+			lastSelected: null,
+			show: false,
+			counter: 0
+		}
+	},
+	components:{ searchbar, draggable, nodeListElement },
+	computed:{
+		selectedObjectId(){
+			return this.store.selectedObject ? this.store.selectedObject.h_id : ''
+		}
+	},
+	methods:{
+		addGroup: function() {
+			this.store.sceneList.push({
+			name:"new Group",
+			h_id:'_'+Date.now(),
+			h_type:'group',
+			children:[],
+			from:[],
+			to:[]
+			})
+		},
+		filterBlocks(e){
+			this.searchstring=e.value
+		},
+		onChange(evt){
+			this.$emit('change',evt)
+		},
+		onPull(evt){
+			return evt.options.group.name=='object' ? 'clone' :true;
+		},
+		onMove(evt){
+			if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
+			this.lastSelected=evt.to;
+			this.lastSelected.classList.add('selected-by-drag')
+		},
+		onChange(evt){
+			this.$emit('change',evt);
+		},
+		onEnd(evt){
+			if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
+			this.lastSelected=null;
+		},
+		onDoubleClick(e,element){
+			window.location.hash=element.h_id;
+			window.dispatchEvent(new HashChangeEvent("hashchange"));
+		},
+	}
+};
 </script>
-
-<style>
-:root{
-  --border:1px solid rgb(230,230,230);
-  --gray1:rgb(250,250,250);
-  --gray2:rgb(230,230,230);
-  --gray3:rgb(200,200,200);
-  --yellow:#fffbe9;
-}
-
-#panel {
-  font-family: Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  position:absolute;
-  right:0;
-  top:0;
-  height:100vh;
-  z-index:1;
-}
-
-#panel-inner{
-  display:flex;
-  grid-column-gap:5%;
-}
-
-#panel-inner> div{
-  flex:1;
-  width:200px;
-}
-
-.sortable-ghost{
-  cursor:grab;
-  opacity:0.3;
-}
-
-#panel_header{
-  text-align:center
-}
-
-.highlight{
-  box-shadow: 0 0 2px #2196F3;
-}
-
-.dragArea .dragArea{
-  width:90%;
-  display:inline-block;
-}
-
-.list-group-item{
-  border:var(--border);
-}
-
-.list-group-item span{
-  cursor:pointer;
-  display:inline-block;
-  padding: 10px 0;
-}
-.list-group-item .handle{
-  padding: 10px 0;
-}
-
-.delete{
-  color:var(--main-error-color);
-}
-
-.dragArea .handle:active{
-  cursor:grabbing;
-}
-
-.handle{
-  cursor:pointer;
-}
-
-.list-group{
-  min-height:2.5em;
-}
-
-.selected-by-drag{
-  border:1px solid blue !important;
-}
-
-.selected{
-  background-color:var(--yellow);
-}
-
-*[type="connection"]{
-  color:blue
-}
-
-.list-group-item[type*="con"] + .list-group-item[type*="con"]{
-  border-top:0;
-}
-
-.floating-blocks{
-  pointer-events:none;
-  font-size:3em;
-  line-height:1.5;
-  background-color:#e3e3e3;
-  padding:5px;
-}
-
-.floating-blocks[contentclass="Text"]{
-  max-width:200px;
-}
-
-.floating-blocks.connection{
-  background-color:white;
-  border:1px blue solid;
-  font-size:1.5em;
-  padding:5px;
-}
-
-.floating-blocks.focus{
-  background-color:transparent;
-}
-</style>
-
-<style scoped>
-header{
-  text-align:left;
-}
-  header span{
-    margin-right:1em;
-    opacity:.4;
-    cursor:pointer;
-  }
-
-  .active{
-    font-weight:bolder;
-    opacity:1
-  }
-</style>
