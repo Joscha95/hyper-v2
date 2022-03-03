@@ -132,7 +132,7 @@ export default {
 .floating-blocks{
   pointer-events:none;
   font-size:3em;
-  line-height:1.5;
+  line-height:1.3;
   background-color:#e3e3e3;
   padding:5px;
 }
@@ -144,7 +144,6 @@ export default {
 .floating-blocks.connection{
   background-color:white;
   border:1px blue solid;
-  font-size:1.5em;
   padding:5px;
 }
 

@@ -70,6 +70,7 @@ export default {
         this.forceSimulation.updateLinkDistances();
       },
     isFocused(){
+      console.log(this.store.focused);
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
     currentItem(newVal){

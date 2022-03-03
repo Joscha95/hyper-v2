@@ -17,7 +17,7 @@ class THREEScene {
     this.width=window.innerWidth;
     this.height=window.innerWidth;
     this.aspect=this.width/this.height;
-    this.cameraController=new FirstPersonController(domparent,cameraSettings);
+    this.cameraController=new FirstPersonController(domparent,cameraSettings,this.scene);
     this.cameraController.onmove=()=> this.onCamMove();
     this.blocks=[];
     this.connections=[];
@@ -118,7 +118,7 @@ class THREEScene {
         }else {
           block.setPos(simPos);
         }
-        block.lookAt(this.cameraController.camera.position)
+        block.lookAt(this.cameraController.position())
       }
 
       for (const connection of this.connections) {
@@ -225,9 +225,9 @@ class THREEScene {
 
     vec.unproject( this.cameraController.camera );
 
-    vec.sub( this.cameraController.camera.position ).normalize().multiplyScalar(offset);
+    vec.sub( this.cameraController.position() ).normalize().multiplyScalar(offset);
 
-    pos.copy( this.cameraController.camera.position ).add( vec );
+    pos.copy( this.cameraController.position() ).add( vec );
     return pos;
   }
 
@@ -297,6 +297,17 @@ class THREEScene {
       case 76:
         // l add lookout
         break;
+      case 79:
+        // o see overview
+        if (this.cameraController.orbit) {
+          this.cameraController.quitOrbit();
+        }else {
+          const bs = new THREE.Sphere()
+          this.computeBounds().getBoundingSphere(bs);
+          this.cameraController.initOrbit(bs);
+        }
+
+        break;
       case 88:
         // x delete
         break;
@@ -340,7 +351,7 @@ class THREEScene {
 
   onCamMove(){
     this.blocks.forEach((item, i) => {
-      item.lookAt(this.cameraController.camera.position);
+      item.lookAt(this.cameraController.position());
       item.updateToolBox();
     });
     const intersects = this.castRay(new THREE.Vector2());
@@ -348,7 +359,6 @@ class THREEScene {
       const targ = intersects[0].object;
       if (this.store.activeChainElement!=targ.refID) {
         this.store.activeChainElement=targ.refID;
-        console.log(targ.refID);
       }
 
     }else {
@@ -394,15 +404,14 @@ class THREEScene {
     if(this.lineHelper) this.lineHelper.dispose(this.scene);
     this.isConnecting=false;
     if(obj==this.lineHelper.startObject) return;
-    const _name = connectionName(this.store.connectionCount);
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
     const node = {
       h_id:makeid(5),
-      name: _name,
+      name: '☍',
       to:[],
       val:1,
       from:[],
-      content: _name,
+      content: '☍',
       initDistance:0,
       isFixed:false,
       x:center.x,
@@ -429,6 +438,28 @@ class THREEScene {
     // callBack to Graph.vue to update simulation data
     this.onLinkAdded(nl);
     this.updateBlockGeomArray();
+  }
+
+  computeBounds(){
+    const min = new THREE.Vector3();
+    const max = new THREE.Vector3();
+    for (const block of this.blocks) {
+      const pos = block.position();
+      // min.set(
+      //   Math.min(min.x,pos.x),
+      //   Math.min(min.y,pos.y),
+      //   Math.min(min.z,pos.z)
+      // );
+      // max.set(
+      //   Math.max(max.x,pos.x),
+      //   Math.max(max.y,pos.y),
+      //   Math.max(max.z,pos.z)
+      // )
+      min.min(pos)
+      max.max(pos)
+    }
+
+    return new THREE.Box3(min,max);
   }
 }
 

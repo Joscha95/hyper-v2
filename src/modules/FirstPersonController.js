@@ -1,15 +1,23 @@
-import {PerspectiveCamera,Vector3} from 'three'
+import {PerspectiveCamera,Vector3,Group} from 'three'
 import {Math as THREEMath}  from 'three'
 
 class FirstPersonController {
-  constructor(domElement,options={}) {
+  constructor(domElement,options={},scene) {
     this.enabled = true;
   	this.domElement = domElement;
   	this.camera = new PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 50000);
-    this.camera.position.set(300,100,0);
-    this.camera.lookAt(0,0,0);
+    this.transformparent = new Group();
+    console.log(this.camera.rotation);
+    this.transformparent.add(this.camera);
+    this.camera.rotation.y=Math.PI;
+    console.log(this.camera.rotation);
+    console.log(this.transformparent.rotation);
+    scene.add(this.transformparent)
+    this.transformparent.position.set(300,100,0);
+    //this.transformparent.lookAt(0,0,0);
   	this.rotateSpeed = options.rotateSpeed || 0.15;
   	this.zoomSpeed = options.zoomSpeed || 1;
+  	this.zoomSpeed *=-1;
   	this.moveSpeed = options.moveSpeed || 0.1;
   	this.active = false;
   	this.moveTarget = new Vector3(0,0,0);
@@ -40,6 +48,10 @@ class FirstPersonController {
     this.enteredLookout = false
     this.context = false
     this.activeLookOut = null
+
+    this.orbit = false;
+    this.cameraPos = new Vector3();
+    this.camZtarg=0;
   }
 
   updateSize(aspect){
@@ -48,9 +60,9 @@ class FirstPersonController {
   }
 
   update(){
-    this.camera.translateOnAxis(this.direction,this.moveSpeed);
+    this.transformparent.translateOnAxis(this.direction,this.moveSpeed);
 			if (this.activeLookOut) {
-				const dist = this.camera.position.distanceTo(this.activeLookOut.position);
+				const dist = this.transformparent.position.distanceTo(this.activeLookOut.position);
 				if (dist<100) {
 					if (!this.enteredLookout) {
 						this.activeLookOut.children[2].visible=false;
@@ -69,11 +81,12 @@ class FirstPersonController {
 
 
 			if (this.moveToTarget) {
-				this.camera.position.lerp(this.moveTarget,0.1);
-				this.camera.quaternion.slerp(this.quatTarg, 0.05 );
+				this.transformparent.position.lerp(this.moveTarget,0.1);
+        if(this.orbit) this.camera.position.setZ(this.camera.position.z + (this.camZtarg - this.camera.position.z)*0.15)
+				this.transformparent.quaternion.slerp(this.quatTarg, 0.06 );
 				this.onmove();
-				if (this.camera.position.distanceTo(this.moveTarget)<0.001
-						&& this.camera.quaternion.angleTo(this.quatTarg)<0.01) {
+				if (this.transformparent.position.distanceTo(this.moveTarget)<0.001
+						&& this.transformparent.quaternion.angleTo(this.quatTarg)<0.01) {
 							this.moveToTarget=false;
 				}
 			}
@@ -103,7 +116,7 @@ class FirstPersonController {
       this.activeLookOut = targetObj;
       this.enteredLookout=false;
     } else {
-      const clone = this.camera.clone();
+      const clone = this.transformparent.clone();
       clone.lookAt(targetPos);
       this.quatTarg = clone.quaternion.clone();
       posOffset = -500;
@@ -113,10 +126,41 @@ class FirstPersonController {
     // Position
     let targ = targetPos.clone();
     var dir = new Vector3();
-    dir.subVectors( targ, this.camera.position ).normalize();
+    dir.subVectors( targ, this.transformparent.position ).normalize();
     targ.addScaledVector(dir,posOffset);
     this.moveTarget.copy(targ);
     this.moveToTarget = true;
+  }
+
+  initOrbit(boundingSphere){
+    let vFoV = this.camera.getEffectiveFOV();
+    let hFoV = this.camera.fov * this.camera.aspect;
+
+    let FoV = Math.min(vFoV, hFoV);
+    let FoV2 = FoV / 2;
+
+    let bsWorld = boundingSphere.center.clone();
+    let th = FoV2 * Math.PI / 180.0;
+    let sina = Math.sin(th);
+    let R = boundingSphere.radius;
+    let FL = R / sina;
+
+    let cameraDir = new Vector3();
+    this.transformparent.getWorldDirection(cameraDir);
+
+    this.moveTarget.copy(boundingSphere.center);
+    this.camZtarg=-FL;
+    // const clone = this.transformparent.clone();
+    // clone.lookAt(bsWorld);
+    this.quatTarg = this.transformparent.quaternion.clone();
+    this.moveToTarget = true;
+    this.orbit=true;
+  }
+
+  quitOrbit(){
+    this.transformparent.position.copy(this.position())
+    this.camera.position.set(0,0,0);
+    this.orbit=false;
   }
 
   onMouseDown(event) {
@@ -156,6 +200,7 @@ class FirstPersonController {
 
 	sendStartEvent(){
 		this.onstart();
+    this.moveToTarget=false;
 		this.active = true;
 	}
 
@@ -196,7 +241,7 @@ class FirstPersonController {
 
 	onMouseWheel(event) {
 	  let delta = 0;
-
+    this.moveToTarget=false;
 	  switch (event.deltaMode) {
 	    case 0:
 	      delta = event.deltaY*0.02;
@@ -208,12 +253,28 @@ class FirstPersonController {
 	      delta = event.deltaY;
 	  }
 
-	  this.camera.translateZ(delta*this.zoomSpeed);
+    if (this.orbit) {
+      this.camera.translateZ(-delta*this.zoomSpeed);
+    }else {
+      this.transformparent.translateZ(delta*this.zoomSpeed);
+    }
+
 		this.onmove();
 	}
 
+  position(){
+    if (this.orbit) {
+      this.camera.getWorldPosition(this.cameraPos)
+    }
+    return this.orbit ? this.cameraPos : this.transformparent.position
+  }
+
+  quaternion(){
+    return this.transformparent.quaternion
+  }
+
 	rotateCam(event) {
-	  var movementY = (event.movementY * Math.PI * this.rotateSpeed) / 180;
+	  var movementY = -(event.movementY * Math.PI * this.rotateSpeed) / 180;
 	  var movementX = (event.movementX * Math.PI * this.rotateSpeed) / 180;
 		if (!this.isDragging) {
 			if (Math.abs(movementX)+Math.abs(movementY)>0.002) {
@@ -221,13 +282,17 @@ class FirstPersonController {
 				this.sendStartEvent();
 			}
 		}
-	  this.camera.rotateOnWorldAxis(new Vector3(0, 1,0), THREEMath.degToRad(50*movementX));
-	  this.camera.rotateX(movementY);
+
+    if(this.orbit) this.onmove();
+
+	  this.transformparent.rotateOnWorldAxis(new Vector3(0, 1,0), THREEMath.degToRad(50*movementX));
+	  this.transformparent.rotateX(movementY);
 	}
 
 	panCam(event) {
+    if(this.orbit) return;
 	  var movementY = event.movementY*0.8;
-	  var movementX = -event.movementX*0.8;
+	  var movementX = event.movementX*0.8;
 		if (!this.isDragging) {
 			if (Math.abs(movementX)+Math.abs(movementY)>0.002) {
 				this.isDragging = true;

@@ -3,7 +3,7 @@
         <textarea @focus="store.focused=true" @blur="store.focused=false" rows="5" v-model="element.content" placeholder="say something about the connection"></textarea>
       </div>
       <div v-else @click="store.selectedObject=element" class="drag_handle">
-        {{ isConnection ? element.content : element.name }}
+        {{ isConnection ? element.content : element.name == '' ? 'no title': element.name }}
       </div>
 
       <div v-if="store.selectedObject==element">

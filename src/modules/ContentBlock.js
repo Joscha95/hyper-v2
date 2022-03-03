@@ -47,14 +47,14 @@ class ContentBlock {
   }
 
   updateToolBox(){
+    if(!this.toolbox) return;
     this.domRect=this.dom.getBoundingClientRect();
-    if(this.toolbox) this.toolbox.setPos(this.domRect.right,this.domRect.top)
+    this.toolbox.setPos(this.domRect.right,this.domRect.top)
   }
 
   lookAt(pos){
     this.plane.lookAt(pos)
   }
-
 
   setPos(pos){
     this.plane.position.set(pos.x,pos.y,pos.z);
@@ -104,7 +104,7 @@ class ContentBlock {
     this.onFocus();
     this.dom.classList.add('focus')
     this.toolbox=new Toolbar([
-      {name:'connection',text:'☍',tooltip:'make a new connection'},
+      {name:'connection',text:'☌',tooltip:'make a new connection'},
       {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic'}
     ],
     [
@@ -116,16 +116,6 @@ class ContentBlock {
 
   toggleFixed(){
     this.contentItem.isFixed=!this.contentItem.isFixed;
-    if (this.contentItem.isFixed) {
-      this.contentItem.fx=this.contentItem.x;
-      this.contentItem.fy=this.contentItem.y;
-      this.contentItem.fz=this.contentItem.z;
-    }else {
-      this.contentItem.fx=null;
-      this.contentItem.fy=null;
-      this.contentItem.fz=null;
-    }
-    this.toolbox.updateField('isFixed',this.contentItem.isFixed)
   }
 
   updateDisplayElement(){
@@ -148,9 +138,6 @@ class ContentBlock {
 
     this.dom.innerHTML='';
     this.dom.appendChild(ele);
-
-    //this.plane.geometry.dispose();
-    //this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
   }
 
 }
