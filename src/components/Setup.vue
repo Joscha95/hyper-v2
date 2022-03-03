@@ -141,6 +141,7 @@ export default {
 	}
 	button {
 		margin-top: 2.5em;
+		height: 2.7em;
 	}
 	input, label {
 		width: 100%;

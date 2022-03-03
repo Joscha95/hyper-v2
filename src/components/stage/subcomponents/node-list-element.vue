@@ -7,33 +7,29 @@
             <img :src="element.imageUrl">
           </div>
           <div class="draggable_list_item_content">
-           <span v-if="element.name">{{ element.name }}</span>
+            <span v-if="isConnection">{{ element.content }}</span>
+           <span v-else-if="element.name">{{ element.name }}</span>
            <span v-else-if="element.class=='Text'">{{ element.content }}</span>
           </div>
       </div>
 
       <div v-if="store.selectedObject==element">
-        <div class="property-field" >
+        <div class="node_properties" >
           <toggle off="↔" on="⥿" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed"/>
-          <span v-if="isConnection" class="button" @click="editmode=!editmode">{{ editmode ? 'done' :'edit' }}</span>
+          <button v-if="isConnection" @click="editmode=!editmode" class="transparent_button">{{ editmode ? 'done' :'edit' }}</button>
         </div>
-        <!-- off="↔" on="⥿"  off="⌱" on="⌖"-->
 
-        <div class="" v-if="isConnection">
-          <span class="links" @click="element=connectedNodes.source" :title="connectedNodes.source.name">◯ </span>
+        <div class="connection_properties" v-if="isConnection">
+          <span class="connection_property_circle" @click="element=connectedNodes.source" :title="connectedNodes.source.name"></span>
           <draggableNumber :value="linkDistance" v-model="linkDistance"/>
-          <span class="links" @click="element=connectedNodes.target" :title="connectedNodes.target.name"> ◯</span>
-          <!-- ◯ ◉ ◼ -->
+          <span class="connection_property_circle" @click="element=connectedNodes.target" :title="connectedNodes.target.name"></span>
         </div>
 
-        <div class="deleteItem" :class="remove ? 'delete' : ''">
-          <span v-if="!remove" @click="remove=true">remove</span>
-          <span v-else="" @click="removeItem">sure?</span>
+        <div class="delete_button_wrapper" :class="remove ? 'delete' : ''">
+          <button v-if="!remove" @click="remove=true" class="delete_button transparent_button">remove</button>
+          <button v-else="" @click="removeItem" class="delete_button transparent_button">sure?</button>
         </div>
-        <!-- <div class="meta">
-          a_id: {{ element.a_id }}<br>
-          h_id: {{ element.h_id }}<br>
-        </div> -->
+
       </div>
 
 </template>
@@ -141,20 +137,6 @@ export default {
 };
 </script>
 <style scoped>
-.property-field{
-  padding:10px 0;
-  margin:0.5em 0;
-}
-
-.block{
-  border: var(--border);
-  cursor:pointer;
-}
-
-.links{
-  color:blue;
-  cursor:pointer;
-}
 
 input[type="text"]{
   border-style:dashed;
@@ -166,26 +148,6 @@ input[type="text"]{
   text-align:center
 }
 
-.meta{
-  text-align:right;
-  /* color:var(--gray2); */
-  font-size:.6em;
-}
-
-.widget-area{
-  text-align:center
-}
-
-.name:hover{
-  text-decoration:underline
-}
-
-.button{
-  border: 1px solid;
-  border-radius: 5px;
-  padding:.6em 1em;
-}
-
 textarea{
   display:block;
   width:100%;
@@ -194,25 +156,7 @@ textarea{
   height:auto;
   border-style:dashed;
   font-family:inherit;
-}
-
-.deleteItem{
-  cursor:pointer;
-  background-color:rgba(255, 94, 0,.05);
-  padding:1px;
-  display: block;
-  border: 1px solid;
-  border-radius:5px;
-}
-
-.deleteItem span{
-  display:block;
-}
-.deleteItem:hover{
-  background-color:rgba(255, 94, 0,.2);
-}
-.deleteItem:active{
-  background-color:rgba(255, 94, 0,.3);
+  margin-bottom: 1rem;
 }
 
 </style>
