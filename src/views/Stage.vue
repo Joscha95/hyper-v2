@@ -34,7 +34,7 @@ export default {
 	},
 	components: {
     Graph,
-    Panel,
+    Editor,
     AllBlocks
   },
 	mounted() {
