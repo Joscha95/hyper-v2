@@ -37,6 +37,9 @@
 			</draggable>
 		</div>
 	</div>
+	<div id="camera_toggle" @click="store.isOrbit=!store.isOrbit">
+    {{store.isOrbit ? '0%' :'100%'}}
+  </div>
 </template>
 
 <script>

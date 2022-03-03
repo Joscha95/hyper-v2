@@ -39,7 +39,7 @@ export default {
         clientY:e.originalEvent.clientY
       })
       this.lastAdded=null;
-      
+
     },
     changed(e){
       // this is a vue event, i also need the mouse pos, so the event is emitted from added evenet (which originates from dom)
@@ -65,5 +65,11 @@ export default {
  .drag-area.active{
    opacity:1;
    pointer-events:all;
+ }
+
+ #camera_toggle{
+   position:fixed;
+   bottom:0;
+   right:calc(var(--draggable-list-item-width) + 3rem);
  }
 </style>
