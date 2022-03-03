@@ -92,7 +92,7 @@ class ContentBlock {
   }
 
   blur(){
-    this.plane.visible=false;
+    //this.plane.visible=false;
     this.onBlur();
     if(this.toolbox)this.toolbox.dispose();
     this.toolbox=undefined;
@@ -100,7 +100,7 @@ class ContentBlock {
   }
 
   focus(){
-    this.plane.visible=true;
+    //this.plane.visible=true;
     this.onFocus();
     this.dom.classList.add('focus')
     this.toolbox=new Toolbar([
