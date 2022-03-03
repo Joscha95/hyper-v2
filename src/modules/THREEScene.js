@@ -394,15 +394,15 @@ class THREEScene {
     if(this.lineHelper) this.lineHelper.dispose(this.scene);
     this.isConnecting=false;
     if(obj==this.lineHelper.startObject) return;
-
+    const _name = connectionName(this.store.connectionCount);
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
     const node = {
       h_id:makeid(5),
-      name: connectionName(this.store.connectionCount),
+      name: _name,
       to:[],
       val:1,
       from:[],
-      content:this.lineHelper.startObject.name+' ↭ '+obj.name,
+      content: _name,
       initDistance:0,
       isFixed:false,
       x:center.x,

@@ -142,7 +142,7 @@ class ContentBlock {
       case'Text':
       default:
         ele=document.createElement('P');
-        ele.innerHTML=this.contentItem.content;
+        ele.innerHTML=this.contentItem.content.replace(/(?:\r\n|\r|\n)/g, '<br>');
         this.setPlaneGeomToDomWidth()
     }
 
