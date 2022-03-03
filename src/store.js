@@ -8,7 +8,7 @@ const store = reactive({
   focused:false,
   activeChainElement:undefined,
   connectionCount:0,
-  unsavedChanges:0
+  unsavedChanges:-1
 })
 
 export default store
