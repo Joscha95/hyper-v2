@@ -6,7 +6,8 @@ const store = reactive({
   isDragging:false,
   sceneList:[],
   focused:false,
-  activeChainElement:undefined
+  activeChainElement:undefined,
+  connectionCount:0
 })
 
 export default store

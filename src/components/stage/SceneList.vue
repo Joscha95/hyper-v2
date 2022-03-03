@@ -10,7 +10,7 @@
         @move="onMove"
         @end="onEnd"
         @change="onChange"
-        handle=".handle"
+        handle=".drag_handle"
         animation="50"
         item-key="h_id"
       >

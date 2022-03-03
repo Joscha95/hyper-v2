@@ -95,6 +95,7 @@ export default {
     },
     linkAdded(l){
       this.graphData.nodes.push(l.node)
+      this.store.connectionCount++
     },
     updateContents(allBlocks){
       let a_block;

@@ -103,7 +103,7 @@ module.exports = {
 		save(){
 			if(this.password) {
 
-				const scene_save = this.$root.store.sceneList.map((n)=> {
+				const scene_objects = this.$root.store.sceneList.map((n)=> {
 					const newNode= {
 						h_id: n.h_id,
 						name: n.name,
@@ -140,12 +140,19 @@ module.exports = {
 					return newNode;
 				})
 
+				const scene_data={
+					scene_data:{
+						connectionCount:this.$root.store.connectionCount
+					},
+					scene_objects:scene_objects
+				}
+
 				if( this.state == 2 ) {
 					this.$root.notify('Update in progress.')
 				} else {
 					this.axios.post(
 						process.env.VUE_APP_API_URL + '?r=s',
-						{ id: this.sceneId, password: this.password, scene: scene_save },
+						{ id: this.sceneId, password: this.password, scene: scene_data },
 						{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 					).then(response => {
 						if(response.status === 200){

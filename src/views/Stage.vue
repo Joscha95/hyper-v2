@@ -62,7 +62,8 @@ export default {
 					this.$root.channelTitle = this.channel.title
 					this.state = 1
 
-					this.$root.store.sceneList=this.initScene;
+					this.$root.store.sceneList=this.initScene.scene_objects;
+					this.$root.store.connectionCount=this.initScene.scene_data.connectionCount;
 					if(this.needsInit) this.$refs.threescene.init();
 					this.needsInit=false;
 					this.$refs.threescene.updateContents(this.channel.contents);
