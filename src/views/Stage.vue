@@ -11,7 +11,7 @@
 
 <script>
 import Graph from '@/components/stage/Graph.vue'
-import Panel from '@/components/stage/Panel.vue'
+import Editor from '@/components/stage/Editor.vue'
 import AllBlocks from '@/components/stage/AllBlocks.vue'
 
 
