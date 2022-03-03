@@ -1,5 +1,6 @@
 <template>
 	<form @submit.prevent="submit">
+		<h3>Create a hyperchannel</h3>
 		<section id="channel_search">
 			<label>Input the URL of an existing <a href="https://www.are.na/" target="_blank">Are.na</a> Channel:</label>
 			<input type="text" v-model.trim="query" :class="{ valid: channel }" required>
@@ -138,6 +139,10 @@ export default {
 		margin: 5rem auto 0 auto;
 		text-align: center;
 		width: 18rem;
+	}
+	h3 {
+		margin: 0 0 2em 0;
+		color: var(--main-success-color);
 	}
 	button {
 		margin-top: 2.5em;

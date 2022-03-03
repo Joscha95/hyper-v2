@@ -27,10 +27,10 @@ export default {
 	}
 	#logo {
 		display: inline;
-		color: var(--main-gray-color);
+		color: var(--main-mediumgray-color);
 	}
 	#channel_name {
-		color: var(--main-darkgray-color);
+		color: black;
 		cursor: pointer;
 	}
 	#channel_name:hover:after, #channel_name.opened:after {

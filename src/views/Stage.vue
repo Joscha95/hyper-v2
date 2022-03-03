@@ -58,7 +58,6 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.$root.channelTitle = this.channel.title
 					this.state = 1
-
 					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : [];
 					this.$root.store.connectionCount = this.initScene ? this.initScene.scene_data.connectionCount : 0;
 					if(this.needsInit) this.$refs.sceneComponent.init();

@@ -8,7 +8,7 @@
     </div>
     <div id="source_body">
       <draggable
-        class="dragArea list_group"
+        class="drag_list"
         :list="blocks"
         :group="{ name: 'arena-blocks', pull: 'clone', put: false }"
         :sort="false"
