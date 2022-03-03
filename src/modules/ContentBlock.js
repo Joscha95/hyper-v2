@@ -34,25 +34,8 @@ class ContentBlock {
     this.dom.classList.add(this.contentItem.h_type);
     this.dom.dataset.contentclass=this.contentItem.class
     this.updateDisplayElement();
-    const img = this.dom.querySelector('IMG');
-    const cssObj=new CSS3DObject(this.dom);
-    let iter = 0;
-    let isLoaded=false;
-    setPlaneGeomToDomWidth(this);
-    function setPlaneGeomToDomWidth(scope) {
-      isLoaded = img ? img.naturalWidth!=0 && img.naturalHeight!=0 : scope.dom.offsetWidth!=0 && scope.dom.offsetHeight!=0;
-      const width = img ? img.naturalWidth : scope.dom.offsetWidth;
-      const height = img ? img.naturalHeight : scope.dom.offsetHeight;
-      if (isLoaded) {
-        scope.updatePlaneSize(width,height);
-      }else if(iter<100) {
-        setTimeout(()=>{
-          iter++;
-          setPlaneGeomToDomWidth(scope);
-        },100)
-      }
 
-    }
+    const cssObj=new CSS3DObject(this.dom);
 
     cssObj.position.set(0, 0, 0);
     cssObj.scale.set(this.cssRes, this.cssRes, this.cssRes);
@@ -60,7 +43,7 @@ class ContentBlock {
     cssObj.position.set(0, 0, 0);
     this.contentItem.sceneElement=this;
 
-    this.scene.add(this.plane)
+    this.scene.add(this.plane);
   }
 
   updateToolBox(){
@@ -72,10 +55,6 @@ class ContentBlock {
     this.plane.lookAt(pos)
   }
 
-  updatePlaneSize(width,height){
-    this.plane.geometry.dispose();
-    this.plane.geometry=new PlaneGeometry( width*this.cssRes , height*this.cssRes );
-  }
 
   setPos(pos){
     this.plane.position.set(pos.x,pos.y,pos.z);
@@ -88,6 +67,21 @@ class ContentBlock {
 
   position(){
     return this.plane.position;
+  }
+
+  setPlaneGeomToDomWidth(img) {
+    const isLoaded = img ? img.naturalWidth!=0 && img.naturalHeight!=0 : this.dom.offsetWidth!=0 && this.dom.offsetHeight!=0;
+    const width = img ? img.naturalWidth : this.dom.offsetWidth;
+    const height = img ? img.naturalHeight : this.dom.offsetHeight;
+    if (isLoaded) {
+      this.plane.geometry.dispose();
+      this.plane.geometry=new PlaneGeometry( width*this.cssRes , height*this.cssRes );
+    }else {
+      setTimeout(()=>{
+        this.setPlaneGeomToDomWidth();
+      },100)
+    }
+
   }
 
   dispose(){
@@ -141,20 +135,22 @@ class ContentBlock {
       case 'Image':
       case 'Media':
         ele=document.createElement('IMG');
+        ele.onload=(e)=>{this.setPlaneGeomToDomWidth(e.target)}
         ele.src=this.contentItem.imageUrl;
         break;
       case'Connection':
       case'Text':
       default:
         ele=document.createElement('P');
-        ele.innerHTML=this.contentItem.content
+        ele.innerHTML=this.contentItem.content;
+        this.setPlaneGeomToDomWidth()
     }
 
     this.dom.innerHTML='';
     this.dom.appendChild(ele);
 
-    this.plane.geometry.dispose();
-    this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
+    //this.plane.geometry.dispose();
+    //this.plane.geometry=new PlaneGeometry( this.dom.offsetWidth*this.cssRes , this.dom.offsetHeight*this.cssRes );
   }
 
 }

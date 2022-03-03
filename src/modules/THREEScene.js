@@ -6,7 +6,7 @@ import LineHelper from '@/modules/LineHelper.js'
 import Connection from '@/modules/Connection.js'
 import ContentBlock from '@/modules/ContentBlock.js'
 import {CSS3DRenderer,CSS3DObject} from '@/modules/CSS3DRenderer.js'
-import {makeid,map} from '@/modules/Helpers.js'
+import {makeid,map,connectionName} from '@/modules/Helpers.js'
 
 class THREEScene {
   constructor(domparent,forceSimulation,cameraSettings,store) {
@@ -31,6 +31,7 @@ class THREEScene {
     this.scale_factor=.2;
 
     this.onLinkAdded = ()=>{};
+
 
     domparent.addEventListener('mousedown',(e)=>this.onClick(e));
     domparent.addEventListener('mousemove',(e)=>this.onMousemove(e));
@@ -397,7 +398,7 @@ class THREEScene {
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
     const node = {
       h_id:makeid(5),
-      name: this.lineHelper.startObject.name+' ↭ '+obj.name,
+      name: connectionName(this.store.connectionCount),
       to:[],
       val:1,
       from:[],
@@ -428,7 +429,6 @@ class THREEScene {
     // callBack to Graph.vue to update simulation data
     this.onLinkAdded(nl);
     this.updateBlockGeomArray();
-
   }
 }
 
