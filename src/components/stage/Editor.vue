@@ -15,7 +15,7 @@
 				<button class="list_controls_button" @click="$emit('save')">save</button>
 			</div>
 			<draggable
-			class="dragArea editor_list"
+			class="drag_list editor_list"
 			:list="store.sceneList"
 			:group="{ name: 'object',pull:onPull,put:true}"
 			@move="onMove"
