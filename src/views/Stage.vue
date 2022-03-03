@@ -1,7 +1,7 @@
 <template>
 	<Graph ref="threescene"/>
     <Editor/>
-    <AllBlocks @update="update" :blocks="channel.contents"/>
+    <Source @update="update" :blocks="channel.contents"/>
 	<button @click="save">save</button>
 	<input type="password" v-model.trim="password">
 	<!--<input type="password" v-model.trim="password">
@@ -12,7 +12,7 @@
 <script>
 import Graph from '@/components/stage/Graph.vue'
 import Editor from '@/components/stage/Editor.vue'
-import AllBlocks from '@/components/stage/AllBlocks.vue'
+import Source from '@/components/stage/Source.vue'
 
 
 export default {
@@ -35,7 +35,7 @@ export default {
 	components: {
     Graph,
     Editor,
-    AllBlocks
+    Source
   },
 	mounted() {
 		this.get()
