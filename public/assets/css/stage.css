@@ -33,9 +33,7 @@
 	overflow-y:auto;
 	top: calc(var(--source-header-height) + var(--source-header-margin) );
 	max-height: calc(100% - var(--source-header-height) - 1rem + var(--source-header-margin) );
-	background: linear-gradient(var(--main-lightgray-color) 1px, transparent 1px calc(100% - 1px), var(--main-lightgray-color) calc(100% - 1px)), linear-gradient(90deg, var(--main-lightgray-color) 1px, white 1px calc(100% - 1px), var(--main-lightgray-color) calc(100% - 1px));
 	box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-	min-height: 3rem;
 }
 
 
@@ -81,12 +79,19 @@
 
 /* DRAGGABLE LIST ITEMS */
 
+.drag_list {
+	background: linear-gradient(var(--main-lightgray-color) 1px, transparent 1px calc(100% - 1px), var(--main-lightgray-color) calc(100% - 1px)), linear-gradient(90deg, var(--main-lightgray-color) 1px, white 1px calc(100% - 1px), var(--main-lightgray-color) calc(100% - 1px));
+}
+
 .drag_list:empty:after {
 	padding: 1em;
 	content: 'No blocks';
 	font-size: .7em;
 	color: var(--main-gray-color);
 	display: block;
+}
+#source .drag_list:empty:after {
+	content: 'Channel is empty';
 }
 .draggable_list_item {
 	border: 1px solid var(--main-lightgray-color);
@@ -212,9 +217,9 @@
 	box-sizing: border-box;
 }
 #editor_button #editor_button_indicator.close_button {
-	background: linear-gradient(45deg, transparent calc(50% - 1px), white calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), white calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(var(--main-gray-color), var(--main-gray-color));
+	background: linear-gradient(45deg, transparent calc(50% - 1px), var(--main-editor-hightlight-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), var(--main-editor-hightlight-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(white, white);
 	color: transparent;
-	border: 3px solid var(--main-gray-color);
+	border: 3px solid white;
 }
 #editor_button_indicator.all_clear {
 	background: var(--main-success-color);
@@ -232,7 +237,6 @@
 	bottom:1rem;
 	right:1rem;
 }
-
 #editor + #camera_toggle{
 	right:calc(var(--draggable-list-item-width) + 3rem);
 }

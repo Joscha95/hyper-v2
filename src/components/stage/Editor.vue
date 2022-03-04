@@ -11,8 +11,8 @@
 	<div id="editor" v-if="show" :class="{opened:show}">
 		<div id="editor_inner">
 			<div class="list_controls">
-				<searchbar @search="filterBlocks" />
 				<button class="list_controls_button" @click="$emit('save')">save</button>
+				<searchbar @search="filterBlocks" />
 			</div>
 			<draggable
 			class="drag_list editor_list"
