@@ -1,4 +1,4 @@
-<template>	
+<template>
 	<div id="notification" @click="notification.id=false" :class="[{show:notification.id}, notification.type]">{{ notification.text }}</div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
 	watch: {
 		notification() {
 			window.clearTimeout(this.timer)
-			this.timer = setTimeout(() => { this.notification.id = false;  }, 4000)
+			this.timer = setTimeout(() => { this.notification.id = false;  }, this.notification.timeout)
 		}
 	}
 }

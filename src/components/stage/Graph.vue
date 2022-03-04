@@ -89,8 +89,10 @@ export default {
       this.forceSimulation.updateGraph()
       this.store.unsavedChanges++;
     },
-    isOrbit(){
+    isOrbit(val){
       this.THREEScene.toggleCamMode();
+      const mode = val ? '⥁ Orbit' : '⟴ First person'
+      this.$root.notify('Camera mode: '+mode, 'default',2000)
     }
   },
   methods:{
@@ -142,6 +144,7 @@ export default {
       }
 
       this.store.sceneList.push(node)
+      console.log(node);
     },
     init(){
       this.graphData.nodes=this.$root.store.sceneList;

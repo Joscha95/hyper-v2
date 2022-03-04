@@ -8,7 +8,9 @@ class FirstPersonController {
   	this.camera = new PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 50000);
     this.transformparent = new Group();
     this.transformparent.add(this.camera);
+    this.camera.rotation.x=0;
     this.camera.rotation.y=Math.PI;
+    this.camera.rotation.z=0;
     scene.add(this.transformparent)
     this.transformparent.position.set(0,300,-900);
     this.transformparent.lookAt(0,200,0);

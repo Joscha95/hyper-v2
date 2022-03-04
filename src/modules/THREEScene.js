@@ -177,7 +177,6 @@ class THREEScene {
     toAdd.forEach((item, i) => {
       if (item.h_type=='lookout') {
         nn=new Lookout(this.scene,item)
-        console.log(nn,item);
       } else {
         nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
       }

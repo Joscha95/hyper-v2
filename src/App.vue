@@ -19,14 +19,14 @@
 				appName: 'hyper',
 				channelTitle: false,
 				showSource: false,
-				notification: { id: false, text: '', type: '' },
+				notification: { id: false, text: '', type: '', timeout: 4000 },
 				popupBox: { body: '', button: false },
 				store,
 			}
 		},
 		methods: {
-			notify(text, type = 'default') {
-				this.notification = { id: Date.now(), text: text, type: type }
+			notify(text, type = 'default', timeout = 4000 ) {
+				this.notification = { id: Date.now(), text: text, type: type, timeout: timeout }
 			},
 			popup(body, button = false) {
 				this.popupBox = { body: body, button: button }
