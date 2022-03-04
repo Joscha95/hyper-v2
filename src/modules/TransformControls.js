@@ -546,7 +546,7 @@ class TransformControls extends Object3D {
 	// Set current object
 	attach( object ) {
 
-		this.object = object.plane;
+		this.object = object.dragObject;
     if (this.attachedContent) this.attachedContent.isDragged=false;
     this.attachedContent=object;
 		this.visible = true;

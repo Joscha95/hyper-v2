@@ -3,13 +3,14 @@ import {CSS3DObject} from '@/modules/CSS3DRenderer.js'
 import Toolbar from '@/modules/Toolbar.js'
 
 class ContentBlock {
-  constructor(scene,contentItem,mat,options={cssResolution:.2}) {
+  constructor(scene,contentItem,mat,options={cssResolution:.2},objectControls) {
     this.scene = scene;
     this.contentItem = contentItem;
     this.h_id = this.contentItem.h_id;
     this.h_type=this.contentItem.h_type;
     this.name=this.contentItem.name;
     this.cssRes=options.cssResolution;
+    this.objectControls=objectControls;
 
     const geometry = new PlaneGeometry( 100, 100 );
     this.plane = new Mesh( geometry, mat );
@@ -28,6 +29,9 @@ class ContentBlock {
     this.onDispose=()=>{};
 
     this.domRect;
+
+    this.hitbox=this.plane; // for raycasting
+    this.dragObject=this.plane;
 
     this.dom.dataset.h_id=this.contentItem.h_id;
     this.dom.classList.add('floating-blocks');
@@ -104,10 +108,14 @@ class ContentBlock {
     this.onFocus();
     this.dom.classList.add('focus')
     this.toolbox=new Toolbar([
+      {name:'transform',text:'⨣',tooltip:'move element'},
+      {name:'center',text:'⊹',tooltip:'focus element'},
       {name:'connection',text:'☌',tooltip:'make a new connection'},
       {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic'}
     ],
     [
+      ()=>{this.objectControls.attach(this)},
+      ()=>{window.location.hash=this.h_id},
       ()=>{this.startLink()},
       ()=>{this.toggleFixed()}
     ]);

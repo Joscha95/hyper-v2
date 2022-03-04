@@ -2,8 +2,9 @@ import {PlaneGeometry,Vector3,LineBasicMaterial,Group,Line,MeshBasicMaterial,Mes
 import Toolbar from '@/modules/Toolbar.js'
 
 class Lookout {
-  constructor(scene,contentItem) {
+  constructor(scene,contentItem,objectControls,camera) {
     this.scene = scene;
+    this.camera = camera;
     this.contentItem = contentItem;
     this.h_id = this.contentItem.h_id;
     this.h_type=this.contentItem.h_type;
@@ -11,6 +12,7 @@ class Lookout {
     this.contentItem.sceneElement=this;
     this.isActive = false;
   	this.group = new Group();
+    this.objectControls=objectControls;
 
   	const material = new LineBasicMaterial({ color: 0x0000ff });
   	const points = [
@@ -37,7 +39,10 @@ class Lookout {
   	hitbox.visible=false;
   	hitbox.refID=this.h_id;
 
-    this.plane=hitbox; // for raycasting
+    this.hitbox=hitbox; // for raycasting
+    this.dragObject=this.group;
+
+
 
   	this.group.name = contentItem.name;
   	this.group.add(hitbox);
@@ -59,18 +64,25 @@ class Lookout {
     this.onDispose=()=>{};
 
     this.scene.add(this.group);
+    this.outerBound=this.hitbox.localToWorld(new Vector3(60,0,0))
+
   }
 
   updateToolBox(){
-    // if(!this.toolbox) return;
-    // this.toolbox.setPos(this.domRect.right,this.domRect.top)
+    if(!this.toolbox) return;
+    const pos = this.outerBound.clone().project(this.camera)
+
+    pos.x = (pos.x * this.widthHalf) + this.widthHalf;
+    pos.y = - (pos.y * this.heightHalf) + this.heightHalf;
+    pos.z = 0;
+    this.toolbox.setPos(pos.x,pos.y)
   }
 
   lookAt(){
   }
 
   setPos(pos){
-    // this.group.position.set(pos.x,pos.y,pos.z);
+    //this.group.position.set(pos.x,pos.y,pos.z);
     // this.updateToolBox()
   }
 
@@ -94,17 +106,27 @@ class Lookout {
     this.toolbox=undefined;
   }
 
+  updateBounds(){
+    this.outerBound=this.hitbox.localToWorld(new Vector3(-50,25,0))
+  }
+
   focus(){
     this.onFocus();
-    // this.toolbox=new Toolbar([
-    //   {name:'connection',text:'☌',tooltip:'make a new connection'},
-    //   {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic'}
-    // ],
-    // [
-    //   ()=>{this.startLink()},
-    //   ()=>{this.toggleFixed()}
-    // ]);
-    // this.updateToolBox()
+    this.updateBounds();
+    this.widthHalf = window.innerWidth / 2;
+    this.heightHalf = window.innerHeight / 2;
+    this.toolbox=new Toolbar([
+      {name:'transform',text:'⨣',tooltip:'move element'},
+      {name:'center',text:'⊹',tooltip:'focus element'},
+      {name:'connection',text:'☌',tooltip:'make a new connection'},
+    ],
+    [
+      ()=>{this.objectControls.attach(this)},
+      ()=>{window.location.hash=this.h_id},
+      ()=>{this.startLink()},
+      ()=>{this.toggleFixed()}
+    ]);
+    this.updateToolBox()
   }
 
   toggleFixed(){

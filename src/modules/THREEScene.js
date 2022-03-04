@@ -116,8 +116,10 @@ class THREEScene {
             simPos.fz=block.position().z;
           }
 
-          this.forceSimulation.reheat()
-        }else {
+          this.forceSimulation.reheat();
+          block.updateToolBox()
+          if(block.h_type=='lookout') block.updateBounds()
+        }else if(block.h_type!='lookout') {
           block.setPos(simPos);
         }
         block.lookAt(this.cameraController.position())
@@ -141,9 +143,9 @@ class THREEScene {
     let nn;
     nodes.forEach((item, i) => {
       if (item.h_type=='lookout') {
-        nn=new Lookout(this.scene,item)
+        nn=new Lookout(this.scene,item,this.objectControls,this.cameraController.camera)
       } else {
-        nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
+        nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
       }
       nn.onStartLink=(ele)=>{this.startConnection(ele)};
       this.blocks.push(nn);
@@ -162,7 +164,7 @@ class THREEScene {
       this.connections.push(con);
     });
 
-    this.updateBlockGeomArray();
+    this.updateHitboxArray();
   }
 
   simDataChanged(){
@@ -176,9 +178,9 @@ class THREEScene {
     let nn;
     toAdd.forEach((item, i) => {
       if (item.h_type=='lookout') {
-        nn=new Lookout(this.scene,item)
+        nn=new Lookout(this.scene,item,this.objectControls,this.cameraController.camera)
       } else {
-        nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor})
+        nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
       }
       nn.onStartLink=(ele)=>{this.startConnection(ele)};
       this.blocks.push(nn);
@@ -217,11 +219,11 @@ class THREEScene {
     for (var i = indices.length -1; i >= 0; i--)
         this.store.sceneList.splice(indices[i],1);
 
-    this.updateBlockGeomArray();
+    this.updateHitboxArray();
   }
 
-  updateBlockGeomArray(){
-    this.blockGeometries=this.blocks.map((b)=>b.plane);
+  updateHitboxArray(){
+    this.blockGeometries=this.blocks.map((b)=>b.hitbox);
   }
 
   getWorldPosition(x,y,offset=500){
@@ -253,6 +255,7 @@ class THREEScene {
       if (!this.isConnecting) {
         this.store.selectedObject=targ.contentItem
         //this.startConnection(targ);
+
       } else {
         this.finishConnection(targ);
       }
@@ -337,7 +340,7 @@ class THREEScene {
         this.objectControls.detach();
         return;
       }
-      this.objectControls.attach(this.focusedItem);
+
     }
   }
 
@@ -353,7 +356,7 @@ class THREEScene {
   onHashChange() {
     const target = this.blocks.find((b)=>b.h_id==location.hash.substr(1));
     if (target) {
-      this.cameraController.moveTo(target.plane);
+      this.cameraController.moveTo(target.dragObject);
     }
   }
 
@@ -433,7 +436,7 @@ class THREEScene {
     }
 
 
-    const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:this.scale_factor});
+    const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls);
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj);
     middleNodePlane.onFocus=()=>{con.focus()};
     middleNodePlane.onBlur=()=>{con.blur()};
@@ -446,7 +449,7 @@ class THREEScene {
 
     // callBack to Graph.vue to update simulation data
     this.onLinkAdded(nl);
-    this.updateBlockGeomArray();
+    this.updateHitboxArray();
   }
 
   computeBounds(){

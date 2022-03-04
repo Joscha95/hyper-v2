@@ -143,7 +143,6 @@ export default {
       }
 
       this.store.sceneList.push(node)
-      console.log(node);
     },
     init(){
       this.graphData.nodes=this.$root.store.sceneList;

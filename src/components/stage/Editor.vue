@@ -38,7 +38,7 @@
 		</div>
 	</div>
 	<div id="camera_toggle" >
-		<span @click="$emit('addLookout')">◅ </span>
+		<span @click="$emit('addLookout')">⩥ </span>
     <span @click="store.isOrbit=!store.isOrbit">{{store.isOrbit ? '⟴' :'⥁'}}</span>
   </div>
 </template>
