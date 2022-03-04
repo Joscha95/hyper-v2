@@ -1,36 +1,32 @@
 <template>
   <div id="source" v-if="this.$root.showSource">
     <div id="source_header">
-      <div class="list_controls">
-        <button class="list_controls_button" @click="$emit('update')" title="Refresh blocks">↻</button>
-        <searchbar @search="filterBlocks" title="Search blocks" />
-      </div>
+      <button id="refresh_button" @click="$emit('update')" title="Refresh blocks">↻</button>
+      <searchbar @search="filterBlocks" title="Search blocks" />
     </div>
-    <div id="source_body">
-      <draggable
-        class="drag_list"
-        :list="blocks"
-        :group="{ name: 'arena-blocks', pull: 'clone', put: false }"
-        :sort="false"
-        :clone="cloneBlock"
-        @start="toggleCanvasDragTarget"
-        @end="toggleCanvasDragTarget"
-        @move="onMove"
-        item-key="id"
-      >
-        <template #item="{ element }">
-          <div class="draggable_list_item drag_handle" :class="{no_thumb:!element.image}" v-show="element.title.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring)">
-            <div class="draggable_list_item_thumb" v-if="element.image">
-              <img :src="element.image.thumb.url">
-            </div>
-            <div class="draggable_list_item_content">
-             <span v-if="element.title">{{ element.title }}</span>
-             <span v-else-if="element.class=='Text'">{{ element.content }}</span>
-            </div>
+    <draggable
+      class="drag_list"
+      :list="blocks"
+      :group="{ name: 'arena-blocks', pull: 'clone', put: false }"
+      :sort="false"
+      :clone="cloneBlock"
+      @start="toggleCanvasDragTarget"
+      @end="toggleCanvasDragTarget"
+      @move="onMove"
+      item-key="id"
+    >
+      <template #item="{ element }">
+        <div class="draggable_list_item drag_handle" :class="{no_thumb:!element.image}" v-show="element.title.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring)">
+          <div class="draggable_list_item_thumb" v-if="element.image">
+            <img :src="element.image.thumb.url">
           </div>
-        </template>
-      </draggable>
-    </div>
+          <div class="draggable_list_item_content">
+           <span v-if="element.title">{{ element.title }}</span>
+           <span v-else-if="element.class=='Text'">{{ element.content }}</span>
+          </div>
+        </div>
+      </template>
+    </draggable>
   </div>
 </template>
 

@@ -9,36 +9,34 @@
 		</div>
 	</div>
 	<div id="editor" v-if="show" :class="{opened:show}">
-		<div id="editor_inner">
-			<div class="list_controls">
-				<button class="list_controls_button" @click="$emit('save')">save</button>
-				<searchbar @search="filterBlocks" />
-			</div>
-			<draggable
-			class="drag_list editor_list"
-			:list="store.sceneList"
-			:group="{ name: 'object',pull:onPull,put:true}"
-			@move="onMove"
-			@end="onEnd"
-			@change="onChange"
-			handle=".drag_handle"
-			animation="50"
-			item-key="h_id"
-			>
-				<template #item="{ element }">
-					<div class="draggable_list_item"
-					:class="selectedObjectId==element.h_id ? 'selected': '' "
-					:type="element.h_type" v-if="element.name.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring) "
-					@dblclick="onDoubleClick($event,element)"
-					>
-						<node-list-element :element="element"/>
-					</div>
-				</template>
-			</draggable>
+		<div id="editor_header">
+			<button class="list_controls_button" @click="$emit('save')">save</button>
+			<searchbar @search="filterBlocks" />
 		</div>
+		<draggable
+		class="drag_list editor_list"
+		:list="store.sceneList"
+		:group="{ name: 'object',pull:onPull,put:true}"
+		@move="onMove"
+		@end="onEnd"
+		@change="onChange"
+		handle=".drag_handle"
+		animation="50"
+		item-key="h_id"
+		>
+			<template #item="{ element }">
+				<div class="draggable_list_item"
+				:class="selectedObjectId==element.h_id ? 'selected': '' "
+				:type="element.h_type" v-if="element.name.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring) "
+				@dblclick="onDoubleClick($event,element)"
+				>
+					<node-list-element :element="element"/>
+				</div>
+			</template>
+		</draggable>
 	</div>
 	<div id="camera_toggle" >
-		<span @click="$emit('addLookout')">⩥ </span>
+		<span @click="$emit('addLookout')">◅ </span>
     <span @click="store.isOrbit=!store.isOrbit">{{store.isOrbit ? '⟴' :'⥁'}}</span>
   </div>
 </template>
