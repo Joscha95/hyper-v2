@@ -135,10 +135,9 @@ module.exports = {
 						newNode.targetID = n.targetID
 						newNode.initDistance = n.initDistance
 					} else if(n.h_type=='lookout') {
-						newNode.qw = n.qw
-		        newNode.qx = n.qx
-		        newNode.qy = n.qy
-		        newNode.qz = n.qz
+		        newNode.rx = n.rx
+		        newNode.ry = n.ry
+		        newNode.rz = n.rz
 					} else {
 						newNode.a_id =  n.a_id
 						newNode.class =  n.class

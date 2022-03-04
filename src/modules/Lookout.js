@@ -16,11 +16,11 @@ class Lookout {
   	const points = [
   		new Vector3( -40, -25, 0 ),
   		new Vector3( 40, -25, 0 ),
-  		new Vector3( 0, 0, 70 ),
+  		new Vector3( 0, 0, -70 ),
   		new Vector3( -40, -25, 0 ),
   		new Vector3( -40, 25, 0 ),
   		new Vector3( -40, 25, 0 ),
-  		new Vector3( 0, 0, 70 ),
+  		new Vector3( 0, 0, -70 ),
   		new Vector3( 40, 25, 0 ),
   		new Vector3( 40, -25, 0 ),
   		new Vector3( 40, 25, 0 ),
@@ -45,7 +45,7 @@ class Lookout {
   	this.group.add(plane);
 
     this.group.position.set(this.contentItem.x,this.contentItem.y,this.contentItem.z);
-    this.group.quaternion.set(this.contentItem.qw,this.contentItem.qx,this.contentItem.qy,this.contentItem.qz);
+    this.group.rotation.set(this.contentItem.rx,this.contentItem.ry,this.contentItem.rz);
 
     this.isDragged=false;
     this.isFocused;
@@ -57,8 +57,6 @@ class Lookout {
     this.onFocus=()=>{};
     this.onStartLink=()=>{};
     this.onDispose=()=>{};
-
-
 
     this.scene.add(this.group);
   }

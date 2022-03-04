@@ -121,7 +121,7 @@ export default {
       })
     },
     addLookout(){
-      const quat = this.THREEScene.cameraController.quaternion();
+      const rot = this.THREEScene.cameraController.rotation();
       const pos = this.THREEScene.cameraController.position();
       const node = {
         h_id: makeid(5),
@@ -131,10 +131,9 @@ export default {
         isFixed:true,
         content:'',
         h_type: 'lookout',
-        qw:quat.w,
-        qx:quat.x,
-        qy:quat.y,
-        qz:quat.z,
+        rx:rot.x,
+        ry:rot.y,
+        rz:rot.z,
         fx:pos.x,
         fy:pos.y,
         fz:pos.z,

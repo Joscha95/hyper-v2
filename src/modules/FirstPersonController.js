@@ -5,7 +5,7 @@ class FirstPersonController {
   constructor(domElement,options={},scene) {
     this.enabled = true;
   	this.domElement = domElement;
-  	this.camera = new PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 50000);
+  	this.camera = new PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 70000);
     this.transformparent = new Group();
     this.transformparent.add(this.camera);
     this.camera.rotation.x=0;
@@ -273,6 +273,10 @@ class FirstPersonController {
 
   quaternion(){
     return this.transformparent.quaternion
+  }
+
+  rotation(){
+    return this.transformparent.rotation
   }
 
 	rotateCam(event) {
