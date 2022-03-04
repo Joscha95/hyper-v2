@@ -19,8 +19,8 @@
 				appName: 'hyper',
 				channelTitle: false,
 				showSource: false,
-				notification: { id: false, text: '', type: '', timeout: 4000 },
-				popupBox: { body: '', button: false },
+				notification: {},
+				popupBox: {},
 				store,
 			}
 		},
@@ -30,7 +30,7 @@
 			},
 			popup(body, button = false) {
 				this.popupBox = { body: body, button: button }
-			}
+			},
 		},
 		components: { Notification, PopupBox, Header }
 	}
