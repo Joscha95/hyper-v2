@@ -125,7 +125,7 @@ export default {
       const pos = this.THREEScene.cameraController.position();
       const node = {
         h_id: makeid(5),
-        name:'◅',
+        name:'⩥',
         to:[],
         from:[],
         isFixed:true,
