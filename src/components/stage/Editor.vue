@@ -1,16 +1,16 @@
 <template>
 	<div id="editor_controls">
-		<div id="settings_button" title="Settings">⚙</div>
+		<div id="settings_button" title="Settings">Settings</div>
 		<div id="editor_button" @click="show=!show">
-			Editor
-			<span id="editor_button_indicator" :class="{close_button:show, all_clear:store.unsavedChanges==0}">
-				{{ store.unsavedChanges }}
-			</span>
+			<span id="editor_button_text">Editor</span> <span id="editor_button_indicator" :class="{close_button:show, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
 		</div>
 	</div>
 	<div id="editor" v-if="show" :class="{opened:show}">
 		<div id="editor_header">
-			<button class="list_controls_button" @click="$emit('save')">save</button>
+			<div id="save_button_wrapper">
+				<span id="save_button_changes" v-if="store.unsavedChanges>0"><strong class="err_col">{{ store.unsavedChanges }}</strong> unsaved change<span v-if="store.unsavedChanges>1">s</span></span>
+				<button id="save_button" @click="$emit('save')">save</button>
+			</div>
 			<searchbar @search="filterBlocks" />
 		</div>
 		<draggable
@@ -22,8 +22,7 @@
 		@change="onChange"
 		handle=".drag_handle"
 		animation="50"
-		item-key="h_id"
-		>
+		item-key="h_id">
 			<template #item="{ element }">
 				<div class="draggable_list_item"
 				:class="selectedObjectId==element.h_id ? 'selected': '' "

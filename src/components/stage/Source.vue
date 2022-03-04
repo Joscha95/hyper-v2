@@ -35,7 +35,6 @@ import draggable from "vuedraggable";
 import searchbar from "@/components/stage/subcomponents/searchbar.vue";
 import {makeid} from'@/modules/Helpers.js'
 
-let idGlobal = 8;
 export default {
   order: 3,
   components: {

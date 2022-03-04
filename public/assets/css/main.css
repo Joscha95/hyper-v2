@@ -18,6 +18,9 @@
 	--main-layer-four: 4;
 	--main-layer-overkill: 1000;
 }
+.err_col {
+	color: var(--main-error-color);
+}
 
 html, body {
 	position: fixed;

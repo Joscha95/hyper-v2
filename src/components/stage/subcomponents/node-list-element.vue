@@ -39,7 +39,6 @@ import draggableNumber from '@/components/stage/subcomponents/draggable-number.v
 import toggle from '@/components/stage/subcomponents/toggle.vue'
 import {Vector3} from 'three'
 
-let idGlobal = 8;
 export default {
   order: 3,
   components: {
