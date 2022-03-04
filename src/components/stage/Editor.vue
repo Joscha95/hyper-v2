@@ -1,11 +1,5 @@
 <template>
-	<div id="editor_controls">
-		<div id="settings_button" title="Settings">Settings</div>
-		<div id="editor_button" @click="show=!show">
-			<span id="editor_button_text">Editor</span> <span id="editor_button_indicator" :class="{close_button:show, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
-		</div>
-	</div>
-	<div id="editor" v-if="show" :class="{opened:show}">
+	<div id="editor">
 		<div id="editor_header">
 			<div id="save_button_wrapper">
 				<span id="save_button_changes" v-if="store.unsavedChanges>0"><strong class="err_col">{{ store.unsavedChanges }}</strong> unsaved change<span v-if="store.unsavedChanges>1">s</span></span>
@@ -34,10 +28,6 @@
 			</template>
 		</draggable>
 	</div>
-	<div id="camera_toggle" >
-		<span @click="$emit('addLookout')">◅ </span>
-    <span @click="store.isOrbit=!store.isOrbit">{{store.isOrbit ? '⟴' :'⥁'}}</span>
-  </div>
 </template>
 
 <script>
@@ -45,17 +35,15 @@ import draggable from "vuedraggable";
 import searchbar from "@/components/stage/subcomponents/searchbar.vue";
 import nodeListElement from "@/components/stage/subcomponents/node-list-element.vue";
 
-let idGlobal = 8;
 export default {
 	data(){
 		return{
 			store: this.$root.store,
 			searchstring: '',
-			lastSelected: null,
-			show: true
+			lastSelected: null
 		}
 	},
-	emits: ['save','addLookout'],
+	emits: ['save'],
 	components:{ searchbar, draggable, nodeListElement },
 	computed:{
 		selectedObjectId(){
@@ -63,16 +51,6 @@ export default {
 		}
 	},
 	methods:{
-		addGroup: function() {
-			this.store.sceneList.push({
-			name:"new Group",
-			h_id:'_'+Date.now(),
-			h_type:'group',
-			children:[],
-			from:[],
-			to:[]
-			})
-		},
 		filterBlocks(e){
 			this.searchstring=e.value
 		},

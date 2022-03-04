@@ -2,20 +2,12 @@
 	<header>
 		<div id="logo">
 			(
-				<span id="channel_name" :class="{opened:this.$root.showSource}" @click="this.$root.showSource=!this.$root.showSource" v-if="this.$route.name=='Stage'">{{ title }}</span>
+				<span id="channel_name" :class="{opened:this.$root.store.showSource}" @click="this.$root.store.showSource=!this.$root.store.showSource" v-if="this.$route.name=='Stage'">{{ $root.store.channelTitle }}</span>
 			)
-			<sup id="app_name">{{ this.$root.appName }}</sup>
+			<sup id="app_name"><router-link to="/about">{{ this.$root.appName }}</router-link></sup>
 		</div>
 	</header>
 </template>
-
-<script>
-export default {
-	props: {
-		title: ''
-	}
-}
-</script>
 
 <style>
 	header {
@@ -28,6 +20,9 @@ export default {
 	#logo {
 		display: inline;
 		color: var(--main-mediumgray-color);
+	}
+	#app_name a {
+		text-decoration: none;
 	}
 	#channel_name {
 		color: black;

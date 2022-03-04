@@ -1,16 +1,17 @@
 <template>
 	<Graph ref="sceneComponent"/>
-    <Editor @save="save" @addLookout="addLookout"/>
-    <Source @update="update" :blocks="channel.contents"/>
+	<Controls @toggleEditor="toggleEditor" :showEditor="showEditor" :loggedIn="$root.store.loggedIn" @login="authenticate" @addLookout="addLookout"/>
+	<Editor v-show="showEditor" @save="save"/>
+	<Source v-if="$root.store.loggedIn" @update="update" :blocks="channel.contents"/>
 	<!--<input type="password" v-model.trim="password">
 	<button @click="recover">recover</button>-->
 </template>
 
 <script>
 import Graph from '@/components/stage/Graph.vue'
+import Controls from '@/components/stage/Controls.vue'
 import Editor from '@/components/stage/Editor.vue'
 import Source from '@/components/stage/Source.vue'
-
 
 export default {
 	mixins: [
@@ -25,15 +26,14 @@ export default {
 			state: 0, // setup=0, OK=1
 			channel: false,
 			password: '12345678',
-			initScene:[],
-			needsInit:true
+			initScene: [],
+			needsInit: true,
+			showEditor: false
 		}
 	},
-	components: {
-    Graph,
-    Editor,
-    Source
-  },
+	components: { 
+		Graph, Controls, Editor, Source 
+	},
 	mounted() {
 		this.get()
 	},
@@ -51,12 +51,12 @@ export default {
 					break;
 				// UPDATING
 				case 2:
-					this.$root.channelTitle = 'loading...'
+					this.$root.store.channelTitle = 'loading...'
 					break;
 				// UPDATED
 				case 3:
 					this.$root.notify('Channel has been updated.', 'success')
-					this.$root.channelTitle = this.channel.title
+					this.$root.store.channelTitle = this.channel.title
 					this.state = 1
 					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : [];
 					this.$root.store.connectionCount = this.initScene ? this.initScene.scene_data.connectionCount : 0;
@@ -84,6 +84,9 @@ export default {
 	methods: {
 		addLookout(){
 			this.$refs.sceneComponent.addLookout();
+		},
+		toggleEditor () {
+			this.showEditor = !this.showEditor
 		}
 	}
 }

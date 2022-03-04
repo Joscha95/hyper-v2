@@ -1,9 +1,9 @@
 <template>
-	<Notification :notification="this.notification" />
-	<PopupBox :popupBox="this.popupBox" />
-	<Header :title="this.channelTitle" />
+	<Notification :notification="this.notification"/>
+	<PopupBox :popupBox="this.popupBox"/>
+	<Header/>
 	<main :class="$route.name">
-		<router-view />
+		<router-view/>
 	</main>
 </template>
 
@@ -17,8 +17,6 @@
 		data() {
 			return {
 				appName: 'hyper',
-				channelTitle: false,
-				showSource: false,
 				notification: {},
 				popupBox: {},
 				store,

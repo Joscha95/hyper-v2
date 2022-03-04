@@ -28,7 +28,7 @@ export default {
 <style scoped>
 	#popup {
 		background: white;
-		border: 4px solid var(--main-faintgray-color);
+		box-shadow: 0 0 0 4px rgba(0,0,0,.1);
 		position: fixed;
 		top: 45%;
 		left: 50%;

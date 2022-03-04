@@ -98,6 +98,11 @@ module.exports = {
 				console.error(error)
 			})
 		},
+		
+		
+		authenticate(){
+			this.$root.popup('Please enter your password')
+		},
 
 
 		save(){

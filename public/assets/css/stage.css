@@ -139,6 +139,9 @@
 *[type="connection"], *[type="lookout"] {
 	color: var(--main-connection-color)
 }
+input.searchbar {
+	border: 1px solid var(--main-gray-color);
+}
 
 
 
@@ -173,7 +176,6 @@
 	width: calc( 100% - 4rem - .5rem );
 	transition: width .1s;
 	z-index: 100;
-	border: 1px solid var(--main-gray-color);
 	text-align: left;
 }
 #source_header .searchbar:focus {
@@ -217,7 +219,12 @@
 }
 
 
-#editor_controls {
+
+
+
+/* CONTROLS */
+
+#controls_header {
 	position:fixed;
 	top: 1rem;
 	right: 1rem;
@@ -226,7 +233,26 @@
 	flex-wrap: nowrap;
 	align-items: center;
 }
-#editor_button {
+#help_button, #settings_button {
+	margin-right: 2rem;
+}
+#help_button {
+	cursor: pointer;
+}
+#help_button:hover:before {
+	content: 'Help ';
+}
+#settings_button, #help_button:hover:before {
+	cursor: pointer;
+	font-size: .8em;
+	color: var(--main-mediumgray-color);
+}
+#settings_button:hover, #help_button:hover {
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	color: black;
+}
+#main_button {
 	background: var(--main-editor-color);
 	padding: .4rem .9rem;
 	color: white;
@@ -234,7 +260,7 @@
 	position: relative;
 	cursor: pointer;
 }
-#editor_button:hover {
+#main_button:hover {
 	background: var(--main-editor-hightlight-color);
 }
 #editor_button_indicator {
@@ -254,11 +280,11 @@
 	padding: 0.1em .5em;
 	margin-right: -.45rem;
 }
-#editor_button_text {
+#main_button_text {
 	position: relative;
 	top: 1px;
 }
-#editor_button #editor_button_indicator.close_button {
+#main_button #editor_button_indicator.close_button {
 	background: linear-gradient(45deg, transparent calc(50% - 1px), var(--main-editor-hightlight-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), var(--main-editor-hightlight-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(white, white);
 	color: transparent;
 	border: 3px solid white;
@@ -267,33 +293,13 @@
 #editor_button_indicator.hide:not(.close_button) {
 	display: none;
 }
-#settings_button {
-	margin-right: 2rem;
-	cursor: pointer;
-	font-size: .8em;
-	color: var(--main-mediumgray-color);
-}
-#settings_button:hover {
-	text-decoration: underline;
-	text-decoration-style: dotted;
-	color: black;
-}
 
-
-
-
-
-
-
-
-
-
-#camera_toggle{
+#camera_controls {
 	position:fixed;
 	bottom:1rem;
 	right:1rem;
 }
-#editor + #camera_toggle{
+#camera_controls.margin_right {
 	right:calc(var(--draggable-list-item-width) + 3rem);
 }
 
