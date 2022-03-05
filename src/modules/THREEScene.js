@@ -60,7 +60,7 @@ class THREEScene {
     });
 
     this.cssRenderer.domElement.classList.add('CSS3DRenderer');
-    document.body.appendChild(this.cssRenderer.domElement);
+    domparent.appendChild(this.cssRenderer.domElement);
 
     this.renderer=new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize( window.innerWidth,window.innerHeight );

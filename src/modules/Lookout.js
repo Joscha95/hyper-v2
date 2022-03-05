@@ -122,7 +122,7 @@ class Lookout {
     ],
     [
       ()=>{this.objectControls.attach(this)},
-      ()=>{window.location.hash=this.h_id},
+      ()=>{window.location.hash=this.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))},
       ()=>{this.startLink()},
       ()=>{this.toggleFixed()}
     ]);
