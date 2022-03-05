@@ -66,6 +66,7 @@ class Lookout {
     this.scene.add(this.group);
     this.outerBound=this.hitbox.localToWorld(new Vector3(60,0,0))
 
+    this.canStartThread=true;
   }
 
   updateToolBox(){
@@ -123,17 +124,22 @@ class Lookout {
     this.updateBounds();
     this.widthHalf = window.innerWidth / 2;
     this.heightHalf = window.innerHeight / 2;
-    this.toolbox=new Toolbar([
-      {name:'transform',text:'⨣',tooltip:'move element'},
-      {name:'center',text:'⊹',tooltip:'focus element'},
-      {name:'connection',text:'☌',tooltip:'make a new connection'},
-    ],
-    [
-      ()=>{this.objectControls.attach(this)},
-      ()=>{window.location.hash=this.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))},
-      ()=>{this.startLink()},
-      ()=>{this.toggleFixed()}
-    ]);
+    const scope=this;
+    const options = [
+      {name:'transform',text:'⨣',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}},
+      {name:'center',text:'⊹',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
+      {name:'connection',text:'☌',tooltip:'make a new connection',callback:()=>{scope.startLink()}}
+    ]
+
+    if(this.canStartThread) {
+      options.push({name:'thread',text:'☡',tooltip:'start weaving',callback:()=>{scope.startThread()}});
+    } else if (this.isThreatStart || this.isThreatEnd) {
+      options.push({name:'thread',text:'c',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
+    }else if(this.isInThreat) {
+      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope)}});
+    }
+
+    this.toolbox=new Toolbar(options);
     this.updateToolBox()
   }
 

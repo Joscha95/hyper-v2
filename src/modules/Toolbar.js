@@ -1,20 +1,19 @@
 class Toolbar {
-  constructor(buttons,callbacks) {
-    if (buttons.length>callbacks.length) console.warn('Not enough callbacks provided');
+  constructor(options) {
     this.dom = document.createElement('DIV');
     this.dom.classList.add('toolbox');
     this.parent=document.querySelector('#toolbox_wrapper');
     this.fields = new Map();
 
     let btn;
-    buttons.forEach((item, i) => {
+    options.forEach((item, i) => {
       btn=document.createElement('DIV');
       switch (item.type) {
         case 'toggle':
             btn.innerHTML= item.condition ? item.on : item.off;
             btn.title=item.condition ? item.tooltipOn : item.tooltipOff;
             btn.onclick=(e)=>{
-              if(callbacks[i])callbacks[i]();
+              item.callback();
               e.stopPropagation();
             }
 
@@ -23,7 +22,7 @@ class Toolbar {
           btn.innerHTML=item.text;
           btn.title=item.tooltip;
           btn.onclick=(e)=>{
-            if(callbacks[i])callbacks[i]();
+            item.callback();
             e.stopPropagation();
           }
       }

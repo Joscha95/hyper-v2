@@ -5,6 +5,7 @@ import Globe from '@/modules/GlobeHelper.js'
 import LineHelper from '@/modules/LineHelper.js'
 import PolarGrid from '@/modules/PolarGrid.js'
 import Connection from '@/modules/Connection.js'
+import Thread from '@/modules/Thread.js'
 import Lookout from '@/modules/Lookout.js'
 import ContentBlock from '@/modules/ContentBlock.js'
 import {CSS3DRenderer,CSS3DObject} from '@/modules/CSS3DRenderer.js'
@@ -31,6 +32,8 @@ class THREEScene {
     this.lineHelper = null;
     this.store=store;
     this.blockGeometries=[];
+
+    this.thread = new Thread(this.scene);
 
     this.scale_factor = .2;
 
@@ -150,6 +153,7 @@ class THREEScene {
         nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
       }
       nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
+      nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
       this.blocks.push(nn);
     });
 
@@ -185,6 +189,7 @@ class THREEScene {
         nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
       }
       nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
+      nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
       this.blocks.push(nn);
       });
 
@@ -259,7 +264,7 @@ class THREEScene {
         //this.startConnection(targ);
 
       } else {
-        this.finishConnection(targ);
+        this.finishLine(targ);
       }
 
     }else {
@@ -370,7 +375,7 @@ class THREEScene {
     const intersects = this.castRay(new THREE.Vector2());
     if (intersects[0] && intersects[0].distance<600) {
       const targ = intersects[0].object;
-      if (this.store.elementInCameraView!=targ.refID) {
+      if (this.store.elementInCameraView!=targ.refID && !this.cameraController.enteredLookout) {
         this.store.elementInCameraView=targ.refID;
       }
 
@@ -412,12 +417,36 @@ class THREEScene {
   disposeConnection(){
     if(this.lineHelper) this.lineHelper.dispose(this.scene);
     this.isConnecting=false;
+    this.lineHelper=null;
   }
 
-  finishConnection(obj){
+  finishLine(obj){
     if(this.lineHelper) this.lineHelper.dispose(this.scene);
     this.isConnecting=false;
     if(obj==this.lineHelper.startObject) return;
+
+    if (this.lineHelper.type=="connection") {
+      this.finishConnection(obj)
+    } else {
+      if (this.thread.empty) {
+        this.thread.init(this.lineHelper.startObject,obj);
+        this.blocks.forEach((item) => {item.canStartThread=false});
+      } else {
+        if (this.lineHelper.startObject.isThreatEnd) {
+          this.thread.append(obj)
+        }else if (this.lineHelper.startObject.isThreatStart) {
+          this.thread.prepend(obj)
+        } else {
+          console.warn('weaving not possible');
+        }
+      }
+
+    }
+
+    this.lineHelper=null;
+  }
+
+  finishConnection(obj){
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
     const node = {
       h_id:makeid(5),
@@ -443,6 +472,7 @@ class THREEScene {
     middleNodePlane.onFocus=()=>{con.focus()};
     middleNodePlane.onBlur=()=>{con.blur()};
     middleNodePlane.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
+    middleNodePlane.onQuitThread=(ele)=>{this.thread.remove(ele)}
     this.blocks.push(middleNodePlane);
 
     const nl=con.createNew(node);

@@ -101,7 +101,7 @@ module.exports = {
 
 
 		authenticate(){
-			
+
 			this.axios.post(
 				process.env.VUE_APP_API_URL + '?r=a',
 				{ id: this.sceneId, password: this.password },
@@ -129,9 +129,7 @@ module.exports = {
 					const newNode= {
 						h_id: n.h_id,
 						name: n.name,
-						to: n.to.map((t)=>t.h_id),
 						val: n.val,
-						from: n.from.map((f) => f.h_id),
 						content: n.content,
 						description: n.description,
 						isFixed: n.isFixed,

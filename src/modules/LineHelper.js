@@ -1,9 +1,10 @@
 import {LineBasicMaterial,Vector3,BufferGeometry,Line,DynamicDrawUsage} from 'three'
 class LineHelper {
-  constructor(startObject) {
+  constructor(startObject,type) {
     this.startObject=startObject;
     this.endPosition=new Vector3();
-    const material = new LineBasicMaterial({color: 0x0000ff });
+    this.type=type;
+    const material = new LineBasicMaterial({color: type=='connection' ? 'blue' : 'red' });
 
     const points = [];
     points.push( new Vector3( 0, 0, 0 ) );

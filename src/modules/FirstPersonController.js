@@ -107,6 +107,7 @@ class FirstPersonController {
     // Rotation
     if (targetObj.h_type == "lookout") {
       this.quatTarg = targetObj.dragObject.quaternion.clone();
+      if (this.activeLookOut) this.activeLookOut.deactivate();
       this.activeLookOut = targetObj;
       this.enteredLookout=false;
     } else {
