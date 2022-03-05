@@ -1,6 +1,6 @@
 <template>
 	<Header :title="headerTitle" @click="toggleSource" :class="{opened:showSource, disabled:!loggedIn}"/>
-	<Controls :showEditor="showEditor" :loggedIn="loggedIn" :password="password" v-model:password="password" @login="authenticate" @recover="recover" @toggleEditor="toggleEditor" @addLookout="addLookout"/>
+	<Controls :showEditor="showEditor" :loggedIn="loggedIn" :password="password" v-model:password="password" @login="authenticate(false)" @logout="authenticate(false, 'logout')" @recover="authenticate()" @toggleEditor="toggleEditor" @addLookout="addLookout"/>
 	<Editor v-show="showEditor" @save="save"/>
 	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
 	<Graph ref="sceneComponent"/>

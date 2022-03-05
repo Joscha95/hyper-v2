@@ -20,6 +20,7 @@
 		<div class="popup_body">
 			<input type="password" :value="password" @focus="store.focused=true" @blur="this.store.focused=false" @keyup="$emit('update:password', $event.target.value)"  >
 			<p @click="$emit('login')">Login</p>
+			<p @click="$emit('logout')">Logout</p>
 			<p @click="$emit('recover')">Forgot password?</p>
 		</div>
 		<div class="popup_close_button" @click="showSettings=false">close</div>
@@ -45,6 +46,7 @@ export default {
 		'toggleEditor',
 		'addLookout',
 		'login',
+		'logout',
 		'recover',
 		'update:password'
 	],

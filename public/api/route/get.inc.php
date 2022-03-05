@@ -40,8 +40,8 @@ if(isset($_GET['s'])) {
 		$result['scene'] = json_decode($result['scene']);
 		$response = $result;
 	} else {
-		$error = [404,'Not Found','No scene found.'];
+		$error = [404,'Not Found','No scene found'];
 	}
 } else {
-	$error = [400,'Bad Request','No slug given.'];
+	$error = [400,'Bad Request','No slug given'];
 }

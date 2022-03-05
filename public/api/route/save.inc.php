@@ -20,11 +20,11 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 			$response = array('message' => 'Saved');
 			
 		} else {
-			$error = [500, 'Internal Server Error', 'Scene could not be saved.'];
+			$error = [500, 'Internal Server Error', 'Scene could not be saved'];
 		}
 	} else {
-		$error = [400, 'Bad Request', 'Password incorrect.'];
+		$error = [400, 'Bad Request', 'Wrong password'];
 	}
 } else {
-	$error = [400,'Bad Request','No data.'];
+	$error = [400,'Bad Request','No data'];
 }

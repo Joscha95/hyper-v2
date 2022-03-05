@@ -30,7 +30,7 @@ if(isset($_GET['r'])){
 			include_once('route/reset.inc.php');
 			break;
 		default:
-			$error = [404,'Bad Request','Wrong route.'];
+			$error = [404,'Bad Request','Wrong route'];
 	}
 }else{
 	$error = [400,'Bad Request','Invalid route'];
@@ -49,6 +49,6 @@ else if( isset($error[0]) )
 else 
 {
 	header('HTTP/1.1 '.'500 Internal Server Error');
-	$response = array('code' => 500, 'message' => 'Internal Server Error', 'description' => 'no response or error set');
+	$response = array('code' => 500, 'message' => 'Internal Server Error', 'description' => 'No response or error set');
 }
 echo json_encode($response);

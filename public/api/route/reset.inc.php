@@ -17,11 +17,11 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 		$stmt->bind_param('s', $auth_hash);
 		$stmt->execute();
 		
-		$response = array('message' => 'Your password has been changed.');
+		$response = array('message' => 'Your password has been changed');
 
 	} else {
-		$error = [400, 'Bad Request', 'Invalid reset link.'];
+		$error = [400, 'Bad Request', 'Invalid reset link'];
 	}
 } else {
-	$error = [400,'Bad Request','No data.'];
+	$error = [400,'Bad Request','No data'];
 }

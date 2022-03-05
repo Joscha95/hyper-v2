@@ -100,21 +100,25 @@ module.exports = {
 		},
 
 
-		authenticate(){
+		authenticate(silent = true, logout = false){
 			
 			this.axios.post(
 				process.env.VUE_APP_API_URL + '?r=a',
-				{ id: this.sceneId, password: this.password },
+				{ id: logout=='logout' ? logout : this.sceneId, password: this.password },
 				{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 			).then(response => {
 				if(response.status === 200){
-					console.log('KORRRRRREKT')
+					// logged in
+					if(!silent){ this.$root.notify(response.data.message, 'success') }
+				}else if(response.status === 205){
+					// logged out
+					if(!silent){ this.$root.notify(response.data.description) }
 				}else{
 					console.error(response.data)
 				}
 			}).catch(error => {
 				if(error.response.status === 400){
-					this.$root.notify(error.response.data.description, 'error')
+					if(!silent){ this.$root.notify(error.response.data.description, 'error') }
 				}else{
 					console.error(error)
 				}

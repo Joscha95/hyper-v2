@@ -33,16 +33,16 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 			include_once('inc/mail.inc.php');
 						
 			if( $mail->send() ){
-				$response = array('message' => 'A mail with a password reset link has been sent. (check spam folder)');
+				$response = array('message' => 'A mail with a password reset link has been sent (check spam folder)');
 			} else {
 				$error = [500, 'Internal Server Error', 'Message could not be sent. Mailer Error: '.$mail->ErrorInfo];
 			}
 		} else {
-			$error = [500, 'Internal Server Error', 'Reset link could not be created.'];
+			$error = [500, 'Internal Server Error', 'Reset link could not be created'];
 		}
 	} else {
-		$error = [400, 'Bad Request', 'The provided mail address does not match this scene.'];
+		$error = [400, 'Bad Request', 'The provided mail address does not match this scene'];
 	}
 } else {
-	$error = [400,'Bad Request','No data.'];
+	$error = [400,'Bad Request','No data'];
 }
