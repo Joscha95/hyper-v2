@@ -100,13 +100,8 @@ module.exports = {
 		},
 
 
-<<<<<<< HEAD
 		authenticate(silent = true, logout = false){
 			
-=======
-		authenticate(){
-
->>>>>>> 7c91e2bcff397c1b4eb117bcdb500a7d04f6bf80
 			this.axios.post(
 				process.env.VUE_APP_API_URL + '?r=a',
 				{ id: logout=='logout' ? logout : this.sceneId, password: this.password },
@@ -165,9 +160,9 @@ module.exports = {
 						newNode.targetID = n.targetID
 						newNode.initDistance = n.initDistance
 					} else if(n.h_type=='lookout') {
-		        newNode.rx = n.rx
-		        newNode.ry = n.ry
-		        newNode.rz = n.rz
+				newNode.rx = n.rx
+				newNode.ry = n.ry
+				newNode.rz = n.rz
 					} else {
 						newNode.a_id =  n.a_id
 						newNode.class =  n.class
