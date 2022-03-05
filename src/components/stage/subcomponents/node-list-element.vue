@@ -1,6 +1,6 @@
 <template>
       <div v-if="isConnection && editmode" :type="element.h_type">
-        <textarea @focus="store.focused=true" @blur="store.focused=false" rows="5" v-model="element.content" placeholder="say something about the connection"></textarea>
+        <textarea @focus="store.focused=true" @blur="onBlurText" rows="5" v-model="element.content" placeholder="say something about the connection"></textarea>
       </div>
       <div v-else @click="store.selectedObject=element" class="drag_handle">
           <div class="draggable_list_item_thumb" v-if="element.imageUrl">
@@ -127,6 +127,10 @@ export default {
   methods: {
     log(evt){
       window.console.log(evt);
+    },
+    onBlurText(){
+      this.store.focused=false;
+      this.element.sceneElement.updateDisplayElement();
     },
     removeItem(){
       this.store.sceneList.splice(this.store.sceneList.indexOf(this.element),1);
