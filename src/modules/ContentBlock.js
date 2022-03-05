@@ -28,6 +28,7 @@ class ContentBlock {
     this.onStartLink=()=>{};
     this.onStartThread=()=>{};
     this.onDispose=()=>{};
+    this.onQuitThread=()=>{};
 
     this.domRect;
 
@@ -47,6 +48,8 @@ class ContentBlock {
     this.plane.add(cssObj);
     cssObj.position.set(0, 0, 0);
     this.contentItem.sceneElement=this;
+
+    this.canStartThread=true;
 
     this.scene.add(this.plane);
   }
@@ -112,29 +115,28 @@ class ContentBlock {
     //this.plane.visible=true;
     this.onFocus();
     this.dom.classList.add('focus')
-    this.toolbox=new Toolbar([
-      {name:'transform',text:'⨣',tooltip:'move element'},
-      {name:'center',text:'⊹',tooltip:'focus element'},
-      {name:'connection',text:'☌',tooltip:'make a new connection'},
-      {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic'},
-      {name:'thread',text:'☡',tooltip:'start weaving'},
-    ],
-    [
-      ()=>{this.objectControls.attach(this)},
-      ()=>{window.location.hash=this.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))},
-      ()=>{this.startLink()},
-      ()=>{this.toggleFixed()},
-      ()=>{this.startThread()},
-    ]);
+    const scope=this;
+    const options = [
+      {name:'transform',text:'⨣',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}},
+      {name:'center',text:'⊹',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
+      {name:'connection',text:'☌',tooltip:'make a new connection',callback:()=>{scope.startLink()}},
+      {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic',callback:()=>{scope.toggleFixed()}},
+    ]
+
+    if(this.canStartThread) {
+      options.push({name:'thread',text:'☡',tooltip:'start weaving',callback:()=>{scope.startThread()}});
+    } else if (this.isThreatStart || this.isThreatEnd) {
+      options.push({name:'thread',text:'c',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
+    }else if(this.isInThreat) {
+      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope)}});
+    }
+
+    this.toolbox=new Toolbar(options);
     this.updateToolBox()
   }
 
   toggleFixed(){
     this.contentItem.isFixed=!this.contentItem.isFixed;
-  }
-
-  startThread(){
-    this.onStartThread();
   }
 
   updateDisplayElement(){

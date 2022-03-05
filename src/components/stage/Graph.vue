@@ -6,13 +6,13 @@
   <div id="toolbox_wrapper"></div>
 
   <div id="chain_navigator" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement" >
-    <a v-if = "lastValidChainElement.from[0]" :href="'#'+lastValidChainElement.from[0].h_id"> {{ lastValidChainElement.from[0].name }} ⇢ </a>
+    <a v-if = "lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id"> {{ lastValidChainElement.from.name }} ⇢ </a>
 
     <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
     <div class="description" v-if="lastValidChainElement.description!=''">{{ lastValidChainElement.description }}</div>
     <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'">{{ lastValidChainElement.content }}</div>
 
-    <a v-if = "lastValidChainElement.to[0]" :href="'#'+lastValidChainElement.from[0].h_id"> ⇢ {{ lastValidChainElement.to[0].name }} </a>
+    <a v-if = "lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id"> ⇢ {{ lastValidChainElement.to.name }} </a>
   </div>
 
 
