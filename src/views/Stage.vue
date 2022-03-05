@@ -83,9 +83,6 @@ export default {
 					break;
 			}
 
-		},
-		password(newVal){
-			console.log(newVal);
 		}
 	},
 	methods: {
