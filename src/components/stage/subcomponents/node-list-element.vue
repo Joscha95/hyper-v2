@@ -125,9 +125,6 @@ export default {
     }
   },
   methods: {
-    log(evt){
-      window.console.log(evt);
-    },
     onBlurText(){
       this.store.focused=false;
       this.element.sceneElement.updateDisplayElement();
