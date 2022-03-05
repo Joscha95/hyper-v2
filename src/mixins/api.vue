@@ -101,7 +101,6 @@ module.exports = {
 
 
 		authenticate(){
-			//this.$root.popup('Please enter your password')
 			
 			this.axios.post(
 				process.env.VUE_APP_API_URL + '?r=a',
