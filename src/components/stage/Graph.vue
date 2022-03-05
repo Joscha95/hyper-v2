@@ -5,10 +5,13 @@
 
   <div id="toolbox_wrapper"></div>
 
-  <div id="chain_navigator" :class="currentActiveChainElement?'show':''" v-if="lastValidChainElement" >
+  <div id="chain_navigator" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement" >
     <a v-if = "lastValidChainElement.from[0]" :href="'#'+lastValidChainElement.from[0].h_id"> {{ lastValidChainElement.from[0].name }} ⇢ </a>
+
     <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
-    <div class="description" v-if="lastValidChainElement.description!=''">{{ lastValidChainElement.description }}</div> 
+    <div class="description" v-if="lastValidChainElement.description!=''">{{ lastValidChainElement.description }}</div>
+    <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'">{{ lastValidChainElement.content }}</div>
+
     <a v-if = "lastValidChainElement.to[0]" :href="'#'+lastValidChainElement.from[0].h_id"> ⇢ {{ lastValidChainElement.to[0].name }} </a>
   </div>
 
@@ -58,8 +61,8 @@ export default {
     currentItem(){
         return this.store.selectedObject
     },
-    currentActiveChainElement(){
-      return this.store.activeChainElement ? this.store.sceneList.find((n)=>n.h_id==this.store.activeChainElement ) : undefined;
+    currentelementInCameraView(){
+      return this.store.elementInCameraView ? this.store.sceneList.find((n)=>n.h_id==this.store.elementInCameraView ) : undefined;
     },
     nodesLength(){
       return this.graphData.nodes.length
@@ -82,7 +85,7 @@ export default {
       if(!newVal) return;
       this.THREEScene.focusItem(this.store.selectedObject.h_id,this.store.selectedObject.h_type)
     },
-    currentActiveChainElement(newVal){
+    currentelementInCameraView(newVal){
       if (newVal) this.lastValidChainElement=newVal
     },
     nodesLength(){
@@ -167,6 +170,10 @@ export default {
   user-select:none;
 }
 
+.description{
+  margin-top:.5em;
+  font-size:.7em;
+}
 
 #chain_navigator{
   position:fixed;

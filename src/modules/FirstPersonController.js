@@ -59,58 +59,54 @@ class FirstPersonController {
 
   update(){
     this.transformparent.translateOnAxis(this.direction,this.moveSpeed);
-			if (this.activeLookOut) {
-				const dist = this.transformparent.position.distanceTo(this.activeLookOut.position);
-				if (dist<100) {
-					if (!this.enteredLookout) {
-						this.activeLookOut.children[2].visible=false;
-						this.enteredLookout=true;
-						this.onenterLookout();
-					}
-				} else {
-					this.activeLookOut.children[2].visible=true;
-					if (this.enteredLookout) {
-						this.activeLookOut = null;
-						this.enteredLookout=false;
-						this.onleaveLookout();
-					}
+
+    if (this.activeLookOut) {
+			const dist = this.transformparent.position.distanceTo(this.activeLookOut.position());
+			if (dist<100) {
+				if (!this.enteredLookout) {
+					this.activeLookOut.activate();
+					this.enteredLookout=true;
+					this.onenterLookout(this.activeLookOut.h_id);
+				}
+			} else {
+				this.activeLookOut.deactivate();
+				if (this.enteredLookout) {
+					this.activeLookOut = null;
+					this.enteredLookout=false;
+					this.onleaveLookout();
 				}
 			}
+		}
 
-
-			if (this.moveToTarget) {
-				this.transformparent.position.lerp(this.moveTarget,0.1);
-        if(this.orbit) this.camera.position.setZ(this.camera.position.z + (this.camZtarg - this.camera.position.z)*0.15)
-				this.transformparent.quaternion.slerp(this.quatTarg, 0.06 );
-				this.onmove();
-				if (this.transformparent.position.distanceTo(this.moveTarget)<0.001
-						&& this.transformparent.quaternion.angleTo(this.quatTarg)<0.01) {
-							this.moveToTarget=false;
-				}
+		if (this.moveToTarget) {
+			this.transformparent.position.lerp(this.moveTarget,0.1);
+      if(this.orbit) this.camera.position.setZ(this.camera.position.z + (this.camZtarg - this.camera.position.z)*0.15)
+			this.transformparent.quaternion.slerp(this.quatTarg, 0.06 );
+			this.onmove();
+			if (this.transformparent.position.distanceTo(this.moveTarget)<0.001
+					&& this.transformparent.quaternion.angleTo(this.quatTarg)<0.01) {
+						this.moveToTarget=false;
 			}
+		}
 
-			this.direction.multiplyScalar(0.8);
+		this.direction.multiplyScalar(0.8);
 
-			if (this.direction.length()>0.001) {
-				this.onmove();
-				this.onchange();
+		if (this.direction.length()>0.001) {
+			this.onmove();
+			this.onchange();
 
-			} else if (this.isDragging) {
-				this.onchange();
-			}
+		} else if (this.isDragging) {
+			this.onchange();
+		}
   }
 
   moveTo(targetObj) {
     let targetPos = new Vector3();
-    targetObj.getWorldPosition(targetPos);
+    targetObj.dragObject.getWorldPosition(targetPos);
     let posOffset = 0;
-
     // Rotation
-    if (targetObj.type == "LOOKOUT") {
-      this.quatTarg = targetObj.quaternion.clone();
-      if (this.activeLookOut) {
-        this.activeLookOut.children[2].visible=true;
-      }
+    if (targetObj.h_type == "lookout") {
+      this.quatTarg = targetObj.dragObject.quaternion.clone();
       this.activeLookOut = targetObj;
       this.enteredLookout=false;
     } else {

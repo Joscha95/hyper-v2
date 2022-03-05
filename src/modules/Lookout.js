@@ -86,6 +86,14 @@ class Lookout {
     // this.updateToolBox()
   }
 
+  activate(){
+    this.group.children[2].visible=false
+  }
+
+  deactivate(){
+    this.group.children[2].visible=true
+  }
+
   startLink(){
     this.onStartLink(this);
   }

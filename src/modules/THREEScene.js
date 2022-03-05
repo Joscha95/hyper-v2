@@ -21,6 +21,8 @@ class THREEScene {
     this.aspect=this.width/this.height;
     this.cameraController=new FirstPersonController(domparent,cameraSettings,this.scene);
     this.cameraController.onmove=()=> this.onCamMove();
+    this.cameraController.onenterLookout=(h_id)=> this.onEnterLookout(h_id);
+    this.cameraController.onleaveLookout=()=> this.onLeaveLookout();
     this.blocks=[];
     this.connections=[];
     this.defaultMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
@@ -356,7 +358,7 @@ class THREEScene {
   onHashChange() {
     const target = this.blocks.find((b)=>b.h_id==location.hash.substr(1));
     if (target) {
-      this.cameraController.moveTo(target.dragObject);
+      this.cameraController.moveTo(target);
     }
   }
 
@@ -368,12 +370,12 @@ class THREEScene {
     const intersects = this.castRay(new THREE.Vector2());
     if (intersects[0] && intersects[0].distance<600) {
       const targ = intersects[0].object;
-      if (this.store.activeChainElement!=targ.refID) {
-        this.store.activeChainElement=targ.refID;
+      if (this.store.elementInCameraView!=targ.refID) {
+        this.store.elementInCameraView=targ.refID;
       }
 
     }else {
-      this.store.activeChainElement = undefined;
+      if(!this.cameraController.enteredLookout) this.store.elementInCameraView = undefined;
     }
 
     if(this.lineHelper)  this.lineHelper.update();
@@ -462,6 +464,14 @@ class THREEScene {
     }
 
     return new THREE.Box3(min,max);
+  }
+
+  onEnterLookout(h_id){
+    this.elementInCameraView=h_id;
+  }
+
+  onLeaveLookout(){
+    this.elementInCameraView=undefined;
   }
 }
 

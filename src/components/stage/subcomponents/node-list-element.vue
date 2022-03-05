@@ -1,13 +1,14 @@
 <template>
-      <div v-if="isConnection && editmode" :type="element.h_type">
-        <textarea @focus="store.focused=true" @blur="onBlurText" rows="5" v-model="element.content" placeholder="say something about the connection"></textarea>
+      <div v-if="needstextedit && editmode" :type="element.h_type">
+        <input v-if="h_type=='lookout' " @focus="store.focused=true" @blur="store.focused=false;" v-model="element.name" type="text" placeholder="title">
+        <textarea @focus="store.focused=true" @blur="onBlurText" rows="5" v-model="element.content" :placeholder="'say something about the '+h_type"></textarea>
       </div>
       <div v-else @click="store.selectedObject=element" class="drag_handle">
           <div class="draggable_list_item_thumb" v-if="element.imageUrl">
             <img :src="element.imageUrl">
           </div>
           <div class="draggable_list_item_content">
-            <span v-if="isConnection">{{ element.content }}</span>
+            <span v-if="h_type=='connection' ">{{ element.content }}</span>
            <span v-else-if="element.name">{{ element.name }}</span>
            <span v-else-if="element.class=='Text'">{{ element.content }}</span>
           </div>
@@ -16,10 +17,10 @@
       <div v-if="store.selectedObject==element">
         <div class="node_properties" >
           <toggle v-if="element.h_type!='lookout'" off="↔" on="⥿" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed"/>
-          <button v-if="isConnection" @click="editmode=!editmode" class="transparent_button">{{ editmode ? 'done' :'edit' }}</button>
+          <button v-if="needstextedit" @click="editmode=!editmode" class="transparent_button">{{ editmode ? 'done' :'edit' }}</button>
         </div>
 
-        <div class="connection_properties" v-if="isConnection">
+        <div class="connection_properties" v-if="h_type=='connection' ">
           <span class="connection_property_circle" @click="element=connectedNodes.source" :title="connectedNodes.source.name"></span>
           <draggableNumber :value="linkDistance" v-model="linkDistance"/>
           <span class="connection_property_circle" @click="element=connectedNodes.target" :title="connectedNodes.target.name"></span>
@@ -51,7 +52,8 @@ export default {
       store:this.$root.store,
       editmode:false,
       remove:false,
-      isConnection:this.element.h_type=='connection'
+      h_type:this.element.h_type,
+      needstextedit:this.element.h_type=='connection' || this.element.h_type=='lookout'
     };
   },
   computed:{
