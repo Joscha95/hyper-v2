@@ -10,7 +10,7 @@
 		</div>
 	</div>
 	<div id="camera_controls" :class="{margin_right:showEditor}">
-		<span v-if="loggedIn" @click="$emit('addLookout')">◅ </span>
+		<span v-if="loggedIn" @click="$emit('addLookout')">⩥ </span>
 		<span @click="store.isOrbit=!store.isOrbit">{{store.isOrbit ? '⟴' :'⥁'}}</span>
 	</div>
 </template>
@@ -21,7 +21,7 @@
 <script>
 export default {
 	props: [
-		'loggedIn', 
+		'loggedIn',
 		'showEditor'
 	],
 	data(){
@@ -30,7 +30,7 @@ export default {
 		}
 	},
 	emits: [
-		'toggleEditor', 
+		'toggleEditor',
 		'addLookout',
 		'login'
 	],
