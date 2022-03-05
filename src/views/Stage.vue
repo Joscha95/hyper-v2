@@ -65,7 +65,7 @@ export default {
 					this.$root.store.unsavedChanges = this.initScene ? -1 : 0;
 					if(this.needsInit) this.$refs.sceneComponent.init()
 					if(!this.needsInit) this.$refs.sceneComponent.updateContents(this.channel.contents)
-					this.needsInit=false
+					this.needsInit=false;
 
 					break;
 				// MOVED PERMANENTLY
