@@ -149,7 +149,7 @@ class THREEScene {
       } else {
         nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
       }
-      nn.onStartLink=(ele)=>{this.startConnection(ele,'connection')};
+      nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
       this.blocks.push(nn);
     });
 
@@ -184,7 +184,7 @@ class THREEScene {
       } else {
         nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
       }
-      nn.onStartLink=(ele)=>{this.startConnection(ele,'connection')};
+      nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
       this.blocks.push(nn);
       });
 
@@ -442,7 +442,7 @@ class THREEScene {
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj);
     middleNodePlane.onFocus=()=>{con.focus()};
     middleNodePlane.onBlur=()=>{con.blur()};
-    middleNodePlane.onStartLink=(ele)=>{this.startConnection(ele,'connection')};
+    middleNodePlane.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
     this.blocks.push(middleNodePlane);
 
     const nl=con.createNew(node);
