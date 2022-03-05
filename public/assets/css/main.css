@@ -56,6 +56,9 @@ a:hover, a:focus, a:active {
 	color: black;
 	text-decoration-style: solid;
 }
+.bold {
+	font-weight: bold;
+}
 
 .page {
 	max-width: 600px;

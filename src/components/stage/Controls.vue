@@ -6,7 +6,7 @@
 		<div v-if="loggedIn" id="main_button" @click="$emit('toggleEditor')">
 			<span id="main_button_text">Editor</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
 		</div>
-		<div v-else id="main_button" @click="$emit('login')">
+		<div v-else id="main_button" @click="showSettings=!showSettings">
 			<span id="main_button_text">Login</span>
 		</div>
 	</div>
@@ -18,21 +18,21 @@
 	
 	<div id="settings" class="popup" v-if="showSettings">
 		<div class="popup_body">
-			<input type="password" v-model.trim="password">
-			<button @click="recover">recover</button>
+			<input type="password" :value="password" @keyup="$emit('update:modelValue', $event.target.value)"  >
+			<p @click="$emit('login')">Login</p>
+			<p @click="$emit('recover')">Forgot password?</p>
 		</div>
 		<div class="popup_close_button" @click="showSettings=false">close</div>
 	</div>
 	
 </template>
 
-<!--<input type="password" v-model.trim="password">
-<button @click="recover">recover</button>-->
 
 <script>
 export default {
 	props: [
 		'loggedIn',
+		'password',
 		'showEditor'
 	],
 	data(){
@@ -44,7 +44,9 @@ export default {
 	emits: [
 		'toggleEditor',
 		'addLookout',
-		'login'
+		'login',
+		'recover',
+		'update:modelValue'
 	],
 }
 </script>

@@ -101,7 +101,25 @@ module.exports = {
 
 
 		authenticate(){
-			this.$root.popup('Please enter your password')
+			//this.$root.popup('Please enter your password')
+			
+			this.axios.post(
+				process.env.VUE_APP_API_URL + '?r=a',
+				{ id: this.sceneId, password: this.password },
+				{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
+			).then(response => {
+				if(response.status === 200){
+					console.log('KORRRRRREKT')
+				}else{
+					console.error(response.data)
+				}
+			}).catch(error => {
+				if(error.response.status === 400){
+					this.$root.notify(error.response.data.description, 'error')
+				}else{
+					console.error(error)
+				}
+			})
 		},
 
 

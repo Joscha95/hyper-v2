@@ -17,6 +17,9 @@ if(isset($_GET['r'])){
 		case 's':
 			include_once('route/save.inc.php');
 			break;
+		case 'a':
+			include_once('route/auth.inc.php');
+			break;
 		case 'cs':
 			include_once('route/changeslug.inc.php');
 			break;
