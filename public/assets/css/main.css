@@ -180,5 +180,34 @@ button.transparent_button:hover {
 
 
 
+/* POPUP */
 
-
+.popup {
+	background: white;
+	box-shadow: 0 0 0 4px rgba(0,0,0,.1);
+	position: fixed;
+	top: 45%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 24rem;
+	box-sizing: border-box;
+	padding: 1.8em 2em 1em 2em;
+	z-index: 1000;
+	max-width: 80%;
+	border-radius: .5rem;
+	font-size: .9em;
+	line-height: 1.5em;
+}
+.popup_body {
+	margin-bottom: 1.5em;
+	color: black;
+}
+.popup_close_button {
+	text-align: center;
+	color: var(--main-mediumgray-color);
+	font-weight: bold;
+}
+.popup_close_button:hover {
+	color: black;
+	cursor: pointer;
+}

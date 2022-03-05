@@ -1,4 +1,5 @@
 <template>
+	
 	<div id="controls_header">
 		<div id="help_button">?</div>
 		<div v-if="loggedIn" id="settings_button" title="Settings">Settings</div>
@@ -9,10 +10,20 @@
 			<span id="main_button_text">Login</span>
 		</div>
 	</div>
+	
 	<div id="camera_controls" :class="{margin_right:showEditor}">
 		<span v-if="loggedIn" @click="$emit('addLookout')">⩥ </span>
 		<span @click="store.isOrbit=!store.isOrbit">{{store.isOrbit ? '⟴' :'⥁'}}</span>
 	</div>
+	
+	<div id="settings" class="popup" v-if="showSettings">
+		<div class="popup_body">
+			<input type="password" v-model.trim="password">
+			<button @click="recover">recover</button>
+		</div>
+		<div class="popup_close_button" @click="showSettings=false">close</div>
+	</div>
+	
 </template>
 
 <!--<input type="password" v-model.trim="password">
@@ -27,6 +38,7 @@ export default {
 	data(){
 		return{
 			store: this.$root.store,
+			showSettings: false
 		}
 	},
 	emits: [
