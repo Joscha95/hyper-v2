@@ -67,11 +67,11 @@ class ContentBlock {
   }
 
   startLink(){
-    this.onStartLink(this);
+    this.onStartLink(this,'connection');
   }
 
   startThread(){
-    this.onStartThread(this);
+    this.onStartLink(this,'thread');
   }
 
   position(){
