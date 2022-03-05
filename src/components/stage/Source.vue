@@ -1,5 +1,5 @@
 <template>
-  <div id="source" v-if="this.$root.store.showSource">
+  <div id="source">
     <div id="source_header">
       <button id="refresh_button" @click="$emit('update')" title="Refresh blocks">↻</button>
       <searchbar @search="filterBlocks" title="Search blocks" />

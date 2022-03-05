@@ -64,6 +64,49 @@ a:hover, a:focus, a:active {
 }
 
 
+
+/* HEADER */
+
+#logo {
+	position: fixed;
+	top: 1rem;
+	left: 1rem;
+	box-sizing: border-box;
+	z-index: var(--main-layer-two);
+	color: var(--main-mediumgray-color);
+}
+#app_name {
+	text-decoration: none;
+	position: absolute;
+	right: -.3em;
+	top: 0;
+	font-size: .75em;
+	line-height: .75em;
+	transform: translateX(100%);
+}
+#header_title {
+	color: black;
+	cursor: pointer;
+}
+#logo:not(.disabled) #header_title:hover:after, #logo.opened:not(.disabled) #header_title:after {
+	content: '▼';
+	font-size: .5em;
+	margin-left: .5em;
+	position: relative;
+	top: -2px;
+}
+#logo.opened:not(.disabled) #header_title:after {
+	content: '▲';
+}
+.header_nav_link {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+}
+
+
+
+
 /* FORMS */
 
 input {

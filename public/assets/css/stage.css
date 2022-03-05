@@ -235,6 +235,8 @@ input.searchbar {
 }
 #help_button, #settings_button {
 	margin-right: 2rem;
+	position: relative;
+	top: 1px;
 }
 #help_button {
 	cursor: pointer;

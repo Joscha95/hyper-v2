@@ -1,17 +1,17 @@
 <template>
-	<Graph ref="sceneComponent"/>
-	<Controls @toggleEditor="toggleEditor" :showEditor="showEditor" :loggedIn="$root.store.loggedIn" @login="authenticate" @addLookout="addLookout"/>
+	<Header :title="this.headerTitle" @click="toggleSource" :class="{opened:showSource, disabled:!loggedIn}"/>
+	<Controls @toggleEditor="toggleEditor" :showEditor="showEditor" :loggedIn="this.loggedIn" @login="authenticate" @addLookout="addLookout"/>
 	<Editor v-show="showEditor" @save="save"/>
-	<Source v-if="$root.store.loggedIn" @update="update" :blocks="channel.contents"/>
-	<!--<input type="password" v-model.trim="password">
-	<button @click="recover">recover</button>-->
+	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
+	<Graph ref="sceneComponent"/>
 </template>
 
 <script>
-import Graph from '@/components/stage/Graph.vue'
+import Header from '@/components/Header.vue'
 import Controls from '@/components/stage/Controls.vue'
 import Editor from '@/components/stage/Editor.vue'
 import Source from '@/components/stage/Source.vue'
+import Graph from '@/components/stage/Graph.vue'
 
 export default {
 	mixins: [
@@ -25,21 +25,24 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
+			loggedIn: true,
 			password: '12345678',
 			initScene: [],
 			needsInit: true,
-			showEditor: false
+			showSource: true,
+			showEditor: false,
+			headerTitle: ''
 		}
 	},
 	components: { 
-		Graph, Controls, Editor, Source 
+		Header, Controls, Editor, Source, Graph
 	},
 	mounted() {
 		this.get()
 	},
 	watch: {
 		state(newState) {
-			document.body.classList = ['state_'+newState];
+			document.body.classList = ['state_'+newState]
 			switch (this.state) {
 				// NOT FOUND
 				case -1:
@@ -51,18 +54,18 @@ export default {
 					break;
 				// UPDATING
 				case 2:
-					this.$root.store.channelTitle = 'loading...'
+					this.headerTitle = 'loading...'
 					break;
 				// UPDATED
 				case 3:
 					this.$root.notify('Channel has been updated.', 'success')
-					this.$root.store.channelTitle = this.channel.title
 					this.state = 1
-					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : [];
-					this.$root.store.connectionCount = this.initScene ? this.initScene.scene_data.connectionCount : 0;
-					if(this.needsInit) this.$refs.sceneComponent.init();
-					this.needsInit=false;
-					this.$refs.sceneComponent.updateContents(this.channel.contents);
+					this.headerTitle = this.channel.title
+					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : []
+					this.$root.store.connectionCount = this.initScene ? this.initScene.scene_data.connectionCount : 0
+					if(this.needsInit) this.$refs.sceneComponent.init()
+					this.needsInit=false
+					this.$refs.sceneComponent.updateContents(this.channel.contents)
 					break;
 				// MOVED PERMANENTLY
 				case 4:
@@ -84,6 +87,11 @@ export default {
 	methods: {
 		addLookout(){
 			this.$refs.sceneComponent.addLookout();
+		},
+		toggleSource () {
+			if(this.loggedIn){
+				this.showSource = !this.showSource
+			}
 		},
 		toggleEditor () {
 			this.showEditor = !this.showEditor

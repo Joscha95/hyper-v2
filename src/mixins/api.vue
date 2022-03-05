@@ -106,7 +106,7 @@ module.exports = {
 
 
 		save(){
-			if(this.password) {
+			if(this.loggedIn) {
 
 				const scene_objects = this.$root.store.sceneList.map((n)=> {
 					const newNode= {
@@ -182,7 +182,7 @@ module.exports = {
 					})
 				}
 			} else {
-				this.$root.notify('Please enter a password.')
+				this.$root.notify('Please log in.')
 			}
 		},
 

@@ -1,7 +1,7 @@
 <template>
 	<Notification :notification="this.notification"/>
 	<PopupBox :popupBox="this.popupBox"/>
-	<Header/>
+	<Header v-if="$route.name!='Stage'"/>
 	<main :class="$route.name">
 		<router-view/>
 	</main>

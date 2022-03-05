@@ -37,5 +37,5 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 	}
 	
 } else {
-	$error = [400,'Bad Request','No data.'];
+	$error = [400,'Bad Request','No data'];
 }
