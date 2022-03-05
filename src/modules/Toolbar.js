@@ -34,7 +34,6 @@ class Toolbar {
   }
 
   setPos(x,y){
-    this.dom.style.display= culled ? 'none' : 'block';
     this.dom.style.top=y+'px';
     this.dom.style.left=x+'px';
   }
