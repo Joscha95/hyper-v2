@@ -98,8 +98,8 @@ module.exports = {
 				console.error(error)
 			})
 		},
-		
-		
+
+
 		authenticate(){
 			this.$root.popup('Please enter your password')
 		},
@@ -116,6 +116,7 @@ module.exports = {
 						val: n.val,
 						from: n.from.map((f) => f.h_id),
 						content: n.content,
+						description: n.description,
 						isFixed: n.isFixed,
 						x: n.x,
 						y: n.y,

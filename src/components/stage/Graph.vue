@@ -7,7 +7,8 @@
 
   <div id="chain_navigator" :class="currentActiveChainElement?'show':''" v-if="lastValidChainElement" >
     <a v-if = "lastValidChainElement.from[0]" :href="'#'+lastValidChainElement.from[0].h_id"> {{ lastValidChainElement.from[0].name }} ⇢ </a>
-    {{ lastValidChainElement.name }}
+    <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
+    <div class="description" v-if="lastValidChainElement.description!=''">{{ lastValidChainElement.description }}</div> 
     <a v-if = "lastValidChainElement.to[0]" :href="'#'+lastValidChainElement.from[0].h_id"> ⇢ {{ lastValidChainElement.to[0].name }} </a>
   </div>
 
