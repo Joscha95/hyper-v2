@@ -6,7 +6,7 @@ const store = reactive({
   isDragging:false,
   sceneList:[],
   focused:false,
-  activeChainElement:undefined,
+  elementInCameraView:undefined,
   connectionCount:0,
   unsavedChanges:0,
   isOrbit:false

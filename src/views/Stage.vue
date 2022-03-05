@@ -25,7 +25,7 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			loggedIn: false,
+			loggedIn: true,
 			password: '12345678',
 			initScene: [],
 			needsInit: true,
