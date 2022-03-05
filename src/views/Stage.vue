@@ -34,7 +34,7 @@ export default {
 			headerTitle: ''
 		}
 	},
-	components: { 
+	components: {
 		Header, Controls, Editor, Source, Graph
 	},
 	mounted() {
@@ -64,8 +64,9 @@ export default {
 					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : []
 					this.$root.store.connectionCount = this.initScene ? this.initScene.scene_data.connectionCount : 0
 					if(this.needsInit) this.$refs.sceneComponent.init()
+					if(!this.needsInit) this.$refs.sceneComponent.updateContents(this.channel.contents)
 					this.needsInit=false
-					this.$refs.sceneComponent.updateContents(this.channel.contents)
+
 					break;
 				// MOVED PERMANENTLY
 				case 4:
