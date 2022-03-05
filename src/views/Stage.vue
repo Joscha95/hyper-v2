@@ -62,7 +62,7 @@ export default {
 					this.state = 1
 					this.headerTitle = this.channel.title
 					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : []
-					this.$root.store.unsavedChanges = this.initScene ? -1 : 0;
+					this.$root.store.connectionCount = this.initScene ? this.initScene.scene_data.connectionCount : 0
 					if(this.needsInit) this.$refs.sceneComponent.init()
 					if(!this.needsInit) this.$refs.sceneComponent.updateContents(this.channel.contents)
 					this.needsInit=false
