@@ -26,6 +26,7 @@ class ContentBlock {
     this.onBlur=()=>{};
     this.onFocus=()=>{};
     this.onStartLink=()=>{};
+    this.onStartThread=()=>{};
     this.onDispose=()=>{};
 
     this.domRect;
@@ -67,6 +68,10 @@ class ContentBlock {
 
   startLink(){
     this.onStartLink(this);
+  }
+
+  startThread(){
+    this.onStartThread(this);
   }
 
   position(){
@@ -111,19 +116,25 @@ class ContentBlock {
       {name:'transform',text:'⨣',tooltip:'move element'},
       {name:'center',text:'⊹',tooltip:'focus element'},
       {name:'connection',text:'☌',tooltip:'make a new connection'},
-      {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic'}
+      {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic'},
+      {name:'thread',text:'☡',tooltip:'start weaving'},
     ],
     [
       ()=>{this.objectControls.attach(this)},
       ()=>{window.location.hash=this.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))},
       ()=>{this.startLink()},
-      ()=>{this.toggleFixed()}
+      ()=>{this.toggleFixed()},
+      ()=>{this.startThread()},
     ]);
     this.updateToolBox()
   }
 
   toggleFixed(){
     this.contentItem.isFixed=!this.contentItem.isFixed;
+  }
+
+  startThread(){
+    this.onStartThread();
   }
 
   updateDisplayElement(){
