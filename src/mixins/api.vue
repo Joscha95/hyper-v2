@@ -101,7 +101,7 @@ module.exports = {
 
 
 		authenticate(silent = true, logout = false){
-			
+
 			this.axios.post(
 				process.env.VUE_APP_API_URL + '?r=a',
 				{ id: logout=='logout' ? logout : this.sceneId, password: this.password },
@@ -174,7 +174,7 @@ module.exports = {
 
 				const scene_data={
 					scene_data:{
-						connectionCount:this.$root.store.connectionCount
+						thread:this.$root.store.thread.map((n)=> n.h_id)
 					},
 					scene_objects:scene_objects
 				}

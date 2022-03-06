@@ -1,16 +1,16 @@
 <template>
 	<Header :title="headerTitle" @click="toggleSource" :class="{opened:showSource, disabled:!loggedIn}"/>
-	<Controls 
-		:showEditor="showEditor" 
-		:loggedIn="loggedIn" 
-		:email="email" 
-		:password="password" 
-		v-model:email="email" 
-		v-model:password="password" 
-		@login="authenticate(false)" 
-		@logout="authenticate(false, 'logout')" 
-		@recover="authenticate()" 
-		@toggleEditor="toggleEditor" 
+	<Controls
+		:showEditor="showEditor"
+		:loggedIn="loggedIn"
+		:email="email"
+		:password="password"
+		v-model:email="email"
+		v-model:password="password"
+		@login="authenticate(false)"
+		@logout="authenticate(false, 'logout')"
+		@recover="authenticate()"
+		@toggleEditor="toggleEditor"
 		@addLookout="addLookout"
 	/>
 	<Editor v-show="showEditor" @save="save"/>
@@ -37,7 +37,7 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			loggedIn: false,
+			loggedIn: true,
 			email: 'asd@asd.de',
 			password: '12345678',
 			initScene: [],
@@ -76,6 +76,7 @@ export default {
 					this.headerTitle = this.channel.title
 					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : []
 					this.$root.store.unsavedChanges = this.initScene ? -1 : 0;
+					this.$root.store.
 					if(this.needsInit) this.$refs.sceneComponent.init()
 					if(!this.needsInit) this.$refs.sceneComponent.updateContents(this.channel.contents)
 					this.needsInit=false
