@@ -9,7 +9,7 @@
     <a v-if = "lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id"> {{ lastValidChainElement.from.name }} ⇢ </a>
 
     <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
-    <div class="description" v-if="lastValidChainElement.description!=''">{{ lastValidChainElement.description }}</div>
+    <div class="description" v-if="lastValidChainElement.description!=''"  v-html="lastValidChainElement.description"></div>
     <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'">{{ lastValidChainElement.content }}</div>
 
     <a v-if = "lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id"> ⇢ {{ lastValidChainElement.to.name }} </a>
@@ -67,6 +67,9 @@ export default {
     nodesLength(){
       return this.graphData.nodes.length
     },
+    threadLength(){
+      return this.store.thread.length
+    },
     sceneList(){
       return this.$root.store.sceneList
     },
@@ -91,6 +94,9 @@ export default {
     nodesLength(){
       this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
       this.forceSimulation.updateGraph()
+      this.store.unsavedChanges++;
+    },
+    threadLength(){
       this.store.unsavedChanges++;
     },
     isOrbit(val){

@@ -33,7 +33,7 @@ class THREEScene {
     this.store=store;
     this.blockGeometries=[];
 
-    this.thread = new Thread(this.scene);
+    this.thread = new Thread(this.scene,store);
 
     this.scale_factor = .2;
 
@@ -122,7 +122,7 @@ class THREEScene {
           }
 
           this.forceSimulation.reheat();
-          block.updateToolBox()
+          block.updateToolbox()
           if(block.h_type=='lookout') block.updateBounds()
         }else if(block.h_type!='lookout') {
           block.setPos(simPos);
@@ -133,6 +133,8 @@ class THREEScene {
       for (const connection of this.connections) {
         connection.update();
       }
+
+      this.thread.updateSpline()
     }
 
 
@@ -372,7 +374,7 @@ class THREEScene {
   onCamMove(){
     this.blocks.forEach((item, i) => {
       item.lookAt(this.cameraController.position());
-      item.updateToolBox();
+      item.updateToolbox();
     });
     const intersects = this.castRay(new THREE.Vector2());
     if (intersects[0] && intersects[0].distance<600) {
@@ -445,6 +447,7 @@ class THREEScene {
 
     }
 
+    this.lineHelper.startObject.updateToolboxOptions();
     this.lineHelper=null;
   }
 

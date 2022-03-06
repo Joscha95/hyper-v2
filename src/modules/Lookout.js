@@ -69,22 +69,14 @@ class Lookout {
     this.canStartThread=true;
   }
 
-  updateToolBox(){
-    if(!this.toolbox) return;
-    const pos = this.outerBound.clone().project(this.camera)
 
-    pos.x = (pos.x * this.widthHalf) + this.widthHalf;
-    pos.y = - (pos.y * this.heightHalf) + this.heightHalf;
-    pos.z = 0;
-    this.toolbox.setPos(pos.x,pos.y)
-  }
 
   lookAt(){
   }
 
   setPos(pos){
     //this.group.position.set(pos.x,pos.y,pos.z);
-    // this.updateToolBox()
+    // this.updateToolbox()
   }
 
   activate(){
@@ -96,7 +88,10 @@ class Lookout {
   }
 
   startLink(){
-    this.onStartLink(this);
+    this.onStartLink(this,'connection');
+  }
+  startThread(){
+    this.onStartLink(this,'thread');
   }
 
   position(){
@@ -124,6 +119,14 @@ class Lookout {
     this.updateBounds();
     this.widthHalf = window.innerWidth / 2;
     this.heightHalf = window.innerHeight / 2;
+    this.objectControls.detach();
+    this.updateToolboxOptions()
+  }
+
+  updateToolboxOptions(){
+    if(this.toolbox) this.toolbox.dispose();
+    this.toolbox=null;
+
     const scope=this;
     const options = [
       {name:'transform',text:'⨣',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}},
@@ -140,7 +143,17 @@ class Lookout {
     }
 
     this.toolbox=new Toolbar(options);
-    this.updateToolBox()
+    this.updateToolbox()
+  }
+
+  updateToolbox(){
+    if(!this.toolbox) return;
+    const pos = this.outerBound.clone().project(this.camera)
+
+    pos.x = (pos.x * this.widthHalf) + this.widthHalf;
+    pos.y = - (pos.y * this.heightHalf) + this.heightHalf;
+    pos.z = 0;
+    this.toolbox.setPos(pos.x,pos.y)
   }
 
   toggleFixed(){

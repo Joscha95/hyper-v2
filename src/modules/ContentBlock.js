@@ -54,11 +54,7 @@ class ContentBlock {
     this.scene.add(this.plane);
   }
 
-  updateToolBox(){
-    if(!this.toolbox) return;
-    this.domRect=this.dom.getBoundingClientRect();
-    this.toolbox.setPos(this.domRect.right,this.domRect.top)
-  }
+
 
   lookAt(pos){
     this.plane.lookAt(pos)
@@ -66,7 +62,7 @@ class ContentBlock {
 
   setPos(pos){
     this.plane.position.set(pos.x,pos.y,pos.z);
-    this.updateToolBox()
+    this.updateToolbox()
   }
 
   startLink(){
@@ -115,6 +111,14 @@ class ContentBlock {
     //this.plane.visible=true;
     this.onFocus();
     this.dom.classList.add('focus')
+    this.updateToolboxOptions();
+    this.objectControls.detach()
+  }
+
+  updateToolboxOptions(){
+    if(this.toolbox) this.toolbox.dispose();
+    this.toolbox=null;
+
     const scope=this;
     const options = [
       {name:'transform',text:'⨣',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}},
@@ -132,7 +136,13 @@ class ContentBlock {
     }
 
     this.toolbox=new Toolbar(options);
-    this.updateToolBox()
+    this.updateToolbox()
+  }
+
+  updateToolbox(){
+    if(!this.toolbox) return;
+    this.domRect=this.dom.getBoundingClientRect();
+    this.toolbox.setPos(this.domRect.right,this.domRect.top)
   }
 
   toggleFixed(){
