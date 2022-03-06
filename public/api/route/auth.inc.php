@@ -3,15 +3,16 @@
 if( $data=json_decode(file_get_contents('php://input')) ) {
 
 	$id = intval($data->id);
+	$email = filter_var($data->email, FILTER_SANITIZE_EMAIL);
 	$password = $data->password;
 	
-	if( $password != '' )
+	if( $email != '' && $password != '' )
 	{
-		$result = $mysqli->query("SELECT password FROM scenes WHERE id = $id;")->fetch_assoc();
+		$result = $mysqli->query("SELECT email, password FROM scenes WHERE id = $id;")->fetch_assoc();
 		
-		if( !isset($result['password']) OR !password_verify($password, $result['password']) )
+		if( !isset($result['email']) OR $email != $result['email'] OR !password_verify($password, $result['password']) )
 		{
-			$error = [400, 'Bad Request', 'Wrong password'];
+			$error = [400, 'Bad Request', 'Credentials incorrect'];
 		}	
 	}
 	
@@ -20,4 +21,3 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 } else {
 	$error = [400,'Bad Request','No data'];
 }
-

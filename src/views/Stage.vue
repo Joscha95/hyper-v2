@@ -9,7 +9,7 @@
 		v-model:password="password"
 		@login="authenticate(false)"
 		@logout="authenticate(false, 'logout')"
-		@recover="authenticate()"
+		@recover="recover"
 		@toggleEditor="toggleEditor"
 		@addLookout="addLookout"
 	/>
@@ -37,7 +37,7 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			loggedIn: true,
+			loggedIn: false,
 			email: 'asd@asd.de',
 			password: '12345678',
 			initScene: [],
@@ -51,6 +51,7 @@ export default {
 		Header, Controls, Editor, Source, Graph
 	},
 	mounted() {
+		this.authenticate()
 		this.get()
 	},
 	watch: {

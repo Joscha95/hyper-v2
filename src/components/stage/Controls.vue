@@ -2,12 +2,12 @@
 
 	<div id="controls_header">
 		<div id="help_button">?</div>
-		<div v-if="loggedIn" id="settings_button" title="Settings">Settings</div>
+		<div v-if="loggedIn" id="settings_button" title="Settings" @click="showSettings=!showSettings">Settings</div>
 		<div v-if="loggedIn" id="main_button" @click="$emit('toggleEditor')">
 			<span id="main_button_text">Editor</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
 		</div>
 		<div v-else id="main_button" @click="showSettings=!showSettings">
-			<span id="main_button_text">Login</span>
+			<span id="main_button_text">Log in</span>
 		</div>
 	</div>
 
@@ -92,10 +92,12 @@ export default {
 }
 #recover_button {
 	position: absolute;
-	right: .5em;
+	right: 1.4em;
 	font-size: .7em;
 	cursor: pointer;
-	color: var(--main-darkgray-color);
+	color: var(--main-mediumgray-color);
+	line-height: 0;
+	top: 49%;
 }
 #recover_button:hover {
 	color: black;

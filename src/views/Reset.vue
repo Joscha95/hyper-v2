@@ -3,8 +3,7 @@
 	<section class="page">
 		<form @submit.prevent="submit">
 			<h1>Password reset</h1>
-			<p>Please enter a new password:</p>
-			<label><strong>Password</strong> (for managing the hyper)<span id="pwLInd">{{ password.length }} > {{ passwordMinLength-1 }}</span></label>
+			<label><strong>Choose new password</strong><span id="pwLInd">{{ password.length }} > {{ passwordMinLength-1 }}</span></label>
 			<input type="password" v-model.trim="password" :class="{ valid: isValid }" minlength="{{ passwordMinLength }}" maxlength="255" required>
 			<button type="submit" :disabled="!isValid">reset password</button>
 		</form>
@@ -49,6 +48,9 @@
 </script>
 
 <style scoped>
+	h1 {
+		margin-bottom: 1.5em;
+	}
 	form {
 		margin: 5rem auto 0 auto;
 		text-align: center;
@@ -57,6 +59,10 @@
 	input, label {
 		width: 100%;
 		display: block;
+		text-align: left;
+	}
+	button[type="submit"]{
+		margin-top: 2rem;
 	}
 	#pwLInd {
 		float: right;

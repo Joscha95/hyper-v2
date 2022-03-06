@@ -27,11 +27,13 @@ else if ( $id == 'logout' )
 }
 else if ( isset($error[0]) )
 {	
+	// Error set in route
 	session_unset();
 }
 else
 {	
-	$error = [400, 'Bad Request', 'Wrong password'];
+	// Fallback
+	$error = [400, 'Bad Request', 'Credentials incorrect'];
 	session_unset();
 }
 

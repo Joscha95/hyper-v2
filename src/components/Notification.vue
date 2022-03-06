@@ -26,7 +26,8 @@ export default {
 		position: fixed;
 		left: 50%;
 		top: 0em;
-		width: 300px;
+		min-width: 300px;
+		max-width: 50%;
 		font-size: .9em;
 		transform: translate(-50%, -100%);
 		padding: 1em 1.3em;

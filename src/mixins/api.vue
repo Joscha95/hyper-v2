@@ -104,22 +104,27 @@ module.exports = {
 
 			this.axios.post(
 				process.env.VUE_APP_API_URL + '?r=a',
-				{ id: logout=='logout' ? logout : this.sceneId, password: this.password },
+				{ id: logout=='logout' ? logout : this.sceneId, email: this.email, password: this.password },
 				{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 			).then(response => {
 				if(response.status === 200){
 					// logged in
+					this.loggedIn = true
 					if(!silent){ this.$root.notify(response.data.message, 'success') }
 				}else if(response.status === 205){
 					// logged out
+					this.loggedIn = false
 					if(!silent){ this.$root.notify(response.data.description) }
 				}else{
+					this.loggedIn = false
 					console.error(response.data)
 				}
 			}).catch(error => {
 				if(error.response.status === 400){
+					this.loggedIn = false
 					if(!silent){ this.$root.notify(error.response.data.description, 'error') }
 				}else{
+					this.loggedIn = false
 					console.error(error)
 				}
 			})
@@ -184,7 +189,7 @@ module.exports = {
 				} else {
 					this.axios.post(
 						process.env.VUE_APP_API_URL + '?r=s',
-						{ id: this.sceneId, password: this.password, scene: scene_data },
+						{ id: this.sceneId, email: this.email, password: this.password, scene: scene_data },
 						{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 					).then(response => {
 						if(response.status === 200){
@@ -208,15 +213,14 @@ module.exports = {
 
 
 		recover(){
-			var email = prompt('Please enter the mail address for this scene.')
-			if( email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ){
+			if( this.email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ){
 				this.axios.post(
 					process.env.VUE_APP_API_URL + '?r=r',
-					{ id: this.sceneId, email: email },
+					{ id: this.sceneId, email: this.email },
 					{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 				).then(response => {
 					if(response.status === 200){
-						this.$root.notify(response.data.message, 'success')
+						this.$root.notify(response.data.message, 'success', 7000)
 					}else{
 						console.error(response.data)
 					}
@@ -228,7 +232,7 @@ module.exports = {
 					}
 				})
 			} else {
-				this.$root.notify('The entered address it not a valid mail address.', 'error')
+				this.$root.notify('Please enter a valid Email')
 			}
 		}
 
