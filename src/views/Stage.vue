@@ -76,7 +76,7 @@ export default {
 					this.headerTitle = this.channel.title
 					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : []
 					this.$root.store.unsavedChanges = this.initScene ? -1 : 0;
-					this.$root.store.
+					this.$root.store.thread = this.initScene && this.initScene.scene_data.thread ? this.initScene.scene_data.thread : []
 					if(this.needsInit) this.$refs.sceneComponent.init()
 					if(!this.needsInit) this.$refs.sceneComponent.updateContents(this.channel.contents)
 					this.needsInit=false
