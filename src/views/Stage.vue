@@ -1,6 +1,18 @@
 <template>
 	<Header :title="headerTitle" @click="toggleSource" :class="{opened:showSource, disabled:!loggedIn}"/>
-	<Controls :showEditor="showEditor" :loggedIn="loggedIn" :password="password" v-model:password="password" @login="authenticate(false)" @logout="authenticate(false, 'logout')" @recover="authenticate()" @toggleEditor="toggleEditor" @addLookout="addLookout"/>
+	<Controls 
+		:showEditor="showEditor" 
+		:loggedIn="loggedIn" 
+		:email="email" 
+		:password="password" 
+		v-model:email="email" 
+		v-model:password="password" 
+		@login="authenticate(false)" 
+		@logout="authenticate(false, 'logout')" 
+		@recover="authenticate()" 
+		@toggleEditor="toggleEditor" 
+		@addLookout="addLookout"
+	/>
 	<Editor v-show="showEditor" @save="save"/>
 	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
 	<Graph ref="sceneComponent"/>
@@ -25,7 +37,8 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			loggedIn: true,
+			loggedIn: false,
+			email: 'asd@asd.de',
 			password: '12345678',
 			initScene: [],
 			needsInit: true,
@@ -65,8 +78,7 @@ export default {
 					this.$root.store.unsavedChanges = this.initScene ? -1 : 0;
 					if(this.needsInit) this.$refs.sceneComponent.init()
 					if(!this.needsInit) this.$refs.sceneComponent.updateContents(this.channel.contents)
-					this.needsInit=false;
-
+					this.needsInit=false
 					break;
 				// MOVED PERMANENTLY
 				case 4:

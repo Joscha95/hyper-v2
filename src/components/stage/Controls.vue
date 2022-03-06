@@ -18,11 +18,17 @@
 
 	<div id="settings" class="popup" v-if="showSettings">
 		<div class="popup_body">
-			<input type="password" :value="password" @focus="store.focused=true" @blur="this.store.focused=false" @keyup="$emit('update:password', $event.target.value)"  >
-			<p @click="$emit('login')">Login</p>
-			<p @click="$emit('logout')">Logout</p>
-			<p @click="$emit('recover')">Forgot password?</p>
+			<section id="user_credentials" >
+				<input type="email" placeholder="Email" :value="email" @focus="store.focused=true" @blur="this.store.focused=false" @keyup="$emit('update:email', $event.target.value)" :class="{ valid: validEmail }" maxlength="255" required/>
+				<div id="password_wrapper">
+					<input type="password" placeholder="Password" :value="password" @focus="store.focused=true" @blur="this.store.focused=false" @keyup="$emit('update:password', $event.target.value)" :class="{ valid: password.length>passwordMinLength-1 }" minlength="{{ passwordMinLength }}" maxlength="255" required/>
+					<span id="recover_button" @click="$emit('recover')">Forgot?</span>
+				</div>
+				<button v-if="!loggedIn" @click="$emit('login')">Log in</button>
+				<button v-if="loggedIn" @click="$emit('logout')">Log out</button>
+			</section>
 		</div>
+
 		<div class="popup_close_button" @click="showSettings=false">close</div>
 	</div>
 
@@ -32,15 +38,33 @@
 <script>
 export default {
 	props: [
-		'loggedIn',
+		'email',
 		'password',
+		'loggedIn',
 		'showEditor'
 	],
 	data(){
 		return{
 			store: this.$root.store,
-			showSettings: false
+			showSettings: false,
+			validEmail: false,
+			passwordMinLength: 8
 		}
+	},
+	methods: {
+		validateEmail() {
+			(
+				( this.email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? this.validEmail=true : this.validEmail=false ) 
+			)
+		}
+	},
+	watch: {
+		email() { 
+			this.validateEmail()
+		}
+	},
+	mounted() {
+		this.validateEmail()
 	},
 	emits: [
 		'toggleEditor',
@@ -48,7 +72,33 @@ export default {
 		'login',
 		'logout',
 		'recover',
+		'update:email',
 		'update:password'
 	],
 }
 </script>
+
+
+<style>
+#user_credentials {
+	display: flex;
+	flex-wrap: nowrap;
+}
+#user_credentials input {
+	margin-right: .5em;
+}
+#password_wrapper {
+	position: relative;
+}
+#recover_button {
+	position: absolute;
+	right: .5em;
+	font-size: .7em;
+	cursor: pointer;
+	color: var(--main-darkgray-color);
+}
+#recover_button:hover {
+	color: black;
+}
+
+</style>
