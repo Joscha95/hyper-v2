@@ -54,6 +54,7 @@
 }
 .draggable_list_item[type="connection"], .draggable_list_item[type="lookout"] {
 	color: var(--main-connection-color);
+	text-align: center;
 }
 .drag_handle {
 	display: flex;
@@ -349,6 +350,28 @@ button.delete_button {
 	color: var(--main-error-color);
 }
 
+
+
+
+.eye {
+	width: 13px;
+	height: 13px;
+	border: solid 1px #000;
+	border-radius:  75% 15%;
+	position: relative;
+	transform: rotate(45deg);
+}
+.eye:before {
+	content: '';
+	display: block;
+	position: absolute;
+	width: 5px;
+	height: 5px;
+	border: solid 1px #000;
+	border-radius: 50%;
+	left: 3px;
+	top: 3px;
+}
 
 
 

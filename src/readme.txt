@@ -1,0 +1,1 @@
+Bei build, einmal in der 'stage' 'password' und 'email' auf als leeren String deklarieren setzen und Variabel 'loggedIn' auf 'false'

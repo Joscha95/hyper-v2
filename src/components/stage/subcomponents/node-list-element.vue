@@ -8,15 +8,16 @@
             <img :src="element.imageUrl">
           </div>
           <div class="draggable_list_item_content">
-            <span v-if="h_type=='connection' ">{{ element.content }}</span>
+           <span v-if="h_type=='connection' ">{{ element.content }}</span>
            <span v-else-if="element.name">{{ element.name }}</span>
            <span v-else-if="element.class=='Text'">{{ element.content }}</span>
+           <div class="eye"></div>
           </div>
       </div>
 
       <div v-if="store.selectedObject==element">
         <div class="node_properties" >
-          <toggle v-if="element.h_type!='lookout'" off="↔" on="⥿" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed"/>
+          <toggle v-if="element.h_type!='lookout'" off="↔" on="⥿&nbsp;" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed"/>
           <button v-if="needstextedit" @click="editmode=!editmode" class="transparent_button">{{ editmode ? 'done' :'edit' }}</button>
         </div>
 
@@ -41,7 +42,6 @@ import toggle from '@/components/stage/subcomponents/toggle.vue'
 import {Vector3} from 'three'
 
 export default {
-  order: 3,
   components: {
     draggableNumber,
     toggle
