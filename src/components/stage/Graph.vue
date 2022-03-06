@@ -96,8 +96,9 @@ export default {
       this.forceSimulation.updateGraph()
       this.store.unsavedChanges++;
     },
-    threadLength(){
+    threadLength(newVal){
       this.store.unsavedChanges++;
+      this.THREEScene.blocks.forEach((item)=>item.canStartThread=newVal==0)
     },
     isOrbit(val){
       this.THREEScene.toggleCamMode();
@@ -231,5 +232,16 @@ a{
 
   .toolbox div + div{
     border-top:solid 1px black;
+  }
+
+  #thread_plus{
+    position:fixed;
+    padding:.5em;
+    border-radius:1em;
+    background:white;
+  }
+
+  .cursor_pointer{
+    cursor:pointer;
   }
 </style>

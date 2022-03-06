@@ -4,7 +4,7 @@ class Thread {
   constructor(scene,store) {
     this.scene=scene
     this.store=store
-    this.empty=true
+    this.empty=true;
 
     this.ARC_SEGMENTS = 200;
 
@@ -15,14 +15,24 @@ class Thread {
 		curve.curveType = 'catmullrom';
 		curve.mesh = new Line( geometry, new LineBasicMaterial( {
 			color: 0xff0000,
-			opacity: 0.35
+			//opacity: 0.35
 		} ) );
 		curve.mesh.castShadow = false;
+		curve.mesh.name = 'thread';
 		this.spline = curve;
     this.spline.tension = .5;
     this.scene.add(this.spline.mesh)
 
-    this.temppoint=new Vector3();
+    this.temppoint=new Vector3()
+
+    this.domPlus=document.createElement('DIV');
+    this.domPlus.id='thread_plus';
+    this.domPlus.innerHTML='click to insert';
+    this.domPlus.style.display='none';
+    this.isHovered=false;
+
+    this.isInserting=false;
+    this.insertindex=null;
 
     this.val=0;
     this.valTarg=1;
@@ -48,6 +58,42 @@ class Thread {
 
   append(node){
     this.store.thread.push(node)
+    this.nodesChanged()
+  }
+
+  startInsert(point){
+    const divisions = this.store.thread.length*10
+    const points = this.spline.getPoints(divisions);
+    let dist = 100000;
+    let ind = null;
+
+    points.forEach((item, i) => {
+      if (point.distanceTo(item)<dist) {
+        ind=i;
+        dist=point.distanceTo(item);
+      }
+    });
+
+    ind = Math.floor(ind/(divisions/(this.store.thread.length-1)))
+    this.spline.points.splice(ind+1,0,point)
+    this.insertindex=ind+1;
+    this.isInserting=true;
+    this.spline.tension = 0;
+  }
+
+  onInsert(point){
+    this.spline.points[this.insertindex]=point;
+    this.updateSpline();
+  }
+
+  abortInsert(){
+    this.spline.tension = .5;
+    this.nodesChanged();
+  }
+
+  insert(obj){
+    this.store.thread.splice(this.insertindex,0,obj);
+    this.spline.tension = .5;
     this.nodesChanged()
   }
 
@@ -93,6 +139,8 @@ class Thread {
   }
 
   nodesChanged(){
+    this.isInserting=false;
+
     this.store.thread.forEach((item, i) => {
       item.isThreatStart=false
       item.isThreatEnd=false
@@ -117,7 +165,27 @@ class Thread {
     })
 
     this.spline.points=this.store.thread.map((n)=>n.position());
+
     this.updateSpline();
+    this.empty=this.store.thread.length==0;
+  }
+
+  hover(x,y){
+    this.domPlus.style.left=x+15+'px';
+    this.domPlus.style.top=y+15+'px';
+    if(!this.isHover) {
+      this.domPlus.style.display='block';
+      document.body.classList.add('cursor_pointer')
+    }
+    this.isHovered=true;
+  }
+
+  unHover(){
+    if(this.isHovered) {
+      this.domPlus.style.display='none';
+      document.body.classList.remove('cursor_pointer')
+    }
+    this.isHovered=false;
   }
 
   updateSpline(){
