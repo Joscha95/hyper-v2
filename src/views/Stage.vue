@@ -37,7 +37,7 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			loggedIn: false,
+			loggedIn: true,
 			email: 'asd@asd.de',
 			password: '12345678',
 			initScene: [],
@@ -77,7 +77,7 @@ export default {
 					this.headerTitle = this.channel.title
 					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : []
 					this.$root.store.unsavedChanges = this.initScene ? -1 : 0;
-					this.$root.store.thread = this.initScene && this.initScene.scene_data.thread ? this.initScene.scene_data.thread : []
+					this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : []
 					if(this.needsInit) this.$refs.sceneComponent.init()
 					if(!this.needsInit) this.$refs.sceneComponent.updateContents(this.channel.contents)
 					this.needsInit=false

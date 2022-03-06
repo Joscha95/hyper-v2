@@ -28,6 +28,21 @@ class Thread {
     this.valTarg=1;
   }
 
+  init(nodes){
+
+    this.store.threadIds.forEach((item, i) => {
+      const node = nodes.find((n) => n.h_id=item);
+      if(node) this.store.thread.push(node);
+    });
+
+    this.nodesChanged()
+
+  }
+
+  dispose(){
+    this.scene.remove(this.spline.mesh)
+  }
+
   prepend(node){
     this.store.thread.unshift(node)
     this.nodesChanged()

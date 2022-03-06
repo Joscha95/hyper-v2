@@ -179,10 +179,12 @@ module.exports = {
 
 				const scene_data={
 					scene_data:{
-						thread:this.$root.store.thread.map((n)=> n.h_id)
+						threadIds:this.$root.store.thread.map((n)=> n.h_id)
 					},
 					scene_objects:scene_objects
 				}
+
+				console.log(scene_data);
 
 				if( this.state == 2 ) {
 					this.$root.notify('Update in progress.')
