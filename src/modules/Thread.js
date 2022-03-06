@@ -19,7 +19,7 @@ class Thread {
 		} ) );
 		curve.mesh.castShadow = false;
 		this.spline = curve;
-    this.spline.tension = 1;
+    this.spline.tension = .5;
     this.scene.add(this.spline.mesh)
 
     this.temppoint=new Vector3();
@@ -50,11 +50,25 @@ class Thread {
     node.contentItem.to=undefined
     node.isThreatStart=false
     node.isThreatEnd=false
-    node.isInThreat=false;
+    node.isInThreat=false
 
     this.store.thread.splice(ind,1);
 
     this.nodesChanged()
+  }
+
+  newEntry(start,end){
+    if (end.isInThreat) {
+      console.warn('Weaving not possible, target is already in thread');
+    }else {
+      if (start.isThreatEnd) {
+        this.append(end)
+      }else if (start.isThreatStart) {
+        this.prepend(end)
+      } else {
+        console.warn('weaving not possible');
+      }
+    }
   }
 
   updateLine(){
@@ -62,7 +76,7 @@ class Thread {
   }
 
   updateDamp(){
-    this.val=this.val + (this.valTarg-this.val)*.1;
+    //this.val=this.val + (this.valTarg-this.val)*.1;
   }
 
   nodesChanged(){
@@ -88,7 +102,7 @@ class Thread {
       item.isInThreat=true;
       item.threat=this;
 
-    });
+    })
 
     this.spline.points=this.store.thread.map((n)=>n.position());
     this.updateSpline();

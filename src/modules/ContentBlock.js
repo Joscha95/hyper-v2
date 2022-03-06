@@ -132,7 +132,7 @@ class ContentBlock {
     } else if (this.isThreatStart || this.isThreatEnd) {
       options.push({name:'thread',text:'c',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
     }else if(this.isInThreat) {
-      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope)}});
+      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }
 
     this.toolbox=new Toolbar(options);

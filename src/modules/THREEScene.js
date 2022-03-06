@@ -436,15 +436,8 @@ class THREEScene {
         this.thread.init(this.lineHelper.startObject,obj);
         this.blocks.forEach((item) => {item.canStartThread=false});
       } else {
-        if (this.lineHelper.startObject.isThreatEnd) {
-          this.thread.append(obj)
-        }else if (this.lineHelper.startObject.isThreatStart) {
-          this.thread.prepend(obj)
-        } else {
-          console.warn('weaving not possible');
-        }
+        this.thread.newEntry(this.lineHelper.startObject,obj);
       }
-
     }
 
     this.lineHelper.startObject.updateToolboxOptions();
