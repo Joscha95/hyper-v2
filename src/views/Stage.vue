@@ -51,7 +51,6 @@ export default {
 		Header, Controls, Editor, Source, Graph
 	},
 	mounted() {
-		//this.authenticate()
 		this.get()
 	},
 	watch: {

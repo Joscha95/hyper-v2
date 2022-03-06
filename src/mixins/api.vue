@@ -15,6 +15,7 @@ module.exports = {
 						this.initScene = response.data.scene
 						this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : [];
 						this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : [];
+						this.authenticate()
 						this.update()
 					} else {
 						// scene has been moved permanently
@@ -106,30 +107,36 @@ module.exports = {
 
 			this.axios.post(
 				process.env.VUE_APP_API_URL + '?r=a',
-				{ id: logout=='logout' ? logout : this.sceneId, email: this.email, password: this.password },
+				{ id: logout ? 'logout' : this.sceneId, email: this.email, password: this.password },
 				{ headers: {'Content-Type':'application/x-www-form-urlencoded'} }
 			).then(response => {
 				if(response.status === 200){
 					// logged in
 					this.loggedIn = true
+					this.email = response.data.email
 					if(!silent){ this.$root.notify(response.data.message, 'success') }
 				}else if(response.status === 205){
 					// logged out
-					this.loggedIn = false
+					this.logout()
 					if(!silent){ this.$root.notify(response.data.description) }
 				}else{
-					this.loggedIn = false
+					this.logout()
 					console.error(response.data)
 				}
 			}).catch(error => {
 				if(error.response.status === 400){
-					this.loggedIn = false
+					this.logout()
 					if(!silent){ this.$root.notify(error.response.data.description, 'error') }
 				}else{
-					this.loggedIn = false
+					this.logout()
 					console.error(error)
 				}
 			})
+		},
+		logout(){
+			this.loggedIn = false
+			this.email = ''
+			this.password = ''
 		},
 
 

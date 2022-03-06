@@ -18,19 +18,24 @@
 
 	<div id="settings" class="popup" v-if="showSettings">
 		<div class="popup_body">
-			<section id="user_credentials" >
-				<input type="email" placeholder="Email" :value="email" @focus="store.focused=true" @blur="this.store.focused=false" @keyup="$emit('update:email', $event.target.value)" :class="{ valid: validEmail }" maxlength="255" required/>
+			
+			<section id="login" v-if="!loggedIn">
+				<input type="email" placeholder="Email" :value="email" @focus="store.focused=true" @blur="this.store.focused=false" @keyup="$emit('update:email', $event.target.value)" :class="{ valid: validEmail }" maxlength="255" required/><br><br>
 				<div id="password_wrapper">
 					<input type="password" placeholder="Password" :value="password" @focus="store.focused=true" @blur="this.store.focused=false" @keyup="$emit('update:password', $event.target.value)" :class="{ valid: password.length>passwordMinLength-1 }" minlength="{{ passwordMinLength }}" maxlength="255" required/>
 					<span id="recover_button" @click="$emit('recover')">Forgot?</span>
+				</div><br><br>
+				<button @click="$emit('login')">Log in</button>
+			</section>
+			
+			<section id="settings_panel" v-else>
+				<div id="logout">
+					Logged in as <span class="bold">{{ email }}</span>. <span id="logout_button" @click="$emit('logout')">Log out?</span>
 				</div>
-				<button v-if="!loggedIn" @click="$emit('login')">Log in</button>
-				<button v-if="loggedIn" @click="$emit('logout')">Log out</button>
 			</section>
 		</div>
-
-		<div class="popup_close_button" @click="showSettings=false">close</div>
 	</div>
+	<div class="viewport_block" @click="showSettings=false" v-if="showSettings"></div>
 
 </template>
 
@@ -80,14 +85,12 @@ export default {
 
 
 <style>
-#user_credentials {
-	display: flex;
-	flex-wrap: nowrap;
-}
-#user_credentials input {
-	margin-right: .5em;
+#login {
+	text-align: center;
+	font-size: 1rem;
 }
 #password_wrapper {
+	display: inline-block;
 	position: relative;
 }
 #recover_button {
@@ -101,6 +104,13 @@ export default {
 }
 #recover_button:hover {
 	color: black;
+}
+#logout_button {
+	cursor: pointer;
+	text-decoration: underline;
+}
+#settings_panel {
+	font-size: .8em;
 }
 
 </style>

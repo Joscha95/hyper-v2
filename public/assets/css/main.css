@@ -193,20 +193,18 @@ button.transparent_button:hover {
 	top: 45%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	min-width: 24rem;
+	min-width: 2rem;
 	box-sizing: border-box;
-	padding: 2em 1.5em 1em 1.5em;
-	z-index: 1000;
+	padding: 2rem 1.5rem;
+	z-index: calc( var(--main-layer-overkill) + 1);
 	max-width: 80%;
 	border-radius: .5rem;
 	line-height: 1.5em;
 	border: 1px solid var(--main-darkgray-color);
-}
-.popup_body {
-	margin-bottom: 1.5em;
-	color: black;
+	color: var(--main-darkgray-color);
 }
 .popup_close_button {
+	margin-top: 1.5em;
 	text-align: center;
 	color: var(--main-mediumgray-color);
 	font-weight: bold;
@@ -214,4 +212,14 @@ button.transparent_button:hover {
 .popup_close_button:hover {
 	color: black;
 	cursor: pointer;
+}
+.viewport_block {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: gray;
+	opacity: 0.2;
+	z-index: var(--main-layer-overkill);
 }
