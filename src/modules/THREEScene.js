@@ -154,6 +154,7 @@ class THREEScene {
       }
       nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
       nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
+      nn.canStartThread=this.thread.empty;
       this.blocks.push(nn);
     });
 
@@ -190,6 +191,7 @@ class THREEScene {
       }
       nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
       nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
+      nn.canStartThread=this.thread.empty;
       this.blocks.push(nn);
       });
 
@@ -473,6 +475,7 @@ class THREEScene {
     middleNodePlane.onBlur=()=>{con.blur()};
     middleNodePlane.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
     middleNodePlane.onQuitThread=(ele)=>{this.thread.remove(ele)}
+    middleNodePlane.canStartThread=this.thread.empty;
     this.blocks.push(middleNodePlane);
 
     const nl=con.createNew(node);
