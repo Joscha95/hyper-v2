@@ -13,6 +13,8 @@ module.exports = {
 					if( this.$route.params.slug == this.targetSlug ){
 						// request slug is the most recent
 						this.initScene = response.data.scene
+						this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : [];
+						this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : [];
 						this.update()
 					} else {
 						// scene has been moved permanently

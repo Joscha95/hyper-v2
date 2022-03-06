@@ -64,7 +64,6 @@ export default {
       }
     },
     cloneBlock(item) {
-      console.log(item);
       return {
         a_id: item.id,
         h_id: makeid(5),

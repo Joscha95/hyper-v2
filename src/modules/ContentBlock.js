@@ -96,6 +96,7 @@ class ContentBlock {
     this.onDispose();
     this.scene.remove(this.plane)
     this.dom.remove()
+    if(this.isInThreat) this.onQuitThread(this)
     if(this.toolbox) this.toolbox.dispose();
   }
 

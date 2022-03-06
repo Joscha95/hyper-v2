@@ -174,6 +174,7 @@ class THREEScene {
     });
 
     this.updateHitboxArray();
+    
   }
 
   simDataChanged(){

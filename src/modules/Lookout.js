@@ -101,6 +101,7 @@ class Lookout {
   dispose(){
     this.onDispose();
     this.scene.remove(this.group)
+    if(this.isInThreat) this.onQuitThread(this)
     if(this.toolbox) this.toolbox.dispose();
   }
 

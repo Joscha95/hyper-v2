@@ -6,6 +6,7 @@ const store = reactive({
   isDragging:false,
   sceneList:[],
   thread:[],
+  threadIds:[],
   focused:false,
   elementInCameraView:undefined,
   connectionCount:0,

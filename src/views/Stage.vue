@@ -51,7 +51,7 @@ export default {
 		Header, Controls, Editor, Source, Graph
 	},
 	mounted() {
-		this.authenticate()
+		//this.authenticate()
 		this.get()
 	},
 	watch: {
@@ -75,11 +75,14 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.state = 1
 					this.headerTitle = this.channel.title
-					this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : []
-					this.$root.store.unsavedChanges = this.initScene ? -1 : 0;
-					this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : []
-					if(this.needsInit) this.$refs.sceneComponent.init()
-					if(!this.needsInit) this.$refs.sceneComponent.updateContents(this.channel.contents)
+
+					if(this.needsInit) {
+						this.$refs.sceneComponent.init();
+						// this.$root.store.unsavedChanges = 0;
+					}else {
+						this.$refs.sceneComponent.updateContents(this.channel.contents)
+					}
+
 					this.needsInit=false
 					break;
 				// MOVED PERMANENTLY

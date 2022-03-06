@@ -157,6 +157,7 @@ export default {
       this.graphData.nodes=this.$root.store.sceneList;
       this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
       this.forceSimulation.updateGraph();
+      this.THREEScene.thread.setup(this.THREEScene.blocks);
     }
   }
 }

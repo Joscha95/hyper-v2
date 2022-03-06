@@ -28,15 +28,13 @@ class Thread {
     this.valTarg=1;
   }
 
-  init(nodes){
+  setup(nodes){
 
     this.store.threadIds.forEach((item, i) => {
-      const node = nodes.find((n) => n.h_id=item);
+      const node = nodes.find((n) => n.h_id==item);
       if(node) this.store.thread.push(node);
     });
-
     this.nodesChanged()
-
   }
 
   dispose(){
@@ -95,7 +93,6 @@ class Thread {
   }
 
   nodesChanged(){
-
     this.store.thread.forEach((item, i) => {
       item.isThreatStart=false
       item.isThreatEnd=false
