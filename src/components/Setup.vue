@@ -2,7 +2,7 @@
 	<form @submit.prevent="submit">
 		<h3>Create a hyperchannel</h3>
 		<section id="channel_search">
-			<label>Input the URL of an existing <a href="https://www.are.na/" target="_blank">Are.na</a> Channel:</label>
+			<label>Input the URL of an <a href="https://www.are.na/" target="_blank">Are.na</a> Channel:</label>
 			<input type="text" v-model.trim="query" :class="{ valid: channel }" required>
 			<p id="info" v-if="message">
 				<span id="message">{{ message }}</span>
@@ -14,7 +14,7 @@
 		<section id="user_data" v-if="advance">
 			<label><strong>Mail</strong></label>
 			<input type="email" v-model.trim="email" :class="{ valid: validEmail }" maxlength="255" required><br>
-			<label><strong>Choose password</strong><span id="pwLInd">{{ password.length }} > {{ passwordMinLength-1 }}</span></label>
+			<label><strong>Choose a password</strong><span id="pwLInd">{{ password.length }} > {{ passwordMinLength-1 }}</span></label>
 			<input type="password" v-model.trim="password" :class="{ valid: password.length>passwordMinLength-1 }" minlength="{{ passwordMinLength }}" maxlength="255" required>
 		</section>
 		<button type="submit" :disabled="!channel" v-if="!advance">Next</button>
@@ -136,13 +136,13 @@ export default {
 
 <style scoped>
 	form {
-		margin: 5rem auto 0 auto;
+		margin: 7rem auto 0 auto;
 		text-align: center;
 		width: 18rem;
 	}
 	h3 {
+		font-weight: normal;
 		margin: 0 0 2em 0;
-		color: var(--main-success-color);
 	}
 	button {
 		margin-top: 2.5em;
@@ -152,6 +152,9 @@ export default {
 	input, label {
 		width: 100%;
 		display: block;
+	}
+	#user_data label {
+		text-align: left;
 	}
 	input:not(.valid, :focus) {
 		background-color: var(--main-faintgray-color);

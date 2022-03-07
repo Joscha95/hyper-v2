@@ -21,7 +21,6 @@
 				<div class="draggable_list_item"
 				:class="selectedObjectId==element.h_id ? 'selected': '' "
 				:type="element.h_type" v-if="element.name.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring) "
-				@dblclick="onDoubleClick($event,element)"
 				>
 					<node-list-element :element="element"/>
 				</div>
@@ -68,11 +67,7 @@ export default {
 		onEnd(evt){
 			if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
 			this.lastSelected=null;
-		},
-		onDoubleClick(e,element){
-			window.location.hash=element.h_id;
-			window.dispatchEvent(new HashChangeEvent("hashchange"));
-		},
+		}
 	}
 };
 </script>

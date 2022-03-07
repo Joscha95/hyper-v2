@@ -13,10 +13,10 @@
            <span v-else-if="element.name">{{ element.name }}</span>
            <span v-else-if="element.class=='Text'">{{ element.content }}</span>
           </div>
-          <span class="icon eye"></span>
+          <span class="icon eye" @click="lookAt($event,element)"></span>
       </div>
 
-      <div v-if="store.selectedObject==element">
+      <div id="node_settings" v-if="store.selectedObject==element">
         <div class="node_properties" >
           <toggle v-if="element.h_type!='lookout'" off="dynamic" on="anchor" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed" :icon="true"/>
           <button v-if="needstextedit" @click="editmode=!editmode" class="transparent_button">{{ editmode ? 'done' :'edit' }}</button>
@@ -135,6 +135,10 @@ export default {
     removeItem(){
       this.store.sceneList.splice(this.store.sceneList.indexOf(this.element),1);
       this.store.selectedObject=undefined;
+    },
+    lookAt(e,element){
+      window.location.hash=element.h_id;
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
     }
   }
 };

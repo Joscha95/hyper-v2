@@ -1,5 +1,5 @@
 <template>
-	<div id="notification" @click="notification.id=false" :class="[{show:notification.id}, notification.type]">{{ notification.text }}</div>
+	<div id="notification" @click="notification.id=false" :class="[{show:notification.id}, notification.type]" v-html="notification.text"></div>
 </template>
 
 <script>

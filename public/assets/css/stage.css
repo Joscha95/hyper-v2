@@ -98,8 +98,11 @@ html, body {
 #editor .selected .drag_handle:before {
 	background: linear-gradient(90deg,rgba(255, 251, 233, 0), var(--main-lightyellow-color) 25%, var(--main-lightyellow-color) 100%);
 }
-.selected .drag_handle {
-	margin-top: 3px;
+.drag_handle .icon.eye {
+	opacity: .75;
+}
+.drag_handle .icon.eye:hover {
+	opacity: 1;
 }
 .draggable_list_item_content {
 	overflow: hidden;
@@ -124,12 +127,14 @@ html, body {
 	flex-basis: var(--thumbs-witdh);
 	flex-shrink: 0;
 	box-sizing: border-box;
-	padding: .3em;
+	padding: 0 .3em;
 	overflow: hidden;
+	height: calc(100% - .6em);
+	display: flex;
 }
 .draggable_list_item_thumb img {
 	width: 100%;
-	margin-top: -1px;
+	align-self: center;
 }
 .sortable-ghost {
 	cursor: grab;
@@ -352,9 +357,29 @@ input.searchbar {
 	position:fixed;
 	bottom:1rem;
 	right:1rem;
+	align-items: stretch;
 }
 #camera_controls.margin_right {
 	right:calc(var(--draggable-list-item-width) + 3rem);
+}
+#add_lookout_btn {
+	background: var(--main-faintgray-color);
+	border: 1px solid var(--main-connection-color);
+	vertical-align: middle;
+	color: var(--main-connection-color);
+	border-radius: 5px;
+	box-sizing: border-box;
+	white-space: nowrap;
+	display: flex;
+	align-items: center;
+	padding: 0 1em;
+	font-size: .8em;
+}
+#add_lookout_btn .icon {
+	margin-left: .7em;
+}
+#add_lookout_btn:hover {
+	background: white;
 }
 
 

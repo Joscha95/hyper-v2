@@ -60,9 +60,6 @@ export default {
 	z-index: 0;
 	box-sizing: border-box;
 	box-shadow: 0 0 5px rgba(0,0,0,0.5);
-	border-radius: 2px;
-	border-top-left-radius: 4px;
-	border-bottom-left-radius: 4px;
 }
 .slider>span{
 	position: relative;
@@ -87,9 +84,5 @@ input:checked + .slider:after {
 	left: 50%;
 	border: none;
 	border-left: 1px solid;
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-	border-top-right-radius: 4px;
-	border-bottom-right-radius: 4px;
 }
 </style>

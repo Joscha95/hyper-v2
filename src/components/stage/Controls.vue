@@ -12,8 +12,11 @@
 	</div>
 
 	<div id="camera_controls" :class="{margin_right:showEditor}">
-		<span v-if="loggedIn" @click="$emit('addLookout')" class="icon lookout" id="add_lookout_btn" title="Add lookout"></span>
-		<toggle off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="store.isOrbit" v-model="store.isOrbit" :icon="true"/>
+		<div id="add_lookout_btn" v-if="loggedIn">
+			Add lookout
+			<span @click="$emit('addLookout')" class="icon lookout"></span>
+		</div>
+		<toggle id="camera_toggle" off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="store.isOrbit" v-model="store.isOrbit" :icon="true"/>
 	</div>
 
 	<div id="settings" class="popup" v-if="showSettings">

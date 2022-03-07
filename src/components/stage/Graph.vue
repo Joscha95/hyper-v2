@@ -107,8 +107,8 @@ export default {
     },
     isOrbit(val){
       this.THREEScene.toggleCamMode();
-      const mode = val ? '⥁ Orbit' : '⟴ First person'
-      this.$root.notify('Camera is now: '+mode, 'default',2000)
+      const mode = val ? '<span class="icon orbit"></span>&ensp;Orbit' : '<span class="icon firstperson"></span>&ensp;First person'
+      this.$root.notify('Camera is now:&ensp;'+mode, 'default',2000)
     }
   },
   methods:{
