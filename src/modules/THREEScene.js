@@ -34,23 +34,27 @@ class THREEScene {
     this.store=store;
     this.blockGeometries=[];
 
-    this.thread = new Thread(this.scene,store);
+    this.thread = new Thread(this.scene,store,makeid(5));
     domparent.appendChild(this.thread.domPlus)
 
     this.scale_factor = .2;
 
     this.onLinkAdded = ()=>{};
-
+    const scope = this;
     this.hoveredItem = {
       item:undefined,
       set(val){
-        if (val!=this.item) {
-          if(this.item) this.item.unhover()
-          this.item=val
-          if(this.item.h_type!='thread') this.item.hover()
-          console.log(this.item);
+        if (val && this.item) {
+          if (val.refID!=this.item.h_id) {
+            if(this.item) this.item.unHover()
+            this.item = val ? val.name=='thread' ? scope.thread : scope.blocks.find((b) => b.h_id==val.refID) : val
+            if(this.item && this.item.h_type!='thread') this.item.hover()
+          }
+        } else if(val!=this.item) {
+          if(this.item) this.item.unHover()
+          this.item = val ? val.name=='thread' ? scope.thread : scope.blocks.find((b) => b.h_id==val.refID) : val
+          if(this.item && this.item.h_type!='thread') this.item.hover()
         }
-
       },
     }
 
@@ -368,7 +372,6 @@ class THREEScene {
       const bs = new THREE.Sphere()
       this.computeBounds().getBoundingSphere(bs);
       this.cameraController.initOrbit(bs);
-      console.log(this.store.isOrbit);
     }
   }
 
@@ -395,8 +398,8 @@ class THREEScene {
 
     const intersect = this.castRay(this.mouse,[...this.blockGeometries,this.thread.spline.mesh])[0]
     this.hoveredItem.set(intersect ? intersect.object : undefined );
-    if (this.hoveredItem) {
-      if (this.hoveredItem.name=='thread') {
+    if (this.hoveredItem.item) {
+      if (this.hoveredItem.item.h_type=='thread') {
         if (!this.thread.empty && !this.thread.isInserting && !this.cameraController.enteredLookout) {
           // const pos = this.raycaster.intersectObject(this.thread.spline.mesh)[0].point.clone().project(this.cameraController.camera)
           //
@@ -492,7 +495,6 @@ class THREEScene {
 
   finishConnection(obj){
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
-    console.log(obj.position());
     const node = {
       h_id:makeid(5),
       name: '☍',
@@ -522,7 +524,7 @@ class THREEScene {
     this.blocks.push(middleNodePlane);
 
     const nl=con.createNew(node);
-    con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1);console.log(this.store.sceneList);}
+    con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1)}
     this.connections.push(con);
 
     // callBack to Graph.vue to update simulation data

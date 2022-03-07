@@ -146,6 +146,16 @@ class ContentBlock {
     this.toolbox.setPos(this.domRect.right,this.domRect.top)
   }
 
+  hover(){
+    document.body.classList.add('cursor_pointer')
+    this.dom.classList.add('hover')
+  }
+
+  unHover(){
+    document.body.classList.remove('cursor_pointer')
+    this.dom.classList.remove('hover')
+  }
+
   toggleFixed(){
     this.contentItem.isFixed=!this.contentItem.isFixed;
   }
@@ -171,7 +181,7 @@ class ContentBlock {
         }else{
           ele.appendChild(document.createTextNode( content ));
         }
-       
+
         this.setPlaneGeomToDomWidth()
     }
 

@@ -258,4 +258,8 @@ a{
   .cursor_pointer{
     cursor:pointer;
   }
+
+  .hover{
+    opacity:.5;
+  }
 </style>

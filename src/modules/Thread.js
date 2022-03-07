@@ -1,10 +1,12 @@
 import {BufferGeometry, BufferAttribute, Vector3, CatmullRomCurve3, Line, LineDashedMaterial, LineBasicMaterial} from 'three'
 
 class Thread {
-  constructor(scene,store) {
+  constructor(scene,store,h_id) {
     this.scene=scene
     this.store=store
     this.empty=true;
+    this.h_id=h_id;
+    this.h_type='thread'
 
     this.ARC_SEGMENTS = 200;
 
@@ -26,6 +28,7 @@ class Thread {
 		curve.mesh = new Line( geometry, this.material );
 		curve.mesh.castShadow = false;
 		curve.mesh.name = 'thread';
+		curve.mesh.refID = this.h_id;
 		this.spline = curve;
     this.spline.mesh.computeLineDistances();
     this.spline.tension = .5;
