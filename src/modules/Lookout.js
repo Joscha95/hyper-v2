@@ -112,10 +112,12 @@ class Lookout {
 
   hover(){
     document.body.classList.add('cursor_pointer')
+    this.planeMat.opacity=.1
   }
 
   unHover(){
     document.body.classList.remove('cursor_pointer')
+    this.planeMat.opacity=.33
   }
 
   position(){
