@@ -5,14 +5,19 @@
 
   <div id="toolbox_wrapper"></div>
 
-  <div id="chain_navigator" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement" >
-    <a v-if = "lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id"> {{ lastValidChainElement.from.name }} ⇢ </a>
+  <div id="activeelement_navigator" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement" >
+    <div id="edit_lookout" v-if="lastValidChainElement.h_type=='lookout'">
+      <span @click="THREEScene.cameraController.toggleLookoutSync()">{{THREEScene.cameraController.lookoutSync ? 'end transform' : 'start transform'}}</span>
+    </div>
+    <div id="chain_navigator">
+      <a v-if = "lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id"> {{ lastValidChainElement.from.name }} ⇢ </a>
 
-    <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
-    <div class="description" v-if="lastValidChainElement.description!=''"  v-html="lastValidChainElement.description"></div>
-    <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'">{{ lastValidChainElement.content }}</div>
+      <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
+      <div class="description" v-if="lastValidChainElement.description!=''"  v-html="lastValidChainElement.description"></div>
+      <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'">{{ lastValidChainElement.content }}</div>
 
-    <a v-if = "lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id"> ⇢ {{ lastValidChainElement.to.name }} </a>
+      <a v-if = "lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id"> ⇢ {{ lastValidChainElement.to.name }} </a>
+    </div>
   </div>
 
 
@@ -183,7 +188,7 @@ export default {
   font-size:.7em;
 }
 
-#chain_navigator{
+#activeelement_navigator{
   position:fixed;
   bottom:0;
   z-index:100;
@@ -192,12 +197,21 @@ export default {
   left:50%;
   transform:translate(-50%,150%);
   transition:transform .3s ease;
+}
+
+#chain_navigator, #edit_lookout span{
   background-color:white;
   border-radius:1em;
   padding:10px;
 }
-#chain_navigator.show{
-  transform:translate(-50%,0%)
+
+#edit_lookout{
+  margin-bottom:2em;
+  text-align:center;
+}
+
+#activeelement_navigator.show{
+  transform:translate(-50%,-15%)
 }
 a{
   text-decoration:none;

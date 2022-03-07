@@ -385,8 +385,7 @@ class THREEScene {
     //this.hoveredItem = this.castRay(this.mouse)[0] ? this.castRay(this.mouse)[0].object : undefined ;
 
     this.raycaster.setFromCamera(this.mouse, this.cameraController.camera);
-    if (this.raycaster.intersectObject(this.thread.spline.mesh)[0] && !this.thread.isInserting && !this.cameraController.enteredLookout) {
-
+    if (!this.thread.empty && this.raycaster.intersectObject(this.thread.spline.mesh)[0] && !this.thread.isInserting && !this.cameraController.enteredLookout) {
       // const pos = this.raycaster.intersectObject(this.thread.spline.mesh)[0].point.clone().project(this.cameraController.camera)
       //
       // pos.x = (pos.x * (this.width/2)) + this.width/2;
@@ -415,7 +414,7 @@ class THREEScene {
     if (intersects[0] && intersects[0].distance<600) {
       const targ = intersects[0].object;
       if (this.store.elementInCameraView!=targ.refID && !this.cameraController.enteredLookout) {
-        //this.store.elementInCameraView=targ.refID;
+        this.store.elementInCameraView=targ.refID;
       }
 
     }else {

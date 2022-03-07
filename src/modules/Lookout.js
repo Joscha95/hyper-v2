@@ -79,6 +79,20 @@ class Lookout {
     // this.updateToolbox()
   }
 
+  setTransform(transform){
+    this.contentItem.x=this.contentItem.fx=transform.position.x;
+    this.contentItem.y=this.contentItem.fy=transform.position.y;
+    this.contentItem.z=this.contentItem.fz=transform.position.z;
+
+    this.contentItem.rx=transform.rotation.x;
+    this.contentItem.ry=transform.rotation.y;
+    this.contentItem.rz=transform.rotation.z;
+
+    this.updateBounds();
+    this.group.position.set(this.contentItem.x,this.contentItem.y,this.contentItem.z);
+    this.group.rotation.set(this.contentItem.rx,this.contentItem.ry,this.contentItem.rz);
+  }
+
   activate(){
     this.group.children[2].visible=false
   }
@@ -139,9 +153,9 @@ class Lookout {
       options.push({name:'thread',text:'☡',tooltip:'start weaving',callback:()=>{scope.startThread()}});
     } else if (this.isThreatStart || this.isThreatEnd) {
       options.push({name:'thread',text:'c',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
-      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope)}});
+      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }else if(this.isInThreat) {
-      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope)}});
+      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }
 
     this.toolbox=new Toolbar(options);

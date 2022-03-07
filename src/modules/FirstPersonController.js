@@ -47,6 +47,8 @@ class FirstPersonController {
     this.context = false
     this.activeLookOut = null
 
+    this.lookoutSync=false;
+
     this.orbit = false;
     this.cameraPos = new Vector3();
     this.camZtarg=0;
@@ -68,11 +70,15 @@ class FirstPersonController {
 					this.enteredLookout=true;
 					this.onenterLookout(this.activeLookOut.h_id);
 				}
+        if (this.lookoutSync) {
+          this.activeLookOut.setTransform(this.transformparent);
+        }
 			} else {
 				this.activeLookOut.deactivate();
 				if (this.enteredLookout) {
 					this.activeLookOut = null;
 					this.enteredLookout=false;
+          this.lookoutSync=false;
 					this.onleaveLookout();
 				}
 			}
@@ -98,6 +104,11 @@ class FirstPersonController {
 		} else if (this.isDragging) {
 			this.onchange();
 		}
+  }
+
+  toggleLookoutSync(){
+    this.lookoutSync=!this.lookoutSync;
+    window.dispatchEvent(new HashChangeEvent("hashchange"))
   }
 
   moveTo(targetObj) {

@@ -5,7 +5,7 @@ class LineHelper {
     this.endPosition=new Vector3();
     this.type=type;
     const material = new LineDashedMaterial( {
-      	color: 0x0000ff,
+      	color: type=='connection' ? 'blue' : 'red',
       	dashSize: .5,
       	gapSize: .1,
       } );

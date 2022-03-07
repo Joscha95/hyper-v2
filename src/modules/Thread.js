@@ -67,6 +67,7 @@ class Thread {
     this.store.thread=[];
     this.empty=true
     this.scene.remove(this.spline.mesh)
+    this.spline.mesh.geometry.setAttribute( 'position', new BufferAttribute( new Float32Array( this.ARC_SEGMENTS * 3 ), 3 ) );
   }
 
   prepend(node){
