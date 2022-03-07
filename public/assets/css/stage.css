@@ -262,6 +262,8 @@ input.searchbar {
 	border-radius: 2rem;
 	position: relative;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 }
 #main_button:hover {
 	background: var(--main-editor-hightlight-color);
@@ -273,25 +275,23 @@ input.searchbar {
 	border-radius: 2em;
 	min-width: 1.1rem;
 	height: 1.1rem;
-	margin-left: .2rem;
+	margin-left: .5rem;
 	line-height: 1.1rem;
 	color: white;
 	font-size: .8em;
 	text-align: center;
-	vertical-align: bottom;
 	box-sizing: border-box;
 	padding: 0.1em .5em;
 	margin-right: -.45rem;
 }
 #main_button_text {
-	position: relative;
-	top: 1px;
 }
 #main_button #editor_button_indicator.close_button {
 	background: linear-gradient(45deg, transparent calc(50% - 1px), var(--main-editor-hightlight-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), var(--main-editor-hightlight-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(white, white);
 	color: transparent;
 	border: 3px solid white;
 	padding: 0;
+	width: 1.1rem;
 }
 #editor_button_indicator.hide:not(.close_button) {
 	display: none;
