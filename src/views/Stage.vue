@@ -1,4 +1,5 @@
 <template>
+	<link rel="stylesheet" href="assets/css/stage.css">
 	<Header :title="headerTitle" @click="toggleSource" :class="{opened:showSource, disabled:!loggedIn}"/>
 	<Controls
 		:showEditor="showEditor"
@@ -116,6 +117,9 @@ export default {
 	}
 }
 </script>
+
 <style>
-	@import "/assets/css/stage.css";
+#notification.default {
+	background: white;
+}
 </style>

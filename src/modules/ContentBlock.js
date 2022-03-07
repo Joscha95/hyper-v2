@@ -132,7 +132,6 @@ class ContentBlock {
       options.push({name:'thread',text:'☡',tooltip:'start weaving',callback:()=>{scope.startThread()}});
     } else if (this.isThreatStart || this.isThreatEnd) {
       options.push({name:'thread',text:'c',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
-      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }else if(this.isInThreat) {
       options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }
@@ -165,7 +164,14 @@ class ContentBlock {
       case'Text':
       default:
         ele=document.createElement('P');
-        ele.innerHTML=this.contentItem.content.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        ele.classList.add('empty');
+        const content=this.contentItem.content.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        if(content==''){
+          ele.innerHTML='<span class="icon link"></span>'
+        }else{
+          ele.appendChild(document.createTextNode( content ));
+        }
+       
         this.setPlaneGeomToDomWidth()
     }
 

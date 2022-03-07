@@ -12,8 +12,8 @@
 	</div>
 
 	<div id="camera_controls" :class="{margin_right:showEditor}">
-		<span v-if="loggedIn" @click="$emit('addLookout')">⩥ </span>
-		<span @click="store.isOrbit=!store.isOrbit">{{store.isOrbit ? '⟴' :'⥁'}}</span>
+		<span v-if="loggedIn" @click="$emit('addLookout')" class="icon lookout" id="add_lookout_btn" title="Add lookout"></span>
+		<toggle off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="store.isOrbit" v-model="store.isOrbit" :icon="true"/>
 	</div>
 
 	<div id="settings" class="popup" v-if="showSettings">
@@ -41,7 +41,10 @@
 
 
 <script>
+import toggle from '@/components/stage/subcomponents/toggle.vue'
+
 export default {
+	components: { toggle },
 	props: [
 		'email',
 		'password',
@@ -112,5 +115,13 @@ export default {
 #settings_panel {
 	font-size: .8em;
 }
-
+#camera_controls {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+#add_lookout_btn {
+	cursor: pointer;
+	margin-right: 1rem;
+}
 </style>

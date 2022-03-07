@@ -7,6 +7,15 @@
 
 
 
+
+html, body {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+
 /* DRAGGABLE LIST */
 
 .drag_list {
@@ -77,8 +86,20 @@
 	right: 0;
 	z-index: 1;
 }
+#editor .drag_handle:hover:before, #editor .selected .drag_handle:before {
+	width: 3.3em;
+}
+#editor .drag_handle:hover:before {
+	background: linear-gradient(90deg,rgba(255,255,255,0), rgba(255,255,255,1) 25%, rgba(255,255,255,1) 100%);
+}
 .selected .drag_handle:before {
 	background: linear-gradient(90deg, rgba(255, 251, 233, 0), var(--main-lightyellow-color) 90%);
+}
+#editor .selected .drag_handle:before {
+	background: linear-gradient(90deg,rgba(255, 251, 233, 0), var(--main-lightyellow-color) 25%, var(--main-lightyellow-color) 100%);
+}
+.selected .drag_handle {
+	margin-top: 3px;
 }
 .draggable_list_item_content {
 	overflow: hidden;
@@ -143,6 +164,16 @@
 input.searchbar {
 	border: 1px solid var(--main-gray-color);
 }
+.drag_handle .icon.eye {
+  position: absolute;
+  right: .5em;
+  z-index: 1;
+  display: none;
+}
+.drag_handle:hover .icon.eye, .draggable_list_item.selected .icon.eye  {
+  display: block;
+  font-size: 1rem;
+}
 
 
 
@@ -182,7 +213,6 @@ input.searchbar {
 #source_header .searchbar:focus {
 	width: 100%;
 }
-
 #refresh_button, .searchbar, #source .drag_list {
 	box-shadow: 0 0 1px rgba(0,0,0,.15);
 }
@@ -218,7 +248,29 @@ input.searchbar {
 	vertical-align: text-bottom;
 	margin-right: 1em;
 }
-
+#editor input[type="text"]{
+  border-style:dashed;
+  padding:10px 0;
+  display:inline-block;
+  width: calc(100% - 2px);
+  margin: 1px;
+  color:inherit;
+  text-align:center
+}
+#editor textarea{
+  display:block;
+  margin: 1px;
+  width: calc(100% - 2px);
+  box-sizing:border-box;
+  resize:vertical;
+  height:auto;
+  border-style:dashed;
+  font-family:inherit;
+  margin-bottom: 1rem;
+}
+#editor input:focus, #editor textarea:focus {
+  background-color: white;
+}
 
 
 
@@ -352,27 +404,6 @@ button.delete_button {
 
 
 
-.eye {
-	width: 13px;
-	height: 13px;
-	border: solid 1px #000;
-	border-radius:  75% 15%;
-	position: relative;
-	transform: rotate(45deg);
-}
-.eye:before {
-	content: '';
-	display: block;
-	position: absolute;
-	width: 5px;
-	height: 5px;
-	border: solid 1px #000;
-	border-radius: 50%;
-	left: 3px;
-	top: 3px;
-}
-
-
 
 
 .floating-blocks{
@@ -402,7 +433,10 @@ button.delete_button {
 .floating-blocks.connection p {
 	margin: 0;
 }
-
+.floating-blocks.connection p.empty {
+	line-height: 0;
+}
+empty
 .floating-blocks.focus{
 	background-color: var(--main-lightyellow-color);
 	box-shadow: 0 0 0 5px black;

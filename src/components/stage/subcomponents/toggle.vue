@@ -1,13 +1,22 @@
 <template>
-	<label class="toggle" :title="bool ? tooltipOn : tooltipOff">
+	<label class="toggle" :title="bool ? tooltipOn : tooltipOff" :class="{iconToggle:icon}">
 		<input type="checkbox" :checked="bool" @change="$emit('update:modelValue', $event.target.checked)">
-		<span class="slider round"><span :class="bool ? '':'active'">{{ off }}</span> <span :class="bool ? 'active':''"> {{ on }}</span></span>
+		<span class="slider round">
+			<span :class="bool ? '':'active'">
+				<span v-if="icon" :class="[icon ? off : '', 'icon']"></span>
+				<span v-else>{{ off }}</span>
+			</span>
+			<span :class="bool ? 'active':''">
+				<span v-if="icon" :class="[icon ? on : '', 'icon']"></span>
+				<span v-else>{{ on }}</span>
+			</span>
+		</span>
 	</label>
 </template>
 
 <script>
 export default {
-	props: ['bool','on','off','tooltipOn','tooltipOff']
+	props: ['bool','on','off','tooltipOn','tooltipOff','icon']
 };
 </script>
 <style scoped>
@@ -18,6 +27,10 @@ export default {
 	user-select: none;
 	vertical-align: top;
 	color: inherit;
+	margin-bottom: 0;
+}
+.iconToggle {
+	line-height: 0;
 }
 .toggle input {
 	display: none;
@@ -46,7 +59,10 @@ export default {
 	transition: left .2s;
 	z-index: 0;
 	box-sizing: border-box;
-	box-shadow: 0 0 5px rgba(0,0,0,0.5)
+	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+	border-radius: 2px;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
 }
 .slider>span{
 	position: relative;
@@ -58,8 +74,11 @@ export default {
 	margin-right: -1px;
 	box-sizing: content-box;
 }
-.slider span{
+.slider span:not(.icon) {
 	height: 100%;
+}
+.iconToggle .slider span:not(.icon) {
+	padding: .7em 1em;
 }
 .slider>span.active{
 	color: black;
@@ -68,5 +87,9 @@ input:checked + .slider:after {
 	left: 50%;
 	border: none;
 	border-left: 1px solid;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
 }
 </style>

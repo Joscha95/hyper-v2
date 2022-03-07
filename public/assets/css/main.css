@@ -23,15 +23,11 @@
 }
 
 html, body {
-	position: fixed;
 	font-family: Arial, sans-serif;
 	color: var(--main-darkgray-color);
 	font-size: 1em;
 	line-height: 1em;
-	width: 100%;
-	height: 100%;
 	margin: 0;
-	overflow: hidden;
 }
 .Stage *:not(input, textarea) {
 	-webkit-touch-callout: none;
@@ -124,7 +120,7 @@ input {
 	box-sizing: border-box;
 }
 input:focus {
-	background-color: rgb(255, 255, 237);
+	background-color: var(--main-lightyellow-color);
 }
 input.invalid {
 	background-color: var(--main-faintgray-color);
@@ -134,7 +130,7 @@ input.valid {
 	background-color: rgb(243, 255, 237);
 	color: var(--main-darkgray-color);
 }
-input:not(.valid, :focus) {
+input:not(.valid, :focus), textarea {
 	background-color: var(--main-faintgray-color);
 	color: black;
 }
@@ -222,4 +218,65 @@ button.transparent_button:hover {
 	background: gray;
 	opacity: 0.2;
 	z-index: var(--main-layer-overkill);
+}
+
+
+
+
+/* ICONS */
+
+.icon {
+	position: relative;
+	width: 1em;
+	height: 1em;
+	display: inline-block;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.icon.arrows {
+	background-image: url(../img/icon-arrows.svg);
+}
+.icon.eye {
+	background-image: url(../img/icon-eye.svg);
+}
+.icon.anchor {
+	background-image: url(../img/icon-anchor.svg);
+}
+.icon.move {
+	background-image: url(../img/icon-move.svg);
+}
+.icon.connect {
+	background-image: url(../img/icon-connect.svg);
+}
+.icon.lookout {
+	background-image: url(../img/icon-lookout.svg);
+}
+.icon.firstperson {
+	background-image: url(../img/icon-firstperson.svg);
+}
+.icon.orbit {
+	background-image: url(../img/icon-orbit.svg);
+}
+.icon.link {
+	background-image: url(../img/icon-link.svg);
+}
+.icon.arrow {
+	background-image: url(../img/icon-arrow.svg);
+}
+.icon.dynamic {
+	background-image: url(../img/icon-dynamic.svg);
+}
+.icon.thread {
+	background-image: url(../img/icon-thread.svg);
+}
+.icon.threadstart {
+	background-image: url(../img/icon-threadstart.svg);
+}
+.icon.threaddelete {
+	background-image: url(../img/icon-threaddelete.svg);
+}
+.icon.lookoutmove {
+	background-image: url(../img/icon-lookoutmove.svg);
 }

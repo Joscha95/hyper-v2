@@ -8,10 +8,25 @@
 		<p><a href="#">Link</a></p>
 		<p><input placeholder="Input"></p>
 		<p><button>Button</button></p>
+		<toggle off="eye" on="move" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="toggleVal" v-model="toggleVal" :icon="true"/>
 		
-		
-		<toggle off="↔" on="⥿&nbsp;" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="toggleVal" v-model="toggleVal"/>
-		
+		<div id="icons">
+			<!--<span class="icon arrows"></span>-->
+			<span class="icon eye"></span>
+			<span class="icon move"></span>
+			<span class="icon connect"></span>
+			<span class="icon lookout"></span>
+			<span class="icon lookoutmove"></span>
+			<span class="icon firstperson"></span>
+			<span class="icon orbit"></span>
+			<span class="icon link"></span>
+			<!--<span class="icon arrow"></span>-->
+			<span class="icon dynamic"></span>
+			<span class="icon anchor"></span>
+			<span class="icon thread"></span>
+			<span class="icon threadstart"></span>
+			<span class="icon threaddelete"></span>
+		</div>
 
 	</section>
 </template>
@@ -30,3 +45,12 @@ export default {
 	}
 }
 </script>
+
+<style>
+#icons {
+	margin: 1em 0;
+}
+#icons span {
+	margin-right: 1em;
+}
+</style>
