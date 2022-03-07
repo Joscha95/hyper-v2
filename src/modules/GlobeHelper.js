@@ -26,7 +26,7 @@ function drawCircle(circleRadius, circleSegments, y=0,mat )
 class Globe {
 	constructor(radius, nLat=15, nLon=32, segments=32, color='white' ) {
 		this.group = new Group();
-
+		const _rad = radius*.8
 		nLat = nLat + 1 ;
 
 		const circleMat = new LineBasicMaterial( { color: color } );
@@ -34,13 +34,13 @@ class Globe {
 		var circularSegment = Math.PI / nLat;
 		for(let i=1; i<nLat; i++)
 		{
-			var yRadius = Math.sin(i * circularSegment) * radius;
-			var y = Math.cos(i * circularSegment) * radius;
+			var yRadius = Math.sin(i * circularSegment) * _rad;
+			var y = Math.cos(i * circularSegment) * _rad;
 			const latCircle = drawCircle( yRadius, segments, y, circleMat );
 			this.group.add(latCircle);
 		}
 
-		const lonCircle = drawCircle( radius, segments );
+		const lonCircle = drawCircle( _rad, segments );
 		lonCircle.rotation.x = Math.PI / 2;
 
 		for(let i=1; i<nLon/2; i++)
@@ -52,7 +52,7 @@ class Globe {
 
 		this.group.add(lonCircle);
 
-		const geometry = new SphereGeometry( 7200, 28, 11 );
+		const geometry = new SphereGeometry( radius, 28, 11 );
     const material = new ShaderMaterial({
       uniforms: {
         color1: {

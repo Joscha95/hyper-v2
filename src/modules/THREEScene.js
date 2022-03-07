@@ -47,7 +47,7 @@ class THREEScene {
     window.addEventListener('hashchange', (e)=>this.onHashChange(e));
     window.addEventListener('keydown', (e)=>this.onKeyDown(e));
 
-    this.horizon = new Globe(7000, 16, 32, 64, 'rgb(240,240,240)').group; // Radius, num lat, num lon, segments, color
+    this.horizon = new Globe(this.cameraController.camera.far*.9, 16, 32, 64, 'rgb(240,240,240)').group; // Radius, num lat, num lon, segments, color
     this.horizon.position.copy(this.cameraController.position());
 
     this.scene.add(this.horizon);
@@ -256,15 +256,14 @@ class THREEScene {
     return pos;
   }
 
-  castRay(point){
+  castRay(point,objs){
     this.raycaster.setFromCamera(point, this.cameraController.camera);
-    return this.raycaster.intersectObjects([...this.blockGeometries,this.thread.spline.mesh]);
+    return this.raycaster.intersectObjects(objs || this.blockGeometries);
   }
 
   onClick(e){
-    this.raycaster.setFromCamera(this.mouse, this.cameraController.camera);
-    const objs = this.thread.isInserting ? this.blockGeometries : [...this.blockGeometries,this.thread.spline.mesh];
-    const intersects = this.raycaster.intersectObjects(objs);
+    const objs = this.thread.isInserting || this.cameraController.enteredLookout ? this.blockGeometries : [...this.blockGeometries,this.thread.spline.mesh];
+    const intersects = this.castRay(this.mouse,objs);
 
     if (intersects.length > 0) {
       if (intersects[0].object.name=="thread") {
@@ -380,13 +379,13 @@ class THREEScene {
       this.lineHelper.endPosition = this.getWorldPosition(event.clientX,event.clientY,1.3);
       this.lineHelper.update();
     } else if (this.thread.isInserting) {
-      this.thread.onInsert(this.getWorldPosition(event.clientX,event.clientY,1.3));
+      this.thread.onInsert(this.getWorldPosition(event.clientX,event.clientY,500));
     }
 
     //this.hoveredItem = this.castRay(this.mouse)[0] ? this.castRay(this.mouse)[0].object : undefined ;
 
     this.raycaster.setFromCamera(this.mouse, this.cameraController.camera);
-    if (this.raycaster.intersectObject(this.thread.spline.mesh)[0] && !this.thread.isInserting) {
+    if (this.raycaster.intersectObject(this.thread.spline.mesh)[0] && !this.thread.isInserting && !this.cameraController.enteredLookout) {
 
       // const pos = this.raycaster.intersectObject(this.thread.spline.mesh)[0].point.clone().project(this.cameraController.camera)
       //
@@ -416,7 +415,7 @@ class THREEScene {
     if (intersects[0] && intersects[0].distance<600) {
       const targ = intersects[0].object;
       if (this.store.elementInCameraView!=targ.refID && !this.cameraController.enteredLookout) {
-        this.store.elementInCameraView=targ.refID;
+        //this.store.elementInCameraView=targ.refID;
       }
 
     }else {
@@ -482,6 +481,7 @@ class THREEScene {
 
   finishConnection(obj){
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
+    console.log(obj.position());
     const node = {
       h_id:makeid(5),
       name: '☍',
@@ -532,11 +532,11 @@ class THREEScene {
   }
 
   onEnterLookout(h_id){
-    this.elementInCameraView=h_id;
+    this.store.elementInCameraView=h_id;
   }
 
   onLeaveLookout(){
-    this.elementInCameraView=undefined;
+    //this.store.elementInCameraView=undefined;
   }
 }
 

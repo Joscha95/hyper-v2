@@ -16,33 +16,33 @@ class Lookout {
 
   	const material = new LineBasicMaterial({ color: 0x0000ff });
   	const points = [
-  		new Vector3( -40, -25, 0 ),
-  		new Vector3( 40, -25, 0 ),
-  		new Vector3( 0, 0, -70 ),
-  		new Vector3( -40, -25, 0 ),
-  		new Vector3( -40, 25, 0 ),
-  		new Vector3( -40, 25, 0 ),
-  		new Vector3( 0, 0, -70 ),
-  		new Vector3( 40, 25, 0 ),
-  		new Vector3( 40, -25, 0 ),
-  		new Vector3( 40, 25, 0 ),
-  		new Vector3( -40, 25, 0 )
+  		new Vector3( -40, -25, 70 ),
+  		new Vector3( 40, -25, 70 ),
+  		new Vector3( 0, 0, 0 ),//-70
+  		new Vector3( -40, -25, 70 ),
+  		new Vector3( -40, 25, 70 ),
+  		new Vector3( -40, 25, 70 ),
+  		new Vector3( 0, 0, 0 ),//-70
+  		new Vector3( 40, 25, 70 ),
+  		new Vector3( 40, -25, 70 ),
+  		new Vector3( 40, 25, 70 ),
+  		new Vector3( -40, 25, 70 )
   	];
   	const line = new Line( new BufferGeometry().setFromPoints( points ), material );
 
   	const planeGeo = new PlaneGeometry( 80, 50 );
   	this.planeMat = new MeshBasicMaterial({ color: 0x0000ff, side: DoubleSide, opacity: 0.33, transparent: true });
   	const plane = new Mesh( planeGeo, this.planeMat );
+    plane.position.set(0,0,70)
 
   	const boxGeometry = new BoxGeometry( 80, 50, 70 );
   	const hitbox = new Mesh( boxGeometry, material );
   	hitbox.visible=false;
   	hitbox.refID=this.h_id;
+    hitbox.position.set(0,0,35)
 
     this.hitbox=hitbox; // for raycasting
     this.dragObject=this.group;
-
-
 
   	this.group.name = contentItem.name;
   	this.group.add(hitbox);
@@ -139,6 +139,7 @@ class Lookout {
       options.push({name:'thread',text:'☡',tooltip:'start weaving',callback:()=>{scope.startThread()}});
     } else if (this.isThreatStart || this.isThreatEnd) {
       options.push({name:'thread',text:'c',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
+      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope)}});
     }else if(this.isInThreat) {
       options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope)}});
     }

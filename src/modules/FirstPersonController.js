@@ -5,7 +5,7 @@ class FirstPersonController {
   constructor(domElement,options={},scene) {
     this.enabled = true;
   	this.domElement = domElement;
-  	this.camera = new PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 70000);
+  	this.camera = new PerspectiveCamera( 50, 0.5 * (window.innerWidth/window.innerHeight), 1, 100000);
     this.transformparent = new Group();
     this.transformparent.add(this.camera);
     this.camera.rotation.x=0;
@@ -107,6 +107,7 @@ class FirstPersonController {
     // Rotation
     if (targetObj.h_type == "lookout") {
       this.quatTarg = targetObj.dragObject.quaternion.clone();
+      targetObj.group.children[2].getWorldPosition(targetPos);
       if (this.activeLookOut) this.activeLookOut.deactivate();
       this.activeLookOut = targetObj;
       this.enteredLookout=false;
