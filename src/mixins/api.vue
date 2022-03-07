@@ -112,7 +112,7 @@ module.exports = {
 			).then(response => {
 				if(response.status === 200){
 					// logged in
-					this.loggedIn = true
+					this.login()
 					this.email = response.data.email
 					if(!silent){ this.$root.notify(response.data.message, 'success') }
 				}else if(response.status === 205){
@@ -133,10 +133,17 @@ module.exports = {
 				}
 			})
 		},
+		login(){
+			this.loggedIn = true
+			this.$root.store.loggedIn = true
+		},
 		logout(){
 			this.loggedIn = false
+			this.$root.store.loggedIn = false
 			this.email = ''
 			this.password = ''
+			this.showSource = false
+			this.showEditor = false
 		},
 
 
