@@ -461,7 +461,6 @@ button.delete_button {
 .floating-blocks.connection p.empty {
 	line-height: 0;
 }
-empty
 .floating-blocks.focus{
 	background-color: var(--main-lightyellow-color);
 	box-shadow: 0 0 0 5px black;

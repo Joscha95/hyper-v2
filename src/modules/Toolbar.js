@@ -10,7 +10,7 @@ class Toolbar {
       btn=document.createElement('DIV');
       switch (item.type) {
         case 'toggle':
-            btn.innerHTML= item.condition ? item.on : item.off;
+            btn.className= item.condition ? item.on : item.off;
             btn.title=item.condition ? item.tooltipOn : item.tooltipOff;
             btn.onclick=(e)=>{
               item.callback();
@@ -19,7 +19,7 @@ class Toolbar {
 
           break;
         default:
-          btn.innerHTML=item.text;
+          btn.className=item.class;
           btn.title=item.tooltip;
           btn.onmousedown=(e)=>{
             item.callback();
@@ -37,15 +37,15 @@ class Toolbar {
     this.dom.style.left=x+'px';
   }
 
-  updateField(name,condition=true,text=''){
+  updateField(name,condition=true,className=''){
     const field = this.fields.get(name)
     switch (field.item.type) {
       case 'toggle':
-          field.dom.innerHTML= condition ? field.item.on : field.item.off;
+          field.dom.className= condition ? field.item.on : field.item.off;
           field.dom.title= condition ? field.item.tooltipOn : field.item.tooltipOff;
         break;
       default:
-        field.dom.innerHTML= text;
+        field.dom.className= className;
     }
 
   }

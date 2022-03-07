@@ -122,18 +122,18 @@ class ContentBlock {
 
     const scope=this;
     const options = [
-      {name:'transform',text:'⨣',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}},
-      {name:'center',text:'⊹',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
-      {name:'connection',text:'☌',tooltip:'make a new connection',callback:()=>{scope.startLink()}},
-      {name:'isFixed',type:'toggle', on:'⥿', off:'↔', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic',callback:()=>{scope.toggleFixed()}},
+      {name:'transform',class:'move',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}},
+      {name:'center',class:'eye',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
+      {name:'connection',class:'connect',tooltip:'make a new connection',callback:()=>{scope.startLink()}},
+      {name:'isFixed',type:'toggle', on:'anchor', off:'dynamic', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic',callback:()=>{scope.toggleFixed()}},
     ]
 
     if(this.canStartThread) {
-      options.push({name:'thread',text:'☡',tooltip:'start weaving',callback:()=>{scope.startThread()}});
+      options.push({name:'thread',class:'thread',tooltip:'start weaving',callback:()=>{scope.startThread()}});
     } else if (this.isThreatStart || this.isThreatEnd) {
-      options.push({name:'thread',text:'c',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
+      options.push({name:'thread',class:'threadstart',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
     }else if(this.isInThreat) {
-      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
+      options.push({name:'thread',class:'threaddelete',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }
 
     this.toolbox=new Toolbar(options);
@@ -174,9 +174,9 @@ class ContentBlock {
       case'Text':
       default:
         ele=document.createElement('P');
-        ele.classList.add('empty');
         const content=this.contentItem.content.replace(/(?:\r\n|\r|\n)/g, '<br>');
         if(content==''){
+          ele.classList.add('empty');
           ele.innerHTML='<span class="icon link"></span>'
         }else{
           ele.appendChild(document.createTextNode( content ));
