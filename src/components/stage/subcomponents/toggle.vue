@@ -39,13 +39,16 @@ export default {
 	position: relative;
 	cursor: pointer;
 	background-color: var(--main-faintgray-color);
-	transition: .2s;
 	overflow: hidden;
 	box-sizing: border-box;
 	display: block;
 	border: 1px solid;
 	border-radius: 5px;
 	height: 100%;
+	border-color: var(--main-gray-color);
+}
+.slider:hover {
+	border-color: black;
 }
 .slider:after {
 	position: absolute;
@@ -60,6 +63,10 @@ export default {
 	z-index: 0;
 	box-sizing: border-box;
 	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+	border-right: 1px solid var(--main-gray-color);
+}
+.slider:hover:after, input:checked + .slider:hover:after {
+	border-color: black;
 }
 .slider>span{
 	position: relative;
@@ -82,7 +89,7 @@ export default {
 }
 input:checked + .slider:after {
 	left: 50%;
-	border: none;
-	border-left: 1px solid;
+	border-right: 0;
+	border-left: 1px solid var(--main-gray-color);
 }
 </style>

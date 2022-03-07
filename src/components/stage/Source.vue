@@ -1,7 +1,7 @@
 <template>
   <div id="source">
     <div id="source_header">
-      <button id="refresh_button" @click="$emit('update')" title="Refresh blocks">↻</button>
+      <button id="refresh_button" @click="$emit('update')" title="Refresh blocks"><span class="icon refresh"></span></button>
       <searchbar @search="filterBlocks" title="Search blocks" />
     </div>
     <draggable

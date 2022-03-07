@@ -26,6 +26,9 @@
 			<span class="icon thread"></span>
 			<span class="icon threadstart"></span>
 			<span class="icon threaddelete"></span>
+			<span class="icon trash"></span>
+			<span class="icon trashopen"></span>
+			<span class="icon refresh"></span>
 		</div>
 
 	</section>

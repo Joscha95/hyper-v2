@@ -164,4 +164,10 @@ a{
   .toolbox div + div{
     border-top:solid 1px black;
   }
+  .toolbox .move { background-image: url(../img/icon-move.svg); }
+  .toolbox .eye { background-image: url(../img/icon-eye.svg); }
+  .toolbox .connect { background-image: url(../img/icon-connect.svg); }
+  .toolbox .dynamic { background-image: url(../img/icon-dynamic.svg); }
+  .toolbox .anchor { background-image: url(../img/icon-anchor.svg); }
+  .toolbox .thread { background-image: url(../img/icon-thread.svg); }
 </style>

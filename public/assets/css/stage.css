@@ -149,16 +149,6 @@ html, body {
 	display:inline-block;
 	padding: 10px 0;
 }
-.delete {
-	color:var(--main-error-color);
-}
-.number_handle {
-	color: blue;
-	cursor: row-resize;
-	user-select: none;
-	padding: 10px 0;
-	display: inline-block
-}
 .selected {
 	background-color: var(--main-lightyellow-color);
 	height: auto;
@@ -218,9 +208,6 @@ input.searchbar {
 #source_header .searchbar:focus {
 	width: 100%;
 }
-#refresh_button, .searchbar, #source .drag_list {
-	box-shadow: 0 0 1px rgba(0,0,0,.15);
-}
 
 
 
@@ -236,9 +223,10 @@ input.searchbar {
 	width: var(--draggable-list-item-width);
 	padding: 1rem;
 	padding-top: 4rem;
-	box-shadow: 0 0 1px 4px rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: column;
+	box-shadow: 0 0 .6em rgba(0, 0, 0, 0.1);
+	border-left: 1px solid var(--main-gray-color);
 }
 #editor_header {
 	text-align: right;
@@ -280,6 +268,7 @@ input.searchbar {
 
 
 
+
 /* CONTROLS */
 
 #controls_header {
@@ -304,48 +293,51 @@ input.searchbar {
 }
 #settings_button, #help_button:hover:before {
 	cursor: pointer;
+	vertical-align: middle;
 	font-size: .8em;
 	color: var(--main-mediumgray-color);
 }
-#settings_button:hover, #help_button:hover {
+#settings_button:hover, #help_button:hover:before {
 	text-decoration: underline;
 	text-decoration-style: dotted;
 	color: black;
 }
 #main_button {
 	background: var(--main-editor-color);
-	padding: .4rem .9rem;
+	padding: 0 .9rem 0 1rem;
 	color: white;
 	border-radius: 2rem;
 	position: relative;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
+	height: 2rem;
 }
 #main_button:hover {
 	background: var(--main-editor-hightlight-color);
 }
 #editor_button_indicator {
 	position: relative;
-	display: inline-block;
+	display: flex;
+	align-items: center;
 	background: var(--main-error-color);
 	border-radius: 2em;
-	min-width: 1.1rem;
-	height: 1.1rem;
+	min-width: 1.2rem;
+	height: 1.2rem;
 	margin-left: .5rem;
 	color: white;
 	font-size: .8em;
 	text-align: center;
 	box-sizing: border-box;
-	padding: 0.1em .5em;
-	margin-right: -.45rem;
+	padding: 0 .5em;
+	margin-right: -.4rem;
 }
 #main_button_text {
 }
 #main_button #editor_button_indicator.close_button {
 	background: linear-gradient(45deg, transparent calc(50% - 1px), var(--main-editor-hightlight-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), var(--main-editor-hightlight-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(white, white);
 	color: transparent;
-	border: 3px solid white;
+	border: 5px solid white;
 	padding: 0;
 	width: 1.1rem;
 }
@@ -358,13 +350,14 @@ input.searchbar {
 	bottom:1rem;
 	right:1rem;
 	align-items: stretch;
+	height: 2.3rem;
 }
 #camera_controls.margin_right {
 	right:calc(var(--draggable-list-item-width) + 3rem);
 }
 #add_lookout_btn {
-	background: var(--main-faintgray-color);
-	border: 1px solid var(--main-connection-color);
+	background: white;
+	border: 1px solid var(--main-gray-color);
 	vertical-align: middle;
 	color: var(--main-connection-color);
 	border-radius: 5px;
@@ -379,7 +372,7 @@ input.searchbar {
 	margin-left: .7em;
 }
 #add_lookout_btn:hover {
-	background: white;
+	border-color: var(--main-connection-color);
 }
 
 
@@ -388,16 +381,32 @@ input.searchbar {
 
 
 .node_properties {
-	text-align: center;
+	display: flex;
+	flex-wrap: nowrap;
+	margin: 1rem 0 .5rem 0;
+	align-items: stretch;
+	justify-content: space-between;
+	padding: 0 .5em;
 	height: 2rem;
-	margin-bottom: .5rem;
 }
 .node_properties button {
 	height: 100%;
 }
-.node_properties button, .node_properties .toggle {
-	margin: 0 .5em;
+.delete_button_wrapper {
+	display: inline;
 }
+button.delete_button {
+	border-color: var(--main-error-color);
+	color: var(--main-error-color);
+	margin: 0;
+}
+button.edit_button {
+	font-size: .7em;
+	padding: 0 1rem;
+}
+
+/* DRAGGABLE NUMBER  */
+
 .connection_properties {
 	text-align: center;
 }
@@ -412,20 +421,24 @@ input.searchbar {
 	box-sizing: border-box;
 }
 .connection_properties:hover .connection_property_circle {
-	border-width: 3px;
+	border-width: 2px;
 }
 .connection_property_circle:hover {
 	background: var(--main-connection-color);
 }
-.delete_button_wrapper {
-	text-align: center;
-	margin: .5rem 0 1rem 0;
+.number_handle {
+	color: blue;
+	cursor: row-resize;
+	user-select: none;
+	padding: 10px 0;
+	display: inline-block;
+	font-size: .9em;
+	font-style: italic;
 }
-button.delete_button {
-	border-color: var(--main-error-color);
-	color: var(--main-error-color);
+.number_handle:hover .number_handle_value {
+	text-decoration: underline;
+	text-decoration-style: dotted;
 }
-
 
 
 
@@ -465,3 +478,66 @@ button.delete_button {
 	background-color: var(--main-lightyellow-color);
 	box-shadow: 0 0 0 5px black;
 }
+
+
+
+
+
+
+/* TOOLBOX */
+
+.toolbox{
+	position:fixed;
+	box-shadow:0 0 5px rgba(0,0,0,0.3);
+	transform: translate(15%);
+	overflow:hidden;
+	border-radius: 5px;
+}
+.toolbox div{
+	cursor:pointer;
+	width: 2.4rem;
+	height: 2.4rem;
+	text-align:center;
+	background-repeat: no-repeat;
+	background-size: 1rem;
+	background-position: center;
+	box-sizing: border-box;
+	border-top: 1px solid var(--main-gray-color);
+	border-bottom: 1px solid var(--main-gray-color);
+	position: relative;
+	background-color:white;
+}
+.toolbox div:hover, .toolbox div:active{
+	/*border-color: black;
+	z-index: 1;*/
+	background-color: var(--main-faintgray-color);
+}
+.toolbox div:not(:first-child) {
+	margin-top: -1px;
+}
+.toolbox div:first-child {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.toolbox div:last-child {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+#thread_plus{
+	position:fixed;
+	padding:.5em;
+	border-radius:1em;
+	background:white;
+}
+.cursor_pointer{
+	cursor:pointer;
+}
+.hover{
+	opacity:.5;
+}
+.toolbox .move { background-image: url(../img/icon-move.svg); }
+.toolbox .eye { background-image: url(../img/icon-eye.svg); }
+.toolbox .connect { background-image: url(../img/icon-connect.svg); }
+.toolbox .dynamic { background-image: url(../img/icon-dynamic.svg); }
+.toolbox .anchor { background-image: url(../img/icon-anchor.svg); }
+.toolbox .thread { background-image: url(../img/icon-thread.svg); }
