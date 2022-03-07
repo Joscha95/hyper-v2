@@ -396,7 +396,7 @@ class THREEScene {
       this.thread.onInsert(this.getWorldPosition(event.clientX,event.clientY,500));
     }
 
-    const intersect = this.castRay(this.mouse,[...this.blockGeometries,this.thread.spline.mesh])[0]
+    const intersect = this.castRay(this.mouse,this.thread.isInserting ? this.blockGeometries : [...this.blockGeometries,this.thread.spline.mesh])[0]
     this.hoveredItem.set(intersect ? intersect.object : undefined );
     if (this.hoveredItem.item) {
       if (this.hoveredItem.item.h_type=='thread') {

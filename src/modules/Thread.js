@@ -84,6 +84,7 @@ class Thread {
   }
 
   startInsert(point){
+    this.unHover();
     const divisions = this.store.thread.length*10
     const points = this.spline.getPoints(divisions);
     let dist = 100000;
