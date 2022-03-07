@@ -110,6 +110,16 @@ class Lookout {
     this.onStartLink(this,'thread');
   }
 
+  hover(){
+    document.body.classList.add('cursor_pointer')
+    this.dom.classList.add('hover')
+  }
+
+  unHover(){
+    document.body.classList.remove('cursor_pointer')
+    this.dom.classList.remove('hover')
+  }
+
   position(){
     return this.group.position;
   }
@@ -146,17 +156,17 @@ class Lookout {
 
     const scope=this;
     const options = [
-      {name:'center',text:'⊹',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
-      {name:'connection',text:'☌',tooltip:'make a new connection',callback:()=>{scope.startLink()}}
+      {name:'center',class:'eye',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
+      {name:'connection',class:'connect',tooltip:'make a new connection',callback:()=>{scope.startLink()}},
     ]
 
     if(this.canStartThread) {
-      options.push({name:'thread',text:'☡',tooltip:'start weaving',callback:()=>{scope.startThread()}});
+      options.push({name:'thread',class:'thread',tooltip:'start weaving',callback:()=>{scope.startThread()}});
     } else if (this.isThreatStart || this.isThreatEnd) {
-      options.push({name:'thread',text:'c',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
-      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
+      options.push({name:'thread',class:'threadstart',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
+      options.push({name:'thread',class:'threaddelete',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }else if(this.isInThreat) {
-      options.push({name:'thread',text:'x',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
+      options.push({name:'thread',class:'threaddelete',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }
 
     this.toolbox=new Toolbar(options);
