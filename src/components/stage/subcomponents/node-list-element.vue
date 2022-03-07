@@ -8,16 +8,17 @@
             <img :src="element.imageUrl">
           </div>
           <div class="draggable_list_item_content">
-           <span v-if="h_type=='connection' ">{{ element.content }}</span>
+           <span v-if="h_type=='connection' "><span v-if="element.content==''" class="icon link"></span>{{ element.content }}</span>
+           <span v-else-if="element.name==''&&h_type=='lookout'" class="icon lookout"></span>
            <span v-else-if="element.name">{{ element.name }}</span>
            <span v-else-if="element.class=='Text'">{{ element.content }}</span>
-           <div class="eye"></div>
           </div>
+          <span class="icon eye"></span>
       </div>
 
       <div v-if="store.selectedObject==element">
         <div class="node_properties" >
-          <toggle v-if="element.h_type!='lookout'" off="↔" on="⥿&nbsp;" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed"/>
+          <toggle v-if="element.h_type!='lookout'" off="dynamic" on="anchor" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed" :icon="true"/>
           <button v-if="needstextedit" @click="editmode=!editmode" class="transparent_button">{{ editmode ? 'done' :'edit' }}</button>
         </div>
 
@@ -138,27 +139,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-
-input[type="text"]{
-  border-style:dashed;
-  padding:10px 0;
-  box-sizing:border-box;
-  display:inline-block;
-  width:100%;
-  color:inherit;
-  text-align:center
-}
-
-textarea{
-  display:block;
-  width:100%;
-  box-sizing:border-box;
-  resize:vertical;
-  height:auto;
-  border-style:dashed;
-  font-family:inherit;
-  margin-bottom: 1rem;
-}
-
-</style>
