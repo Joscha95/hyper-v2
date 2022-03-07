@@ -95,10 +95,12 @@ class Lookout {
 
   activate(){
     this.group.children[2].visible=false
+    this.contentItem.active=true
   }
 
   deactivate(){
     this.group.children[2].visible=true
+    this.contentItem.active=false
   }
 
   startLink(){
@@ -144,7 +146,6 @@ class Lookout {
 
     const scope=this;
     const options = [
-      {name:'transform',text:'⨣',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}},
       {name:'center',text:'⊹',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
       {name:'connection',text:'☌',tooltip:'make a new connection',callback:()=>{scope.startLink()}}
     ]

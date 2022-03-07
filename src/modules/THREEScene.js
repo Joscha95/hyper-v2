@@ -41,6 +41,18 @@ class THREEScene {
 
     this.onLinkAdded = ()=>{};
 
+    this.hoveredItem = {
+      item:undefined,
+      set(val){
+        if (val!=this.item) {
+          if(this.item) this.item.unhover()
+          this.item=val
+          if(this.item.h_type!='thread') this.item.hover()
+          console.log(this.item);
+        }
+
+      },
+    }
 
     domparent.addEventListener('mousedown',(e)=>this.onClick(e));
     domparent.addEventListener('mousemove',(e)=>this.onMousemove(e));
@@ -369,7 +381,6 @@ class THREEScene {
         this.objectControls.detach();
         return;
       }
-
     }
   }
 
@@ -382,19 +393,20 @@ class THREEScene {
       this.thread.onInsert(this.getWorldPosition(event.clientX,event.clientY,500));
     }
 
-    //this.hoveredItem = this.castRay(this.mouse)[0] ? this.castRay(this.mouse)[0].object : undefined ;
+    const intersect = this.castRay(this.mouse,[...this.blockGeometries,this.thread.spline.mesh])[0]
+    this.hoveredItem.set(intersect ? intersect.object : undefined );
+    if (this.hoveredItem) {
+      if (this.hoveredItem.name=='thread') {
+        if (!this.thread.empty && !this.thread.isInserting && !this.cameraController.enteredLookout) {
+          // const pos = this.raycaster.intersectObject(this.thread.spline.mesh)[0].point.clone().project(this.cameraController.camera)
+          //
+          // pos.x = (pos.x * (this.width/2)) + this.width/2;
+          // pos.y = - (pos.y * (this.height/2)) + this.height/2;
+          // pos.z = 0;
 
-    this.raycaster.setFromCamera(this.mouse, this.cameraController.camera);
-    if (!this.thread.empty && this.raycaster.intersectObject(this.thread.spline.mesh)[0] && !this.thread.isInserting && !this.cameraController.enteredLookout) {
-      // const pos = this.raycaster.intersectObject(this.thread.spline.mesh)[0].point.clone().project(this.cameraController.camera)
-      //
-      // pos.x = (pos.x * (this.width/2)) + this.width/2;
-      // pos.y = - (pos.y * (this.height/2)) + this.height/2;
-      // pos.z = 0;
-
-      this.thread.hover(event.clientX,event.clientY)
-    }else {
-      this.thread.unHover()
+          this.thread.hover(event.clientX,event.clientY)
+        }
+      }
     }
   }
 

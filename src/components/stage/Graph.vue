@@ -6,8 +6,8 @@
   <div id="toolbox_wrapper"></div>
 
   <div id="activeelement_navigator" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement" >
-    <div id="edit_lookout" v-if="lastValidChainElement.h_type=='lookout'">
-      <span @click="THREEScene.cameraController.toggleLookoutSync()">{{THREEScene.cameraController.lookoutSync ? 'end transform' : 'start transform'}}</span>
+    <div id="edit_lookout" v-if="lastValidChainElement.h_type=='lookout' && lastValidChainElement.active" >
+      <span @click="THREEScene.cameraController.toggleLookoutSync();forceSimulation.reheat(.1)">{{THREEScene.cameraController.lookoutSync ? 'end transform' : 'start transform'}}</span>
     </div>
     <div id="chain_navigator">
       <a v-if = "lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id"> {{ lastValidChainElement.from.name }} ⇢ </a>

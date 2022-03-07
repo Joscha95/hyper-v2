@@ -108,7 +108,12 @@ class FirstPersonController {
 
   toggleLookoutSync(){
     this.lookoutSync=!this.lookoutSync;
-    window.dispatchEvent(new HashChangeEvent("hashchange"))
+    if (this.lookoutSync) {
+      this.moveToTarget=false;
+      this.transformparent.position.set(this.activeLookOut.group.position.x,this.activeLookOut.group.position.y,this.activeLookOut.group.position.z)
+    }else {
+      window.dispatchEvent(new HashChangeEvent("hashchange"))
+    }
   }
 
   moveTo(targetObj) {

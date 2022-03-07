@@ -63,8 +63,8 @@ class ForceSimulation {
   //   this.onDataChange()
   // }
 
-  reheat(){
-    this.simulation.alpha(1);
+  reheat(a=1){
+    this.simulation.alpha(a);
   }
 
   update(){

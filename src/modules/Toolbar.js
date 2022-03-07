@@ -21,7 +21,7 @@ class Toolbar {
         default:
           btn.innerHTML=item.text;
           btn.title=item.tooltip;
-          btn.onclick=(e)=>{
+          btn.onmousedown=(e)=>{
             item.callback();
             e.stopPropagation();
           }
