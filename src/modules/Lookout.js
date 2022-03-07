@@ -112,12 +112,10 @@ class Lookout {
 
   hover(){
     document.body.classList.add('cursor_pointer')
-    this.dom.classList.add('hover')
   }
 
   unHover(){
     document.body.classList.remove('cursor_pointer')
-    this.dom.classList.remove('hover')
   }
 
   position(){
