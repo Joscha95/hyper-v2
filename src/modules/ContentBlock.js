@@ -132,6 +132,7 @@ class ContentBlock {
       options.push({name:'thread',class:'thread',tooltip:'start weaving',callback:()=>{scope.startThread()}});
     } else if (this.isThreatStart || this.isThreatEnd) {
       options.push({name:'thread',class:'threadstart',tooltip:'continue weaving',callback:()=>{scope.startThread()}});
+      options.push({name:'thread',class:'threaddelete',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }else if(this.isInThreat) {
       options.push({name:'thread',class:'threaddelete',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }
