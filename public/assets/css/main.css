@@ -68,7 +68,7 @@ a:hover, a:focus, a:active {
 
 #logo {
 	position: fixed;
-	top: 1rem;
+	top: 1.2rem;
 	left: 1rem;
 	box-sizing: border-box;
 	z-index: var(--main-layer-two);
