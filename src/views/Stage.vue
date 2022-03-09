@@ -52,7 +52,8 @@ export default {
 		Header, Controls, Editor, Source, Graph
 	},
 	mounted() {
-		this.get()
+		this.get();
+		// window.addEventListener
 	},
 	watch: {
 		state(newState) {

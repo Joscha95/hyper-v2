@@ -4,14 +4,14 @@
 	--main-gray-color: #aaaaaa;
 	--main-mediumgray-color: #6d6d6d;
 	--main-darkgray-color: #333;
-	
+
 	--main-success-color: #17ac10;;
 	--main-error-color: #ff5e00;
 	--main-lightyellow-color: #fffbe9;
 	--main-connection-color: blue;
 	--main-editor-color: #414141;
 	--main-editor-hightlight-color: #5a5a5a;
-	
+
 	--main-layer-one: 1;
 	--main-layer-two: 2;
 	--main-layer-three: 3;
@@ -40,6 +40,11 @@ html, body {
 
 img {
 	vertical-align: middle;
+}
+
+pre{
+	font-family: inherit;
+	font-size: inherit;
 }
 
 /* BASIC */

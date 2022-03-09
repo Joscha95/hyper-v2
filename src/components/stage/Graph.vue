@@ -14,7 +14,7 @@
 
       <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
       <div class="description" v-if="lastValidChainElement.description!=''"  v-html="lastValidChainElement.description"></div>
-      <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'">{{ lastValidChainElement.content }}</div>
+      <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'"><pre>{{ lastValidChainElement.content }}</pre></div>
 
       <a v-if = "lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id"> ⇢ {{ lastValidChainElement.to.name }} </a>
     </div>
