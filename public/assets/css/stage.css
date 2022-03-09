@@ -541,3 +541,5 @@ button.edit_button {
 .toolbox .dynamic { background-image: url(../img/icon-dynamic.svg); }
 .toolbox .anchor { background-image: url(../img/icon-anchor.svg); }
 .toolbox .thread { background-image: url(../img/icon-thread.svg); }
+.toolbox .threadstart { background-image: url(../img/icon-threadstart.svg); }
+.toolbox .threaddelete { background-image: url(../img/icon-threaddelete.svg); }
