@@ -11,7 +11,12 @@ const store = reactive({
   elementInCameraView:undefined,
   connectionCount:0,
   unsavedChanges:0,
-  isOrbit:false
+  isOrbit:false,
+  colors:{
+    connection: '#4a4aba',
+    thread: '#f85330',
+    lookout: 'black'
+  }
 })
 
 export default store

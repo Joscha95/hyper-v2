@@ -117,10 +117,12 @@ export default {
 		}
 	}
 }
+
+const weiss = 'white';
 </script>
 
 <style>
 #notification.default {
-	background: white;
+	background: '{{weiss}}';
 }
 </style>

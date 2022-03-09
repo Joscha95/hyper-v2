@@ -2,7 +2,7 @@ import {LineBasicMaterial,BufferGeometry,Line,DynamicDrawUsage,Vector3,LineDashe
 import {makeid} from '@/modules/Helpers.js'
 
 class Connection {
-  constructor(scene,startObject,middleObject,endObject) {
+  constructor(scene,startObject,middleObject,endObject,color) {
     this.startObject = startObject;
     this.middleObject = middleObject;
     this.endObject = endObject;
@@ -10,9 +10,9 @@ class Connection {
 
     this.onDispose=()=>{}
 
-    this.material = new LineBasicMaterial({color: 0x0000ff });
+    this.material = new LineBasicMaterial({color: color });
     this.dashedMaterial=new LineDashedMaterial( {
-      	color: 0x0000ff,
+      	color: color,
       	dashSize: 3,
       	gapSize: 3,
       } );
@@ -27,7 +27,7 @@ class Connection {
 
     const cgeometry = new ConeGeometry( 2, 5, 3 );
     cgeometry.rotateX(Math.PI * 0.5);
-    const material = new MeshBasicMaterial( {color: 0x0000ff} );
+    const material = new MeshBasicMaterial( {color: color} );
     this.cones = [new Mesh( cgeometry, material ),new Mesh( cgeometry, material )];
     this.cones.forEach((item, i) => {
       scene.add(item)

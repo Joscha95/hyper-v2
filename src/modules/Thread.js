@@ -17,12 +17,12 @@ class Thread {
 		curve.curveType = 'catmullrom';
 
     this.dashedMaterial=new LineDashedMaterial( {
-      	color: 0xff0000,
+      	color: store.colors.thread,
       	dashSize: 3,
       	gapSize: 3,
       } );
     this.material = new LineBasicMaterial( {
-			color: 0xff0000
+			color: store.colors.thread
 		} )
 
 		curve.mesh = new Line( geometry, this.material );

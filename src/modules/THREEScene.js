@@ -168,7 +168,7 @@ class THREEScene {
     let nn;
     nodes.forEach((item, i) => {
       if (item.h_type=='lookout') {
-        nn=new Lookout(this.scene,item,this.objectControls,this.cameraController.camera)
+        nn=new Lookout(this.scene,item,this.objectControls,this.cameraController.camera,this.store.colors.lookout)
       } else {
         nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
       }
@@ -183,7 +183,7 @@ class THREEScene {
       const startObject=this.blocks.find((p)=> p.h_id==item.sourceID);
       const middleObject=this.blocks.find((p)=> p.h_id==item.h_id);
       const endObject=this.blocks.find((p)=> p.h_id==item.targetID)
-      const con = new Connection(this.scene,startObject,middleObject,endObject)
+      const con = new Connection(this.scene,startObject,middleObject,endObject,this.store.colors.connection)
       con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1)}
 
       middleObject.onFocus=()=>{con.focus()};
@@ -206,7 +206,7 @@ class THREEScene {
     let nn;
     toAdd.forEach((item, i) => {
       if (item.h_type=='lookout') {
-        nn=new Lookout(this.scene,item,this.objectControls,this.cameraController.camera)
+        nn=new Lookout(this.scene,item,this.objectControls,this.cameraController.camera,this.store.colors.lookout)
       } else {
         nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
       }
@@ -219,7 +219,7 @@ class THREEScene {
       const startObject=this.blocks.find((p)=> p.h_id==item.sourceID);
       const middleObject=this.blocks.find((p)=> p.h_id==item.h_id);
       const endObject=this.blocks.find((p)=> p.h_id==item.targetID)
-      const con = new Connection(this.scene,startObject,middleObject,endObject)
+      const con = new Connection(this.scene,startObject,middleObject,endObject,this.store.colors.connection)
       con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1)}
 
       middleObject.onFocus=()=>{con.focus()};
@@ -515,7 +515,7 @@ class THREEScene {
 
 
     const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls);
-    const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj);
+    const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj,this.store.colors.connection);
     middleNodePlane.onFocus=()=>{con.focus()};
     middleNodePlane.onBlur=()=>{con.blur()};
     middleNodePlane.onStartLink=(ele,type)=>{this.startConnection(ele,type)};

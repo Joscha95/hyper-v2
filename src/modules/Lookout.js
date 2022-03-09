@@ -2,7 +2,7 @@ import {PlaneGeometry,Vector3,LineBasicMaterial,Group,Line,MeshBasicMaterial,Mes
 import Toolbar from '@/modules/Toolbar.js'
 
 class Lookout {
-  constructor(scene,contentItem,objectControls,camera) {
+  constructor(scene,contentItem,objectControls,camera,color) {
     this.scene = scene;
     this.camera = camera;
     this.contentItem = contentItem;
@@ -14,7 +14,7 @@ class Lookout {
   	this.group = new Group();
     this.objectControls=objectControls;
 
-  	const material = new LineBasicMaterial({ color: 0x0000ff });
+  	const material = new LineBasicMaterial({ color: color });
   	const points = [
   		new Vector3( -40, -25, 70 ),
   		new Vector3( 40, -25, 70 ),
@@ -31,7 +31,7 @@ class Lookout {
   	const line = new Line( new BufferGeometry().setFromPoints( points ), material );
 
   	const planeGeo = new PlaneGeometry( 80, 50 );
-  	this.planeMat = new MeshBasicMaterial({ color: 0x0000ff, side: DoubleSide, opacity: 0.33, transparent: true });
+  	this.planeMat = new MeshBasicMaterial({ color: color, side: DoubleSide, opacity: 0.33, transparent: true });
   	const plane = new Mesh( planeGeo, this.planeMat );
     plane.position.set(0,0,70)
 
