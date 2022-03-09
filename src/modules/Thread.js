@@ -1,4 +1,4 @@
-import {BufferGeometry, BufferAttribute, Vector3, CatmullRomCurve3, Line, LineDashedMaterial, LineBasicMaterial} from 'three'
+import {BufferGeometry, BufferAttribute, Vector3, CatmullRomCurve3, Line, LineDashedMaterial} from 'three'
 
 class Thread {
   constructor(scene,store,h_id) {
@@ -13,17 +13,14 @@ class Thread {
     const geometry = new BufferGeometry();
 		geometry.setAttribute( 'position', new BufferAttribute( new Float32Array( this.ARC_SEGMENTS * 3 ), 3 ) );
 
-		let curve = new CatmullRomCurve3( this.store.thread.map((n)=>n.position()) );
+		const curve = new CatmullRomCurve3( this.store.thread.map((n)=>n.position()) );
 		curve.curveType = 'catmullrom';
 
-    this.dashedMaterial=new LineDashedMaterial( {
+    this.material=new LineDashedMaterial( {
       	color: store.colors.thread,
-      	dashSize: 3,
+      	dashSize: 30,
       	gapSize: 3,
       } );
-    this.material = new LineBasicMaterial( {
-			color: store.colors.thread
-		} )
 
 		curve.mesh = new Line( geometry, this.material );
 		curve.mesh.castShadow = false;
@@ -83,6 +80,28 @@ class Thread {
     this.nodesChanged()
   }
 
+  hover(x,y){
+    this.domPlus.style.left=x+15+'px';
+    this.domPlus.style.top=y+15+'px';
+    if(!this.isHovered) {
+      this.domPlus.style.display='block';
+      document.body.classList.add('cursor_pointer');
+      this.spline.mesh.material.dashSize=15;
+      this.spline.mesh.computeLineDistances();
+
+    }
+    this.isHovered=true;
+  }
+
+  unHover(){
+    if(this.isHovered) {
+      this.domPlus.style.display='none';
+      document.body.classList.remove('cursor_pointer');
+      if(!this.isInserting) this.spline.mesh.material.dashSize=30;
+    }
+    this.isHovered=false;
+  }
+
   startInsert(point){
     this.unHover();
     const divisions = this.store.thread.length*10
@@ -102,7 +121,7 @@ class Thread {
     this.insertindex=ind+1;
     this.isInserting=true;
     this.spline.tension = 0.2;
-    this.spline.mesh.material = this.dashedMaterial;
+    this.spline.mesh.material.dashSize=15;
   }
 
   onInsert(point){
@@ -113,7 +132,7 @@ class Thread {
   abortInsert(){
     this.spline.tension = .5;
     this.nodesChanged();
-    this.spline.mesh.material = this.material;
+    this.spline.mesh.material.dashSize=30;
   }
 
   insert(obj){
@@ -198,30 +217,11 @@ class Thread {
     this.spline.points=this.store.thread.map((n)=>n.position());
 
     this.updateSpline();
+    this.spline.mesh.computeLineDistances();
     this.empty=this.store.thread.length==0;
   }
 
-  hover(x,y){
-    this.domPlus.style.left=x+15+'px';
-    this.domPlus.style.top=y+15+'px';
-    if(!this.isHovered) {
-      this.domPlus.style.display='block';
-      document.body.classList.add('cursor_pointer');
-      this.spline.mesh.material = this.dashedMaterial;
-      this.spline.mesh.computeLineDistances();
 
-    }
-    this.isHovered=true;
-  }
-
-  unHover(){
-    if(this.isHovered) {
-      this.domPlus.style.display='none';
-      document.body.classList.remove('cursor_pointer');
-      if(!this.isInserting) this.spline.mesh.material = this.material;
-    }
-    this.isHovered=false;
-  }
 
   updateSpline(){
     // this.temppoint=new Vector3();

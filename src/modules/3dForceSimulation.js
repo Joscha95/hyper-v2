@@ -7,16 +7,19 @@ class ForceSimulation {
     this.isHot=true;
     this.graphData=graphData;
     this.onDataChange=()=>{};
+    this.minAlpha=0.01;
+    this.alphaDecay=1 - Math.pow(this.minAlpha, 1 / 300)
     this.init();
   }
 
   init(){
     this.simulation.numDimensions(3)
+    this.simulation.alphaDecay(0.1)
     this.simulation.nodes(this.graphData.nodes)
     this.simulation.force('link', d3Force3d.forceLink(this.graphData.links)
                     .id((d) => { return d.h_id; })
                     .distance((l) => l.distance))
-    .force('charge', d3Force3d.forceManyBody())
+    .force('charge', d3Force3d.forceManyBody().theta(.1))
     //.force('center', d3Force3d.forceCenter())
     //.force('dagRadial', null);
     this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_id,n]))
@@ -68,7 +71,7 @@ class ForceSimulation {
   }
 
   update(){
-    this.isHot=this.simulation.alpha()>0.001
+    this.isHot=this.simulation.alpha()>0.01
     if (!this.isHot) return;
     this.simulation.tick();
   }

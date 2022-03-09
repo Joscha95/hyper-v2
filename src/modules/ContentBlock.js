@@ -122,11 +122,12 @@ class ContentBlock {
 
     const scope=this;
     const options = [
-      {name:'transform',class:'move',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}},
       {name:'center',class:'eye',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
       {name:'connection',class:'connect',tooltip:'make a new connection',callback:()=>{scope.startLink()}},
       {name:'isFixed',type:'toggle', on:'anchor', off:'dynamic', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic',callback:()=>{scope.toggleFixed()}},
     ]
+
+    if(this.h_type!='connection') options.splice(2,0,{name:'transform',class:'move',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}})
 
     if(this.canStartThread) {
       options.push({name:'thread',class:'thread',tooltip:'start weaving',callback:()=>{scope.startThread()}});

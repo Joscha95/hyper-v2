@@ -421,10 +421,13 @@ class THREEScene {
   }
 
   onCamMove(){
-    this.blocks.forEach((item, i) => {
-      item.lookAt(this.cameraController.position());
-      item.updateToolbox();
-    });
+    if (!this.forceSimulation.isHot) {
+      this.blocks.forEach((item, i) => {
+        item.lookAt(this.cameraController.position());
+        item.updateToolbox();
+      });
+    }
+
     const intersects = this.castRay(new THREE.Vector2());
     if (intersects[0] && intersects[0].distance<600) {
       const targ = intersects[0].object;

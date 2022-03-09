@@ -131,7 +131,7 @@ class FirstPersonController {
       const clone = this.transformparent.clone();
       clone.lookAt(targetPos);
       this.quatTarg = clone.quaternion.clone();
-      posOffset = -500;
+      posOffset = -150;
     }
 
 
