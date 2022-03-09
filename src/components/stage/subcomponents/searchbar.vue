@@ -19,11 +19,7 @@ export default {
 </script>
 
 <style scoped>
-input{
-  padding:10px;
-  width: 100%;
-  border-radius:0;
-  border:var(--border);
-  margin: 0;
-}
+  .searchbar {
+    width: 100%;
+  }
 </style>

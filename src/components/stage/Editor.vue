@@ -3,7 +3,7 @@
 		<div id="editor_header">
 			<div id="save_button_wrapper">
 				<span id="save_button_changes" v-if="store.unsavedChanges>0"><strong class="err_col">{{ store.unsavedChanges }}</strong> unsaved change<span v-if="store.unsavedChanges>1">s</span></span>
-				<button id="save_button" @click="$emit('save')">save</button>
+				<button id="save_button" @click="$emit('save')">Save</button>
 			</div>
 			<searchbar @search="filterBlocks" />
 		</div>

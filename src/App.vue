@@ -22,6 +22,13 @@
 				store,
 			}
 		},
+		setup() {
+			let style = document.createElement('style')
+			for (const [key, value] of Object.entries(store.colors)) {
+				style.innerHTML = style.innerHTML+':root{--main-'+key+'-color: '+store.colors.connection+';}'
+			}
+			document.head.appendChild(style)
+		},
 		methods: {
 			notify(text, type = 'default', timeout = 4000 ) {
 				this.notification = { id: Date.now(), text: text, type: type, timeout: timeout }

@@ -45,15 +45,15 @@ export default {
 			needsInit: true,
 			showSource: true,
 			showEditor: false,
-			headerTitle: ''
+			headerTitle: '',
+			store:this.$root.store
 		}
 	},
 	components: {
 		Header, Controls, Editor, Source, Graph
 	},
 	mounted() {
-		this.get();
-		// window.addEventListener
+		this.get()
 	},
 	watch: {
 		state(newState) {
@@ -117,12 +117,10 @@ export default {
 		}
 	}
 }
-
-const weiss = 'white';
 </script>
 
 <style>
 #notification.default {
-	background: '{{weiss}}';
+	background: white;
 }
 </style>
