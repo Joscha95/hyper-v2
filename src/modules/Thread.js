@@ -55,7 +55,7 @@ class Thread {
       if(node) this.store.thread.push(node);
     });
 
-    if(this.store.threadIds.length>2) this.scene.add(this.spline.mesh)
+    if(this.store.threadIds.length>=2) this.scene.add(this.spline.mesh)
     this.nodesChanged()
   }
 
