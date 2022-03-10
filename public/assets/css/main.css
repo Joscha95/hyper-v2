@@ -41,6 +41,8 @@ img {
 pre{
 	font-family: inherit;
 	font-size: inherit;
+	margin: 0;
+	padding: 0;
 }
 
 /* BASIC */
