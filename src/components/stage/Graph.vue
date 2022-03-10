@@ -28,7 +28,6 @@ import ForceSimulation from '@/modules/3dForceSimulation.js';
 import THREEScene from '@/modules/THREEScene.js';
 import {makeid} from '@/modules/Helpers.js';
 import CanvasDragtarget from '@/components/stage/CanvasDragtarget.vue';
-import { shallowReactive } from 'vue'
 import { nextTick } from 'vue'
 
 export default {

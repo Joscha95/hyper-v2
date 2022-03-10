@@ -1,6 +1,6 @@
-import { shallowReactive } from 'vue'
+import { reactive } from 'vue'
 
-const store = shallowReactive({
+const store = reactive({
   selectedObject:null,
   scene:null,
   isDragging:false,
