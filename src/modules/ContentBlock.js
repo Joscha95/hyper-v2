@@ -172,6 +172,10 @@ class ContentBlock {
         ele.onload=(e)=>{this.setPlaneGeomToDomWidth(e.target)}
         ele.src=this.contentItem.imageUrl;
         break;
+      case 'Channel':
+        ele=document.createElement('h2');
+        ele.appendChild(document.createTextNode( this.contentItem.name ));
+        break;
       case'Connection':
       case'Text':
       default:

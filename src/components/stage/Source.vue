@@ -16,7 +16,7 @@
       item-key="id"
     >
       <template #item="{ element }">
-        <div class="draggable_list_item drag_handle" :class="{no_thumb:!element.image}" v-show="element.title.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring)">
+        <div class="draggable_list_item drag_handle" :class="{no_thumb:!element.image}" v-show="element.title.toLowerCase().includes(searchstring) || (element.content ? element.content.toLowerCase().includes(searchstring) : false)">
           <div class="draggable_list_item_thumb" v-if="element.image">
             <img :src="element.image.thumb.url">
           </div>
@@ -72,7 +72,7 @@ export default {
         to:[],
         from:[],
         isFixed:false,
-        content:item.content,
+        content:item.content ? item.content : '',
         description: item.description_html,
         imageUrl: item.image ? item.image.thumb.url : '',
         h_type: 'content'
