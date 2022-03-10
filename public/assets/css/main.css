@@ -303,3 +303,6 @@ textarea {
 .icon.refresh {
 	background-image: url(../img/icon-refresh.svg);
 }
+.icon.close {
+	background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.08 32"><defs><style>.c,.d{fill:none;}.d{stroke: black ;stroke-miterlimit:10;stroke-width:2px;}</style></defs><g id="a"><rect class="c" x=".04" width="32" height="32"/></g><g id="b"><line class="d" x1="26.26" y1="5.78" x2="5.81" y2="26.22"/><line class="d" x1="5.81" y1="5.78" x2="26.26" y2="26.22"/></g></svg>');
+}
