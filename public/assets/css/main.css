@@ -283,13 +283,13 @@ textarea {
 	background-image: url(../img/icon-dynamic.svg);
 }
 .icon.thread {
-	background-image: url(../img/icon-thread.svg);
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2{fill:none;}.cls-2{stroke:red;stroke-miterlimit:10;stroke-width:1.8px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Thread"><path class="cls-2" d="M3.65,13.33c3.4-9.33,14-12.12,16.61-10,3.89,3.15-.1,6.34-3.47,9.7a11.7,11.7,0,0,0-3.51,11c1.13,5.58,12.46,9.9,15.07-3.84" transform="translate(0)"/></g></svg>');
 }
 .icon.threadstart {
-	background-image: url(../img/icon-threadstart.svg);
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2,.cls-3{fill:none;}.cls-2,.cls-3{stroke:red;stroke-miterlimit:10;}.cls-2{stroke-width:1.8px;}.cls-3{stroke-width:2px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Thread_Start" data-name="Thread Start"><path class="cls-2" d="M1.83,13.76c3.06-8.4,12.61-10.91,15-9,3.5,2.83-.09,5.7-3.12,8.72a10.5,10.5,0,0,0-3.16,9.93c1,5,11.22,8.92,13.57-3.45" transform="translate(0)"/><circle class="cls-3" cx="25.85" cy="16.59" r="4.32"/></g></svg>');
 }
 .icon.threaddelete {
-	background-image: url(../img/icon-threaddelete.svg);
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2,.cls-3{fill:none;}.cls-2,.cls-3{stroke:red;stroke-miterlimit:10;}.cls-2{stroke-width:1.8px;}.cls-3{stroke-width:2px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Thread_Delete" data-name="Thread Delete"><path class="cls-2" d="M1.17,13.48c3.06-8.4,12.61-10.91,15-9,3.5,2.83-.09,5.7-3.12,8.73a10.49,10.49,0,0,0-3.16,9.92c.9,4.44,9,8,12.45.24" transform="translate(0)"/><line class="cls-3" x1="17.97" y1="20.21" x2="31.43" y2="14.66"/><line class="cls-3" x1="21.93" y1="10.7" x2="27.47" y2="24.16"/></g></svg>');
 }
 .icon.lookoutmove {
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-4{fill:none;}.cls-2,.cls-3{fill:#1d1d1b;}.cls-3,.cls-4{stroke: black ;stroke-miterlimit:10;}.cls-4{stroke-width:2px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Lookout_Move" data-name="Lookout Move"><polygon points="11 6 16 0 21 6 11 6"/><polygon points="7.78 31.29 0 32 0.71 24.22 7.78 31.29"/><polygon points="31.29 24.22 32 32 24.22 31.29 31.29 24.22"/><path class="cls-2" d="M17.63,23.48" transform="translate(0)"/><path class="cls-3" d="M10.84,15" transform="translate(0)"/><polygon class="cls-4" points="16.46 16.73 26.35 8.71 25.33 19.45 16.25 29.38 16.46 16.73"/><polyline class="cls-4" points="27.01 7.66 4.48 14.74 15.74 31.02"/><line class="cls-4" x1="25.33" y1="19.45" x2="4.48" y2="14.74"/><path class="cls-4" d="M5.75,14.61" transform="translate(0)"/><polygon points="14.87 31.52 15.18 32 15.63 30.86 14.87 31.52"/><polygon points="26.61 6.75 27.52 6.46 27.01 7.45 26.61 6.75"/></g></svg>');
