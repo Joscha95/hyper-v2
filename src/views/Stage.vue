@@ -12,11 +12,10 @@
 		@logout="authenticate(false, 'logout')"
 		@recover="recover"
 		@toggleEditor="toggleEditor"
-		@addLookout="addLookout"
 	/>
 	<Editor v-show="showEditor" @save="save"/>
 	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
-	<Graph ref="sceneComponent"/>
+	<Graph :showEditor="showEditor" :loggedIn="loggedIn" ref="sceneComponent"/>
 </template>
 
 <script>
@@ -53,7 +52,14 @@ export default {
 		Header, Controls, Editor, Source, Graph
 	},
 	mounted() {
-		this.get()
+		this.get();
+		window.addEventListener('keydown',(e)=>{
+			if(e.which == 83 && (e.ctrlKey||e.metaKey) || (e.which == 19)) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.save()
+			}
+		})
 	},
 	watch: {
 		state(newState) {
@@ -104,9 +110,6 @@ export default {
 		}
 	},
 	methods: {
-		addLookout(){
-			this.$refs.sceneComponent.addLookout();
-		},
 		toggleSource () {
 			if(this.loggedIn){
 				this.showSource = !this.showSource

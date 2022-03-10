@@ -249,16 +249,16 @@ textarea {
 .icon.arrows {
 	background-image: url(../img/icon-arrows.svg);
 }
-.icon.eye {
+.icon.eye,.toolbox .eye {
 	background-image: url(../img/icon-eye.svg);
 }
-.icon.anchor {
+.icon.anchor,.toolbox .anchor {
 	background-image: url(../img/icon-anchor.svg);
 }
-.icon.move {
+.icon.move, .toolbox .move {
 	background-image: url(../img/icon-move.svg);
 }
-.icon.connect {
+.icon.connect,.toolbox .connect {
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2{fill:none;}.cls-2{stroke: %234A4ABA ;stroke-miterlimit:10;stroke-width:1.8px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Connect"><circle class="cls-2" cx="12.4" cy="19.53" r="8.06"/><line class="cls-2" x1="17.61" y1="14.46" x2="27.67" y2="4.41"/></g></svg>');
 }
 .icon.lookout {
@@ -279,16 +279,16 @@ textarea {
 .icon.arrow {
 	background-image: url(../img/icon-arrow.svg);
 }
-.icon.dynamic {
+.icon.dynamic,.toolbox .dynamic {
 	background-image: url(../img/icon-dynamic.svg);
 }
-.icon.thread {
+.icon.thread,.toolbox .thread {
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2{fill:none;}.cls-2{stroke:red;stroke-miterlimit:10;stroke-width:1.8px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Thread"><path class="cls-2" d="M3.65,13.33c3.4-9.33,14-12.12,16.61-10,3.89,3.15-.1,6.34-3.47,9.7a11.7,11.7,0,0,0-3.51,11c1.13,5.58,12.46,9.9,15.07-3.84" transform="translate(0)"/></g></svg>');
 }
-.icon.threadstart {
+.icon.threadstart,.toolbox .threadstart {
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2,.cls-3{fill:none;}.cls-2,.cls-3{stroke:red;stroke-miterlimit:10;}.cls-2{stroke-width:1.8px;}.cls-3{stroke-width:2px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Thread_Start" data-name="Thread Start"><path class="cls-2" d="M1.83,13.76c3.06-8.4,12.61-10.91,15-9,3.5,2.83-.09,5.7-3.12,8.72a10.5,10.5,0,0,0-3.16,9.93c1,5,11.22,8.92,13.57-3.45" transform="translate(0)"/><circle class="cls-3" cx="25.85" cy="16.59" r="4.32"/></g></svg>');
 }
-.icon.threaddelete {
+.icon.threaddelete,.toolbox .threaddelete {
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2,.cls-3{fill:none;}.cls-2,.cls-3{stroke:red;stroke-miterlimit:10;}.cls-2{stroke-width:1.8px;}.cls-3{stroke-width:2px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Thread_Delete" data-name="Thread Delete"><path class="cls-2" d="M1.17,13.48c3.06-8.4,12.61-10.91,15-9,3.5,2.83-.09,5.7-3.12,8.73a10.49,10.49,0,0,0-3.16,9.92c.9,4.44,9,8,12.45.24" transform="translate(0)"/><line class="cls-3" x1="17.97" y1="20.21" x2="31.43" y2="14.66"/><line class="cls-3" x1="21.93" y1="10.7" x2="27.47" y2="24.16"/></g></svg>');
 }
 .icon.lookoutmove {
@@ -303,6 +303,6 @@ textarea {
 .icon.refresh {
 	background-image: url(../img/icon-refresh.svg);
 }
-.icon.close {
+.icon.close, .toolbox .close {
 	background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.08 32"><defs><style>.c,.d{fill:none;}.d{stroke: black ;stroke-miterlimit:10;stroke-width:2px;}</style></defs><g id="a"><rect class="c" x=".04" width="32" height="32"/></g><g id="b"><line class="d" x1="26.26" y1="5.78" x2="5.81" y2="26.22"/><line class="d" x1="5.81" y1="5.78" x2="26.26" y2="26.22"/></g></svg>');
 }

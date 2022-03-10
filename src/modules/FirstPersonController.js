@@ -135,7 +135,7 @@ class FirstPersonController {
       const clone = this.transformparent.clone();
       clone.lookAt(targetPos);
       this.quatTarg = clone.quaternion.clone();
-      posOffset = -this.calcOptimumDistToObj(targetObj.dragObject.geometry.boundingSphere.radius);
+      posOffset = -Math.max(this.calcOptimumDistToObj(targetObj.dragObject.geometry.boundingSphere.radius),80);
     }
 
 
@@ -230,9 +230,7 @@ class FirstPersonController {
 	}
 
 	handleKeyDown(event) {
-
 		if (!this.enabled || (event.ctrlKey||event.metaKey)) return;
-    console.log(this.enabled);
 		switch ( event.keyCode ) {
 			case this.keys.UP:
 				this.keyPressed = true;

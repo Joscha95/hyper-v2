@@ -20,7 +20,7 @@
 			<template #item="{ element }">
 				<div class="draggable_list_item"
 				:class="selectedObjectId==element.h_id ? 'selected': '' "
-				:type="element.h_type" v-if="element.name.toLowerCase().includes(searchstring) || element.content.toLowerCase().includes(searchstring) "
+				:type="element.h_type" v-if="element.name.toLowerCase().includes(searchstring) || (element.content ? element.content.toLowerCase().includes(searchstring) : false) "
 				>
 					<node-list-element :element="element"/>
 				</div>

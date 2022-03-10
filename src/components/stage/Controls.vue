@@ -11,17 +11,9 @@
 		</div>
 	</div>
 
-	<div id="camera_controls" :class="{margin_right:showEditor}">
-		<div v-if="loggedIn" id="add_lookout_btn" @click="$emit('addLookout')">
-			Add
-			<span class="icon lookout"></span>
-		</div>
-		<toggle id="camera_toggle" off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="store.isOrbit" v-model="store.isOrbit" :icon="true"/>
-	</div>
-
 	<div id="settings" class="popup" v-if="showSettings">
 		<div class="popup_body">
-			
+
 			<section id="login" v-if="!loggedIn">
 				<input type="email" placeholder="Email" :value="email" @focus="store.focused=true" @blur="this.store.focused=false" @keyup="$emit('update:email', $event.target.value)" :class="{ valid: validEmail }" maxlength="255" required/><br><br>
 				<div id="password_wrapper">
@@ -30,7 +22,7 @@
 				</div><br><br>
 				<button @click="$emit('login')">Log in</button>
 			</section>
-			
+
 			<section id="settings_panel" v-else>
 				<div id="logout">
 					Logged in as <span class="bold">{{ email }}</span>. <span id="logout_button" @click="$emit('logout')">Log out?</span>
@@ -65,12 +57,12 @@ export default {
 	methods: {
 		validateEmail() {
 			(
-				( this.email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? this.validEmail=true : this.validEmail=false ) 
+				( this.email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? this.validEmail=true : this.validEmail=false )
 			)
 		}
 	},
 	watch: {
-		email() { 
+		email() {
 			this.validateEmail()
 		}
 	},
@@ -79,7 +71,6 @@ export default {
 	},
 	emits: [
 		'toggleEditor',
-		'addLookout',
 		'login',
 		'logout',
 		'recover',
@@ -117,14 +108,5 @@ export default {
 }
 #settings_panel {
 	font-size: .8em;
-}
-#camera_controls {
-	display: flex;
-	flex-wrap: nowrap;
-	align-items: center;
-}
-#add_lookout_btn {
-	cursor: pointer;
-	margin-right: 1rem;
 }
 </style>

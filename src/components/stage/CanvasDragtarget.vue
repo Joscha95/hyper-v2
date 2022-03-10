@@ -5,12 +5,13 @@
     id="canvas_dragtarget"
     :list="store.sceneList"
     :group="{ name: 'arena-blocks',pull:false,put:true}"
+    :sort="false"
     @add="added"
     @change="changed"
     item-key="uuid"
   >
   <template #item="{ element }">
-    <div class="list-group-item" :type="element.type" >
+    <div class="list-group-item target" :type="element.type" >
         {{ element.name }}
     </div>
   </template>
@@ -63,7 +64,9 @@ export default {
    pointer-events:none;
  }
  .drag-area.active{
-   opacity:1;
    pointer-events:all;
+ }
+ .list-group-item.target{
+   height:0;
  }
 </style>

@@ -6,9 +6,6 @@
   <div id="toolbox_wrapper"></div>
 
   <div id="activeelement_navigator" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement" >
-    <div id="edit_lookout" v-if="lastValidChainElement.h_type=='lookout' && lastValidChainElement.active" >
-      <span @click="THREEScene.cameraController.toggleLookoutSync();forceSimulation.reheat(.1)">{{THREEScene.cameraController.lookoutSync ? 'end transform' : 'start transform'}}</span>
-    </div>
     <div id="chain_navigator">
       <a v-if = "lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id"> {{ lastValidChainElement.from.name }} ⇢ </a>
 
@@ -20,6 +17,18 @@
     </div>
   </div>
 
+  <div id="camera_controls" :class="{margin_right:showEditor}">
+		<div v-if="loggedIn && !isInLookout" id="add_lookout_btn" @click="addLookout">
+			Add
+			<span class="icon lookout"></span>
+		</div>
+		<div v-if="loggedIn && isInLookout" id="add_lookout_btn" @click="toggleLookoutSync">
+
+      {{THREEScene.cameraController.lookoutSync ? 'end Transform' : 'Transform'}}
+			<span class="icon lookout"></span>
+		</div>
+		<toggle id="camera_toggle" off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="store.isOrbit" v-model="store.isOrbit" :icon="true"/>
+	</div>
 
 </template>
 
@@ -29,6 +38,7 @@ import THREEScene from '@/modules/THREEScene.js';
 import {makeid} from '@/modules/Helpers.js';
 import CanvasDragtarget from '@/components/stage/CanvasDragtarget.vue';
 import { nextTick } from 'vue'
+import toggle from '@/components/stage/subcomponents/toggle.vue'
 
 export default {
   data(){
@@ -43,6 +53,7 @@ export default {
       lastValidChainElement:undefined
     }
   },
+  props:['showEditor','loggedIn'],
   mounted(){
     const cameraSettings = {
     	zoomSpeed: 50,
@@ -55,7 +66,7 @@ export default {
     this.THREEScene.onLinkAdded = (l) => {this.linkAdded(l)};
   },
   components:{
-    CanvasDragtarget
+    CanvasDragtarget,toggle
   },
   computed:{
     linkDistance(){
@@ -81,6 +92,9 @@ export default {
     },
     isOrbit(){
       return this.store.isOrbit
+    },
+    isInLookout(){
+      return this.lastValidChainElement && this.lastValidChainElement.h_type=='lookout' && this.lastValidChainElement.active
     }
   },
   watch:{
@@ -122,7 +136,8 @@ export default {
       ele.val=1
     },
     linkAdded(l){
-      this.graphData.nodes.push(l.node)
+      this.graphData.nodes.splice(this.graphData.nodes.findIndex((n)=> n.h_id == l.link1.source)+1,0,l.node)
+      //this.graphData.nodes.push(l.node)
     },
     updateContents(allBlocks){
       let a_block;
@@ -135,6 +150,10 @@ export default {
         item.imageUrl = a_block.image ? a_block.image.thumb.url : '',
         item.sceneElement.updateDisplayElement();
       })
+    },
+    toggleLookoutSync(){
+      this.THREEScene.cameraController.toggleLookoutSync();
+      this.forceSimulation.reheat(.1);
     },
     addLookout(){
       const rot = this.THREEScene.cameraController.rotation();
@@ -158,7 +177,8 @@ export default {
         z:pos.z
       }
 
-      this.store.sceneList.push(node)
+      this.store.sceneList.push(node);
+      window.location.hash=node.h_id;
     },
     init(){
       this.graphData.nodes=this.$root.store.sceneList;
@@ -221,4 +241,16 @@ a{
   text-decoration:none;
 }
 
+</style>
+
+<style media="screen">
+  #camera_controls {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  #add_lookout_btn {
+    cursor: pointer;
+    margin-right: 1rem;
+  }
 </style>
