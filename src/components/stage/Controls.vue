@@ -4,7 +4,7 @@
 		<div id="help_button">?</div>
 		<div v-if="loggedIn" id="settings_button" title="Settings" @click="showSettings=!showSettings">Settings</div>
 		<div v-if="loggedIn" id="main_button" @click="$emit('toggleEditor')">
-			<span id="main_button_text">Editor</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
+			<span id="main_button_text">Edit</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
 		</div>
 		<div v-else id="main_button" @click="showSettings=!showSettings">
 			<span id="main_button_text">Log in</span>
@@ -13,7 +13,7 @@
 
 	<div id="camera_controls" :class="{margin_right:showEditor}">
 		<div v-if="loggedIn" id="add_lookout_btn" @click="$emit('addLookout')">
-			Add lookout
+			Add
 			<span class="icon lookout"></span>
 		</div>
 		<toggle id="camera_toggle" off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="store.isOrbit" v-model="store.isOrbit" :icon="true"/>
