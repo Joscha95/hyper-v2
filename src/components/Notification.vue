@@ -26,7 +26,6 @@ export default {
 		position: fixed;
 		left: 50%;
 		top: 0em;
-		min-width: 300px;
 		max-width: 50%;
 		font-size: .9em;
 		transform: translate(-50%, -100%);
@@ -39,9 +38,9 @@ export default {
 		z-index: var(--main-layer-three);
 	}
 	#notification.show {
-		top: 1.5em;
+		top: 1em;
 		transform: translate(-50%, 0);
-		box-shadow: 0 .1em .33em rgba(0,0,0,.33);
+		box-shadow: 0 0 .5em rgba(0,0,0,.25);
 	}
 	.default {
 		background: var(--main-faintgray-color);
