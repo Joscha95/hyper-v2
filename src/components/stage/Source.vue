@@ -64,6 +64,7 @@ export default {
       }
     },
     cloneBlock(item) {
+      console.log(item);
       return {
         a_id: item.id,
         h_id: makeid(5),
@@ -72,7 +73,7 @@ export default {
         to:[],
         from:[],
         isFixed:false,
-        content:item.content ? item.content : '',
+        content:item.content_html ? item.content_html : '',
         description: item.description_html,
         imageUrl: item.image ? item.image.thumb.url : '',
         h_type: 'content'

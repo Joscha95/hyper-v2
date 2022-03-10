@@ -8,25 +8,23 @@
 			<img :src="element.imageUrl">
 		</div>
 		<div class="draggable_list_item_content">
-			<span v-if="h_type=='connection'" class="edit_click_area" @click="editmode=!editmode">
-				<span v-if="element.content==''" class="icon link"></span>
-				{{ element.content }}
+			<span v-if="element.class=='Text'">{{ element.content }}</span>
+			<span v-else class="edit_click_area" @click="editmode=!editmode">
+				<span :class="'icon '+h_type"></span>
+				{{ h_type=='connection' ? element.content : element.name }}
 			</span>
-			<span v-else-if="element.name=='' && h_type=='lookout'" class="edit_click_area" @click="editmode=!editmode">
-				<span class="icon lookout"></span>
-			</span>
-			<span v-else-if="element.name">{{ element.name }}</span>
-			<span v-else-if="element.class=='Text'">{{ element.content }}</span>
 		</div>
 		<span class="icon eye" title="Look at" @click="lookAt($event,element)"></span>
 	</div>
+
 	<div class="node_settings" v-if="store.selectedObject==element">
 		<div class="connection_properties" v-if="h_type=='connection' ">
 			<span class="connection_property_circle" :title="connectedNodes.source.name"></span>
 			<draggableNumber :value="linkDistance" v-model="linkDistance"/>
 			<span class="connection_property_circle" :title="connectedNodes.target.name"></span>
 		</div>
-		<div class="node_properties">			
+
+		<div class="node_properties">
 			<toggle v-if="element.h_type!='lookout'" off="dynamic" on="anchor" tooltipOff="make node fixed" tooltipOn="make node dynamic" :bool="element.isFixed" v-model="element.isFixed" :icon="true"/>
 			<div class="delete_button_wrapper" :class="remove ? 'delete' : ''">
 				<button v-if="!remove" @click="remove=true" class="delete_button transparent_button" title="Remove?"><span class="icon trash"></span></button>
@@ -34,6 +32,7 @@
 			</div>
 		</div>
 	</div>
+
 </template>
 
 <script>

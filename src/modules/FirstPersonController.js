@@ -20,7 +20,7 @@ class FirstPersonController {
   	this.active = false;
   	this.moveTarget = new Vector3(0,0,0);
 
-  	this.domElement.addEventListener('wheel',(e)=> this.onMouseWheel(e));
+  	this.domElement.addEventListener('wheel',(e)=> this.onMouseWheel(e),{ passive: true});
     this.domElement.addEventListener('mousedown',(e)=> this.onMouseDown(e));
     this.domElement.addEventListener('mouseup',(e)=> this.onMouseUp(e));
     this.domElement.addEventListener('mouseleave',(e)=> this.onMouseUp(e));
@@ -64,7 +64,7 @@ class FirstPersonController {
 
     if (this.activeLookOut) {
 			const dist = this.transformparent.position.distanceTo(this.activeLookOut.position());
-			if (dist<100) {
+			if (dist<100 || this.lookoutSync) {
 				if (!this.enteredLookout) {
 					this.activeLookOut.activate();
 					this.enteredLookout=true;
@@ -78,11 +78,12 @@ class FirstPersonController {
 				if (this.enteredLookout) {
 					this.activeLookOut = null;
 					this.enteredLookout=false;
-          this.lookoutSync=false;
 					this.onleaveLookout();
 				}
 			}
 		}
+
+
 
 		if (this.moveToTarget) {
 			this.transformparent.position.lerp(this.moveTarget,0.1);
@@ -110,9 +111,11 @@ class FirstPersonController {
     this.lookoutSync=!this.lookoutSync;
     if (this.lookoutSync) {
       this.moveToTarget=false;
+      this.activeLookOut.toolbox.dispose();
       this.transformparent.position.set(this.activeLookOut.group.position.x,this.activeLookOut.group.position.y,this.activeLookOut.group.position.z)
     }else {
-      window.dispatchEvent(new HashChangeEvent("hashchange"))
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+      this.activeLookOut.updateToolboxOptions();
     }
   }
 
@@ -120,6 +123,7 @@ class FirstPersonController {
     let targetPos = new Vector3();
     targetObj.dragObject.getWorldPosition(targetPos);
     let posOffset = 0;
+    this.lookoutSync=false;
     // Rotation
     if (targetObj.h_type == "lookout") {
       this.quatTarg = targetObj.dragObject.quaternion.clone();
@@ -131,7 +135,7 @@ class FirstPersonController {
       const clone = this.transformparent.clone();
       clone.lookAt(targetPos);
       this.quatTarg = clone.quaternion.clone();
-      posOffset = -150;
+      posOffset = -this.calcOptimumDistToObj(targetObj.dragObject.geometry.boundingSphere.radius);
     }
 
 
@@ -144,24 +148,25 @@ class FirstPersonController {
     this.moveToTarget = true;
   }
 
-  initOrbit(boundingSphere){
+  calcOptimumDistToObj(radius){
     let vFoV = this.camera.getEffectiveFOV();
     let hFoV = this.camera.fov * this.camera.aspect;
 
     let FoV = Math.min(vFoV, hFoV);
     let FoV2 = FoV / 2;
 
-    let bsWorld = boundingSphere.center.clone();
+    // let bsWorld = boundingSphere.center.clone();
     let th = FoV2 * Math.PI / 180.0;
-    let sina = Math.sin(th);
-    let R = boundingSphere.radius;
-    let FL = R / sina;
+    return radius / Math.sin(th);
+  }
+
+  initOrbit(boundingSphere){
 
     let cameraDir = new Vector3();
     this.transformparent.getWorldDirection(cameraDir);
 
     this.moveTarget.copy(boundingSphere.center);
-    this.camZtarg=-FL;
+    this.camZtarg= - this.calcOptimumDistToObj(boundingSphere.radius);
     // const clone = this.transformparent.clone();
     // clone.lookAt(bsWorld);
     this.quatTarg = this.transformparent.quaternion.clone();
@@ -225,7 +230,9 @@ class FirstPersonController {
 	}
 
 	handleKeyDown(event) {
+
 		if (!this.enabled || (event.ctrlKey||event.metaKey)) return;
+    console.log(this.enabled);
 		switch ( event.keyCode ) {
 			case this.keys.UP:
 				this.keyPressed = true;

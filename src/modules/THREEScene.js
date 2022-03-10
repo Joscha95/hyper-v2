@@ -417,6 +417,7 @@ class THREEScene {
     const target = this.blocks.find((b)=>b.h_id==location.hash.substr(1));
     if (target) {
       this.cameraController.moveTo(target);
+      this.store.isOrbit=false;
     }
   }
 

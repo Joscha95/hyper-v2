@@ -167,6 +167,7 @@ class ContentBlock {
     switch (this.contentItem.class) {
       case 'Link':
       case 'Image':
+      case 'Attachment':
       case 'Media':
         ele=document.createElement('IMG');
         ele.onload=(e)=>{this.setPlaneGeomToDomWidth(e.target)}
@@ -176,19 +177,26 @@ class ContentBlock {
         ele=document.createElement('h2');
         ele.appendChild(document.createTextNode( this.contentItem.name ));
         break;
-      case'Connection':
-      case'Text':
-      default:
+      case'Text'://content comes as content_html from are.na, with html tags
         ele=document.createElement('P');
-        const content=this.contentItem.content.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        ele.innerHTML=this.contentItem.content;
+        this.setPlaneGeomToDomWidth()
+        break;
+      case'Connection':
+      case'Lookout':
+      default:
+        ele=document.createElement('PRE');
+        const content=this.contentItem.content;
         if(content==''){
           ele.classList.add('empty');
           ele.innerHTML='<span class="icon link"></span>'
         }else{
           ele.appendChild(document.createTextNode( content ));
         }
-
         this.setPlaneGeomToDomWidth()
+        break;
+
+
     }
 
     this.dom.innerHTML='';

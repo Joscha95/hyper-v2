@@ -131,7 +131,7 @@ export default {
         a_block = allBlocks.find((b) => b.id == item.a_id);
         if(!a_block) return;
         item.name= a_block.title
-        item.content = a_block.content
+        item.content = a_block.content_html
         item.imageUrl = a_block.image ? a_block.image.thumb.url : '',
         item.sceneElement.updateDisplayElement();
       })

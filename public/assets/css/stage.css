@@ -280,8 +280,10 @@ html, body {
 	background: white;
 }
 .draggable_list_item[type="connection"], .draggable_list_item[type="lookout"] {
-	color: var(--main-connection-color);
 	text-align: center;
+}
+.draggable_list_item[type="connection"] {
+	color: var(--main-connection-color);
 }
 .drag_handle {
 	display: flex;
@@ -328,8 +330,8 @@ html, body {
 	transform: translateX( calc(-100% + (var(--draggable-list-item-width) - var(--thumbs-witdh) - 2px ) ) );
 	transition: transform 5s linear;
 }
-.drag_handle.no_thumb:hover .draggable_list_item_content span, 
-.draggable_list_item[type="connection"] .drag_handle:hover .draggable_list_item_content span, 
+.drag_handle.no_thumb:hover .draggable_list_item_content span,
+.draggable_list_item[type="connection"] .drag_handle:hover .draggable_list_item_content span,
 .draggable_list_item[type="lookout"] .drag_handle:hover .draggable_list_item_content span {
 	transform: translateX( calc(-100% + ( var(--draggable-list-item-width) - 2px ) ) );
 }
@@ -365,7 +367,7 @@ html, body {
 .selected {
 	height: auto;
 }
-*[type="connection"], *[type="lookout"] {
+*[type="connection"] {
 	color: var(--main-connection-color)
 }
 input.searchbar {
