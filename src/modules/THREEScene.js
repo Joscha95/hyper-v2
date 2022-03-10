@@ -500,11 +500,11 @@ class THREEScene {
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
     const node = {
       h_id:makeid(5),
-      name: '☍',
+      name: '',
       to:[],
       val:1,
       from:[],
-      content: '☍',
+      content: '',
       initDistance:0,
       isFixed:false,
       x:center.x,
