@@ -29,7 +29,7 @@ class THREEScene {
     this.defaultMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
     this.mouse=new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
-    this.raycaster.params.Line.threshold = 3;
+    this.raycaster.params.Line.threshold = 2;
     this.lineHelper = null;
     this.store=store;
     this.blockGeometries=[];
