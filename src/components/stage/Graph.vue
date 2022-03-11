@@ -33,23 +33,19 @@
 </template>
 
 <script>
-import ForceSimulation from '@/modules/3dForceSimulation.js';
 import THREEScene from '@/modules/THREEScene.js';
 import {makeid} from '@/modules/Helpers.js';
 import CanvasDragtarget from '@/components/stage/CanvasDragtarget.vue';
-import { nextTick } from 'vue'
+import { nextTick,shallowReactive } from 'vue'
 import toggle from '@/components/stage/subcomponents/toggle.vue'
+import {forceSimulation,sceneElements} from '@/store.js'
 
 export default {
+
   data(){
+    this.THREEScene = null
+    this.store = this.$root.store
     return{
-      graphData:{
-          "nodes": this.$root.store.sceneList,
-          "links": this.$root.store.sceneList.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
-      },
-      THREEScene:null,
-      forceSimulation:null,
-      store:this.$root.store,
       lastValidChainElement:undefined
     }
   },
@@ -61,17 +57,16 @@ export default {
     	rotateSpeed: 0.15
     }
 
-    this.forceSimulation=new ForceSimulation(this.graphData);
-    this.THREEScene = new THREEScene(this.$refs.scene,this.forceSimulation,cameraSettings,this.store);
+    this.THREEScene = new THREEScene(this.$refs.scene,forceSimulation,cameraSettings,this.store,sceneElements);
     this.THREEScene.onLinkAdded = (l) => {this.linkAdded(l)};
   },
   components:{
     CanvasDragtarget,toggle
   },
   computed:{
-    linkDistance(){
-      return this.graphData.links.reduce((oldVal,item) => oldVal+item.distance,0);
-    },
+    // linkDistance(){
+    //   return this.graphData.links.reduce((oldVal,item) => oldVal+item.distance,0);
+    // },
     isFocused(){
       return this.store.focused
     },
@@ -81,14 +76,11 @@ export default {
     currentelementInCameraView(){
       return this.store.elementInCameraView ? this.store.sceneList.find((n)=>n.h_id==this.store.elementInCameraView ) : undefined;
     },
-    nodesLength(){
-      return this.graphData.nodes.length
-    },
     threadLength(){
       return this.store.thread.length
     },
-    sceneList(){
-      return this.$root.store.sceneList
+    nodesLength(){
+      return this.$root.store.sceneList.length
     },
     isOrbit(){
       return this.store.isOrbit
@@ -98,9 +90,9 @@ export default {
     }
   },
   watch:{
-    linkDistance(){
-        this.forceSimulation.updateLinkDistances();
-      },
+    // linkDistance(){
+    //     this.forceSimulation.updateLinkDistances();
+    //   },
     isFocused(){
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
@@ -111,14 +103,12 @@ export default {
     currentelementInCameraView(newVal){
       if (newVal) this.lastValidChainElement=newVal
     },
-    nodesLength(){
-      this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
-      this.forceSimulation.updateGraph()
-      this.store.unsavedChanges++;
-    },
     threadLength(newVal){
       this.store.unsavedChanges++;
       this.THREEScene.blocks.forEach((item)=>item.canStartThread=newVal==0)
+    },
+    nodesLength(){
+      forceSimulation.updateNodes(this.store.sceneList.map(e => e.h_id));
     },
     isOrbit(val){
       this.THREEScene.toggleCamMode();
@@ -129,19 +119,24 @@ export default {
   methods:{
     blockAdded(b){
       const pos = this.THREEScene.getWorldPosition(b.clientX,b.clientY)
-      const ele = b.element;
-      ele.x=pos.x
-      ele.y=pos.y
-      ele.z=pos.z
-      ele.val=1
+      const nn = {
+        h_id:b.element.h_id,
+        x: pos.x,
+        y: pos.y,
+        z: pos.z,
+        val: 1
+      }
+      forceSimulation.addNode(nn);
+      this.store.unsavedChanges++;
     },
     linkAdded(l){
-      this.graphData.nodes.splice(this.graphData.nodes.findIndex((n)=> n.h_id == l.link1.source)+1,0,l.node)
-      //this.graphData.nodes.push(l.node)
+      this.store.sceneList.splice(this.store.sceneList.findIndex((n)=> n.h_id == l.link1.source)+1,0,l.list_element);
+      forceSimulation.addLink(l.simulation_element)
+      this.store.unsavedChanges++;
     },
     updateContents(allBlocks){
       let a_block;
-      this.graphData.nodes.forEach((item)=>{
+      this.THREEScene.blocks.forEach((item)=>{
         if(item.h_type=='connection') return;
         a_block = allBlocks.find((b) => b.id == item.a_id);
         if(!a_block) return;
@@ -153,7 +148,7 @@ export default {
     },
     toggleLookoutSync(){
       this.THREEScene.cameraController.toggleLookoutSync();
-      this.forceSimulation.reheat(.1);
+      //forceSimulation.reheat(.1);
     },
     addLookout(){
       const rot = this.THREEScene.cameraController.rotation();
@@ -166,6 +161,12 @@ export default {
         isFixed:true,
         content:'',
         h_type: 'lookout',
+      }
+
+      this.store.sceneList.push(node);
+      forceSimulation.addNode({
+        h_id: node.h_id,
+        h_type: 'lookout',
         rx:rot.x,
         ry:rot.y,
         rz:rot.z,
@@ -175,15 +176,14 @@ export default {
         x:pos.x,
         y:pos.y,
         z:pos.z
-      }
-
-      this.store.sceneList.push(node);
+      })
       window.location.hash=node.h_id;
+      this.store.unsavedChanges++;
     },
     init(){
-      this.graphData.nodes=this.$root.store.sceneList;
-      this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
-      this.forceSimulation.updateGraph();
+      // this.graphData.nodes=simulation_positions;
+      // this.graphData.links=this.graphData.nodes.filter((n) => n.h_type=='connection').map((n) => n.links).flat()
+      // this.forceSimulation.updateGraph();
       this.THREEScene.thread.setup(this.THREEScene.blocks);
       nextTick(() => {
         this.store.unsavedChanges=0;

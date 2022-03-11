@@ -7,6 +7,7 @@
 		<div class="draggable_list_item_thumb" v-if="element.imageUrl">
 			<img :src="element.imageUrl">
 		</div>
+		{{ element.h_id }}
 		<div class="draggable_list_item_content">
 			<span v-if="h_type=='lookout' || h_type=='connection'" class="edit_click_area" @click="editmode=!editmode">
 				<span :class="'icon '+h_type"></span>
@@ -40,7 +41,7 @@
 <script>
 import draggableNumber from '@/components/stage/subcomponents/draggable-number.vue'
 import toggle from '@/components/stage/subcomponents/toggle.vue'
-import {Vector3} from 'three'
+import {sceneElements, forceSimulation} from '@/store.js'
 
 export default {
   components: {
@@ -49,17 +50,22 @@ export default {
   },
   props:['element'],
   data() {
+		this.sceneElement = sceneElements.find((e) => e.h_id == this.element.h_id);
+		this.forceElement = forceSimulation.getNodeById(this.element.h_id);
+
     return {
       store:this.$root.store,
       editmode:false,
       remove:false,
-      h_type:this.element.h_type
+      h_type:this.element.h_type,
+      h_id:this.element.h_id,
+			linkDistance: this.forceElement && this.forceElement.links ? this.forceElement.links[0].distance*2 : 0
     };
   },
   computed:{
     connectedNodes(){
       let conNodes = null;
-      if (this.element.h_type=='connection') {
+      if (this.h_type=='connection') {
         conNodes = {};
         let id = this.element.sourceID
         conNodes.source=this.store.sceneList.find((n) => n.h_id==id)
@@ -67,33 +73,6 @@ export default {
         conNodes.target=this.store.sceneList.find((n) => n.h_id==id)
       }
       return conNodes
-    },
-    linkDistance:{
-      get(){
-        return this.element.links[0].distance*2;
-      },
-      set(newVal){
-
-        const fac=newVal/this.linkDistance;
-
-        //calc new source position
-        let newPos = new Vector3(this.connectedNodes.source.x,this.connectedNodes.source.y,this.connectedNodes.source.z)
-        let centerPos= new Vector3(this.element.x,this.element.y,this.element.z)
-        centerPos.addScaledVector(newPos.sub(centerPos),fac);
-        this.connectedNodes.source.x=centerPos.x;
-        this.connectedNodes.source.y=centerPos.y;
-        this.connectedNodes.source.z=centerPos.z;
-
-        //calc new target position
-        newPos = new Vector3(this.connectedNodes.target.x,this.connectedNodes.target.y,this.connectedNodes.target.z)
-        centerPos= new Vector3(this.element.x,this.element.y,this.element.z)
-        centerPos.addScaledVector(newPos.sub(centerPos),fac);
-        this.connectedNodes.target.x=centerPos.x;
-        this.connectedNodes.target.y=centerPos.y;
-        this.connectedNodes.target.z=centerPos.z;
-
-        this.element.links.forEach((item) => item.distance=newVal/2);
-      }
     },
     nodeIsFixed(){
       return this.element.isFixed
@@ -108,31 +87,36 @@ export default {
   watch:{
     nodeIsFixed(newVal){
       if (newVal) {
-        this.element.fx=this.element.x;
-        this.element.fy=this.element.y;
-        this.element.fz=this.element.z;
+				forceSimulation.setNodeFixed(this.h_id)
       }else {
-        this.element.fx=null;
-        this.element.fy=null;
-        this.element.fz=null;
+				forceSimulation.setNodeDynamic(this.h_id)
       }
-      if(this.element.sceneElement.toolbox) this.element.sceneElement.toolbox.updateField('isFixed',newVal)
+			const sl = this.sceneElement;
+      if(sl.toolbox) sl.toolbox.updateField('isFixed',newVal)
     },
     nodeContent(newVal){
-      this.element.sceneElement.updateDisplayElement();
+      this.sceneElement.updateDisplayElement();
     },
     selectedObject(){
       this.editmode=false
       this.remove=false
-    }
+    },
+		linkDistance(newVal,oldVal){
+			forceSimulation.setLinkLength(this.h_id,newVal,newVal/oldVal)
+		}
   },
   methods: {
+		getSimulationElement(id=this.element.h_id){
+			return simulation_positions.find( n => n.h_id==id);
+		},
     onBlurText(){
       this.store.focused=false;
-      this.element.sceneElement.updateDisplayElement();
+      this.sceneElement.updateDisplayElement();
     },
     removeItem(){
-      this.store.sceneList.splice(this.store.sceneList.indexOf(this.element),1);
+      this.store.sceneList.splice(this.store.sceneList.findIndex((el) => el.h_id==this.h_id),1);
+			forceSimulation.removeNode(this.h_id)
+			this.store.unsavedChanges++;
       this.store.selectedObject=undefined;
     },
     lookAt(e,element){

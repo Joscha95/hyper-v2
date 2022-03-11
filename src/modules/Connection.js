@@ -68,7 +68,6 @@ class Connection {
     this.startObject.connections.splice(this.startObject.connections.indexOf(this.middleObject.contentItem),1);
     this.endObject.connections.splice(this.startObject.connections.indexOf(this.middleObject.contentItem),1);
     console.log('disposed');
-
   }
 
   blur(){
@@ -80,28 +79,29 @@ class Connection {
     this.line.computeLineDistances();
   }
 
-  createNew(node){
+  createNew(list_element, simulation_element){
     const center = new Vector3().copy(this.startObject.position()).lerp(this.endObject.position(),0.5);
     const dist = this.startObject.position().distanceTo(this.endObject.position())
 
-    this.middleObject.name = node.name;
+    this.middleObject.name = list_element.name;
 
-    this.middleObject.h_id=node.h_id;
+    this.middleObject.h_id=list_element.h_id;
 
     const l = {
       link1:
         {
           source : this.startObject.h_id,
-          target : node.h_id,
+          target : list_element.h_id,
           distance : dist/2,
           name:  '',
           h_type: 'connection',
           h_id: makeid(5),
         },
-      node:node,
+      list_element:list_element,
+      simulation_element:simulation_element,
       link2:
         {
-          source : node.h_id,
+          source : list_element.h_id,
           target : this.endObject.h_id,
           distance : dist/2,
           name:  '',
@@ -110,8 +110,8 @@ class Connection {
         }
     }
 
-    node.links=[l.link1,l.link2];
-    node.initDistance=dist;
+    simulation_element.links=[l.link1,l.link2];
+    list_element.initDistance=dist;
 
     return l;
   }

@@ -111,11 +111,11 @@ class FirstPersonController {
     this.lookoutSync=!this.lookoutSync;
     if (this.lookoutSync) {
       this.moveToTarget=false;
-      this.activeLookOut.toolbox.dispose();
+      if(this.activeLookOut.toolbox) this.activeLookOut.toolbox.dispose();
       this.transformparent.position.set(this.activeLookOut.group.position.x,this.activeLookOut.group.position.y,this.activeLookOut.group.position.z)
     }else {
       window.dispatchEvent(new HashChangeEvent("hashchange"));
-      this.activeLookOut.updateToolboxOptions();
+      //this.activeLookOut.updateToolboxOptions();
     }
   }
 

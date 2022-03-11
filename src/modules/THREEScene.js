@@ -12,7 +12,7 @@ import {CSS3DRenderer,CSS3DObject} from '@/modules/CSS3DRenderer.js'
 import {makeid,map,connectionName} from '@/modules/Helpers.js'
 
 class THREEScene {
-  constructor(domparent,forceSimulation,cameraSettings,store) {
+  constructor(domparent,forceSimulation,cameraSettings,store,sceneElements) {
     this.scene = new THREE.Scene();
     this.forceSimulation=forceSimulation;
     this.forceSimulation.onDataChange=()=>{this.simDataChanged()};
@@ -24,7 +24,7 @@ class THREEScene {
     this.cameraController.onmove=()=> this.onCamMove();
     this.cameraController.onenterLookout=(h_id)=> this.onEnterLookout(h_id);
     this.cameraController.onleaveLookout=()=> this.onLeaveLookout();
-    this.blocks=[];
+    this.blocks=sceneElements;
     this.connections=[];
     this.defaultMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
     this.mouse=new THREE.Vector2();
@@ -164,13 +164,13 @@ class THREEScene {
   }
 
   importNodes(){
-    const nodes = this.forceSimulation.simulation.nodes();
+    const nodes = this.store.sceneList;
     let nn;
     nodes.forEach((item, i) => {
       if (item.h_type=='lookout') {
-        nn=new Lookout(this.scene,item,this.objectControls,this.cameraController.camera,this.store.colors.lookout)
+        nn=this.createNewElement('lookout',item)
       } else {
-        nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
+        nn=this.createNewElement('content',item)
       }
       nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
       nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
@@ -196,7 +196,7 @@ class THREEScene {
   }
 
   simDataChanged(){
-    const nodes = this.forceSimulation.simulation.nodes();
+    const nodes = this.store.sceneList;
     const planes = this.blocks;
 
     // check which nodes are in the simulation but not in the scene -> add new plane to scene
@@ -206,9 +206,9 @@ class THREEScene {
     let nn;
     toAdd.forEach((item, i) => {
       if (item.h_type=='lookout') {
-        nn=new Lookout(this.scene,item,this.objectControls,this.cameraController.camera,this.store.colors.lookout)
+        nn=this.createNewElement('lookout',item)
       } else {
-        nn=new ContentBlock(this.scene,item,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
+        nn=this.createNewElement('content',item)
       }
       nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
       nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
@@ -232,10 +232,9 @@ class THREEScene {
       return !nodes.some((n)=>n.h_id==p.h_id)
     })
 
-    this.blocks=planes.filter((p)=>{
-      return nodes.some((n)=>n.h_id==p.h_id)
-    })
     if(this.objectControls.attachedContent && toRemove.some((b)=>b.h_id==this.objectControls.attachedContent.h_id)) this.objectControls.detach();
+
+    //check for  connected nodes and remove them as well
     let indices = [];
     toRemove.forEach((item, i) => {
       item.dispose();
@@ -243,16 +242,44 @@ class THREEScene {
         indices.push(this.store.sceneList.indexOf(con))
       });
     });
-    indices=indices.filter((i)=> i>0 )
+    indices=indices.filter((i)=> i>=0 ).sort((a, b) => a - b);
 
-    for (var i = indices.length -1; i >= 0; i--)
-        this.store.sceneList.splice(indices[i],1);
+    for (var i = indices.length -1; i >= 0; i--) {
+      this.store.sceneList.splice(indices[i],1);
+    }
+
+    //finally remove blocks from this list
+    indices=[]
+
+    toRemove.forEach((item, i) => {
+      indices.push(this.blocks.indexOf(item))
+    });
+
+    indices=indices.filter((i)=> i>=0 ).sort((a, b) => a - b);
+
+    for (var i = indices.length -1; i >= 0; i--) {
+      this.blocks.splice(indices[i],1);
+    }
 
     this.updateHitboxArray();
   }
 
   updateHitboxArray(){
     this.blockGeometries=this.blocks.map((b)=>b.hitbox);
+  }
+
+  createNewElement(type,contentItem){
+    switch (type) {
+      case 'lookout':
+          return new Lookout(this.scene,contentItem,this.forceSimulation.getNodeById(contentItem.h_id),this.objectControls,this.cameraController.camera,this.store.colors.lookout)
+        break;
+      case 'content':
+        return new ContentBlock(this.scene,contentItem,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
+        break;
+      default:
+        return new ContentBlock(this.scene,contentItem,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
+    }
+
   }
 
   getWorldPosition(x,y,offset=500){
@@ -309,7 +336,7 @@ class THREEScene {
       if (this.thread.isInserting) this.thread.abortInsert();
       if (this.cameraController.enabled) {
         this.objectControls.detach();
-        if(this.store.selectedObject) this.store.selectedObject.sceneElement.blur();
+        if(this.store.selectedObject) this.blocks.find((b) => b.h_id==this.store.selectedObject.h_id ).blur();
         this.store.selectedObject=null;
       }
 
@@ -499,7 +526,7 @@ class THREEScene {
 
   finishConnection(obj){
     const center = new THREE.Vector3().copy(this.lineHelper.startObject.position()).lerp(obj.position(),0.5);
-    const node = {
+    const list_element = {
       h_id:makeid(5),
       name: '',
       to:[],
@@ -508,17 +535,21 @@ class THREEScene {
       content: '',
       initDistance:0,
       isFixed:false,
-      x:center.x,
-      y:center.y,
-      z:center.z,
       sourceID : this.lineHelper.startObject.h_id,
       targetID : obj.h_id,
       h_type: 'connection',
+    }
+
+    const simulation_element = {
+      h_id:list_element.h_id,
+      h_type: 'connection',
+      x:center.x,
+      y:center.y,
+      z:center.z,
       links:[]
     }
 
-
-    const middleNodePlane = new ContentBlock(this.scene,node,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls);
+    const middleNodePlane = this.createNewElement('content',list_element)
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj,this.store.colors.connection);
     middleNodePlane.onFocus=()=>{con.focus()};
     middleNodePlane.onBlur=()=>{con.blur()};
@@ -527,7 +558,7 @@ class THREEScene {
     middleNodePlane.canStartThread=this.thread.empty;
     this.blocks.push(middleNodePlane);
 
-    const nl=con.createNew(node);
+    const nl=con.createNew(list_element,simulation_element);
     con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1)}
     this.connections.push(con);
 

@@ -2,10 +2,11 @@ import {PlaneGeometry,Vector3,LineBasicMaterial,Group,Line,MeshBasicMaterial,Mes
 import Toolbar from '@/modules/Toolbar.js'
 
 class Lookout {
-  constructor(scene,contentItem,objectControls,camera,color) {
+  constructor(scene,contentItem,forceItem,objectControls,camera,color) {
     this.scene = scene;
     this.camera = camera;
     this.contentItem = contentItem;
+    this.forceItem = forceItem;
     this.h_id = this.contentItem.h_id;
     this.h_type=this.contentItem.h_type;
     this.name=this.contentItem.name;
@@ -49,14 +50,14 @@ class Lookout {
   	this.group.add(line);
   	this.group.add(plane);
 
-    this.group.position.set(this.contentItem.x,this.contentItem.y,this.contentItem.z);
-    this.group.rotation.set(this.contentItem.rx,this.contentItem.ry,this.contentItem.rz);
+    this.group.position.set(this.forceItem.x,this.forceItem.y,this.forceItem.z);
+    this.group.rotation.set(this.forceItem.rx,this.forceItem.ry,this.forceItem.rz);
 
     this.isDragged=false;
     this.isFocused;
     this.connections=[]
 
-    this.toolbox;
+    this.toolbox=undefined;
 
     this.onBlur=()=>{};
     this.onFocus=()=>{};
@@ -80,26 +81,28 @@ class Lookout {
   }
 
   setTransform(transform){
-    this.contentItem.x=this.contentItem.fx=transform.position.x;
-    this.contentItem.y=this.contentItem.fy=transform.position.y;
-    this.contentItem.z=this.contentItem.fz=transform.position.z;
+    this.forceItem.x=this.forceItem.fx=transform.position.x;
+    this.forceItem.y=this.forceItem.fy=transform.position.y;
+    this.forceItem.z=this.forceItem.fz=transform.position.z;
 
-    this.contentItem.rx=transform.rotation.x;
-    this.contentItem.ry=transform.rotation.y;
-    this.contentItem.rz=transform.rotation.z;
+    this.forceItem.rx=transform.rotation.x;
+    this.forceItem.ry=transform.rotation.y;
+    this.forceItem.rz=transform.rotation.z;
 
     this.updateBounds();
-    this.group.position.set(this.contentItem.x,this.contentItem.y,this.contentItem.z);
-    this.group.rotation.set(this.contentItem.rx,this.contentItem.ry,this.contentItem.rz);
+    this.group.position.set(this.forceItem.x,this.forceItem.y,this.forceItem.z);
+    this.group.rotation.set(this.forceItem.rx,this.forceItem.ry,this.forceItem.rz);
   }
 
   activate(){
     this.group.children[2].visible=false
+    this.hitbox.scale.set(0,0,0);
     this.contentItem.active=true
   }
 
   deactivate(){
     this.group.children[2].visible=true
+    this.hitbox.scale.set(1,1,1);
     this.contentItem.active=false
   }
 
