@@ -8,10 +8,12 @@
 			<img :src="element.imageUrl">
 		</div>
 		<div class="draggable_list_item_content">
-			<span v-if="element.class=='Text'">{{ element.content }}</span>
-			<span v-else class="edit_click_area" @click="editmode=!editmode">
+			<span v-if="h_type=='lookout' || h_type=='connection'" class="edit_click_area" @click="editmode=!editmode">
 				<span :class="'icon '+h_type"></span>
 				{{ h_type=='connection' ? element.content : element.name }}
+			</span>
+			<span v-else>
+				{{ element.class=='Text' ? element.content : element.name }}
 			</span>
 		</div>
 		<span class="icon eye" title="Look at" @click="lookAt($event,element)"></span>

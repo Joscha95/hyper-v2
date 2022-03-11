@@ -106,6 +106,7 @@ class ContentBlock {
     if(this.toolbox)this.toolbox.dispose();
     this.toolbox=undefined;
     this.dom.classList.remove('focus')
+    this.isTransforming=false;
   }
 
   focus(){
@@ -121,13 +122,13 @@ class ContentBlock {
     this.toolbox=null;
 
     const scope=this;
-    const options = [
+    let options = [
       {name:'center',class:'eye',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
       {name:'connection',class:'connect',tooltip:'make a new connection',callback:()=>{scope.startLink()}},
       {name:'isFixed',type:'toggle', on:'anchor', off:'dynamic', condition:this.contentItem.isFixed, tooltipOff:'make node fixed',tooltipOn:'make node dynamic',callback:()=>{scope.toggleFixed()}},
     ]
 
-    if(this.h_type!='connection') options.splice(2,0,{name:'transform',class:'move',tooltip:'move element',callback:()=>{scope.objectControls.attach(scope)}})
+    if(this.h_type!='connection') options.splice(2,0,{name:'transform',class:'move',tooltip:'move element',callback:()=>{scope.toggleTransform()}})
 
     if(this.canStartThread) {
       options.push({name:'thread',class:'thread',tooltip:'start weaving',callback:()=>{scope.startThread()}});
@@ -138,8 +139,22 @@ class ContentBlock {
       options.push({name:'thread',class:'threaddelete',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }
 
+    if(this.isTransforming) options = [{name:'endtransform',class:'close',tooltip:'exit transform',callback:()=>{scope.toggleTransform()}}]
+
     this.toolbox=new Toolbar(options);
     this.updateToolbox()
+  }
+
+  toggleTransform(){
+    this.isTransforming=!this.isTransforming
+
+    if (this.isTransforming) {
+      this.objectControls.attach(this)
+    } else {
+      this.objectControls.detach(this)
+    }
+
+    this.updateToolboxOptions();
   }
 
   updateToolbox(){
