@@ -82,14 +82,12 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.state = 1
 					this.headerTitle = this.channel.title
-
+					//console.log(this.channel)
 					if(this.needsInit) {
 						this.$refs.sceneComponent.init();
-						// this.$root.store.unsavedChanges = 0;
 					}else {
 						this.$refs.sceneComponent.updateContents(this.channel.contents)
 					}
-
 					this.needsInit=false
 					break;
 				// MOVED PERMANENTLY

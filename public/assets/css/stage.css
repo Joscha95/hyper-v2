@@ -61,6 +61,20 @@ html, body {
 	width: calc(100% - .5rem);
 	background: white;
 }
+#to_arena_channel_btn {
+	background: white;
+	font-size: .7em;
+	padding: .9em .7em;
+	border: 1px solid var(--main-lightgray-color);
+	border-top: 0;
+	color: var(--main-gray-color);
+}
+#to_arena_channel_btn a {
+	text-decoration: none;
+}
+#to_arena_channel_btn a:hover {
+	text-decoration: underline;
+}
 
 
 
@@ -474,15 +488,21 @@ button.edit_button {
 	border-radius: 3rem;
 	min-width: 1rem;
 	min-height: 1rem;
-	padding: 1rem;
+	padding: 1rem 1rem;
 	text-align: center;
 	color: white;
+	max-width: 30rem;
 }
 .floating-blocks.connection p {
 	margin: 0;
 }
-.floating-blocks.connection p.empty {
+.floating-blocks.connection pre {
+	white-space: normal;
+	padding: 0 1rem;
+}
+.floating-blocks.connection pre.empty {
 	line-height: 0;
+	padding: 0;
 }
 .floating-blocks.focus{
 	box-shadow: 0 0 0 5px white, 0 0 0 10px black;
