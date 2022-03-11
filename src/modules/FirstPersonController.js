@@ -232,7 +232,6 @@ class FirstPersonController {
 	handleKeyDown(event) {
 
 		if (!this.enabled || (event.ctrlKey||event.metaKey)) return;
-    console.log(this.enabled);
 		switch ( event.keyCode ) {
 			case this.keys.UP:
 				this.keyPressed = true;

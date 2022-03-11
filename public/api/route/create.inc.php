@@ -14,7 +14,7 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 		INSERT INTO slugs (scene_id, string, number) VALUES (@scene_id, '$slug', @number );
 		SET @slug_id = LAST_INSERT_ID();
 		UPDATE scenes SET slug_id = @slug_id WHERE id = @scene_id;
-		SELECT @number;
+		SELECT @scene_id, @number;
 	";
 	
 	$mysqli->autocommit(FALSE);
@@ -23,7 +23,8 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 	do {
 		if ($result = $mysqli->store_result()) {
 			while ($row = $result->fetch_row()) {
-				$counter = $row[0]!=1 ? '_'.$row[0] : '';
+				$id = $row[0];
+				$counter = $row[1]!=1 ? '_'.$row[1] : '';
 			}
 		}
 	} while ($mysqli->next_result());
@@ -33,7 +34,7 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 		$error = [500,'Internal Server Error',$mysqli->error];
 	} else {
 		$mysqli->commit();
-		$response = array('slug' => $slug.$counter);
+		$response = array('id' => $id, 'slug' => $slug.$counter);
 	}
 	
 } else {

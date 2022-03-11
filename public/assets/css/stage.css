@@ -61,6 +61,20 @@ html, body {
 	width: calc(100% - .5rem);
 	background: white;
 }
+#to_arena_channel_btn {
+	background: white;
+	font-size: .7em;
+	padding: .9em .7em;
+	border: 1px solid var(--main-lightgray-color);
+	border-top: 0;
+	color: var(--main-gray-color);
+}
+#to_arena_channel_btn a {
+	text-decoration: none;
+}
+#to_arena_channel_btn a:hover {
+	text-decoration: underline;
+}
 
 
 
@@ -474,15 +488,21 @@ button.edit_button {
 	border-radius: 3rem;
 	min-width: 1rem;
 	min-height: 1rem;
-	padding: 1rem;
+	padding: 1rem 1rem;
 	text-align: center;
 	color: white;
+	max-width: 30rem;
 }
 .floating-blocks.connection p {
 	margin: 0;
 }
-.floating-blocks.connection p.empty {
+.floating-blocks.connection pre {
+	white-space: normal;
+	padding: 0 1rem;
+}
+.floating-blocks.connection pre.empty {
 	line-height: 0;
+	padding: 0;
 }
 .floating-blocks.focus{
 	box-shadow: 0 0 0 5px white, 0 0 0 10px black;
@@ -544,11 +564,3 @@ button.edit_button {
 .hover{
 	opacity:.5;
 }
-.toolbox .move { background-image: url(../img/icon-move.svg); }
-.toolbox .eye { background-image: url(../img/icon-eye.svg); }
-.toolbox .connect { background-image: url(../img/icon-connect.svg); }
-.toolbox .dynamic { background-image: url(../img/icon-dynamic.svg); }
-.toolbox .anchor { background-image: url(../img/icon-anchor.svg); }
-.toolbox .thread { background-image: url(../img/icon-thread.svg); }
-.toolbox .threadstart { background-image: url(../img/icon-threadstart.svg); }
-.toolbox .threaddelete { background-image: url(../img/icon-threaddelete.svg); }

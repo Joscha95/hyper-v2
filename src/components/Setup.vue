@@ -117,7 +117,12 @@ export default {
 				.then(response => { 
 					if(response.status === 200){
 						this.$root.notify('Your hyperspace has been created', 'success')
-						this.$router.push(`/${response.data.slug}`)
+						this.$router.push({ name: 'Login', params: {
+							sceneId: response.data.id,
+							email: this.email, 
+							password: this.password,
+							slug: response.data.slug
+						}})
 					}else{
 						this.$root.notify('Something went wrong', 'error')
 						console.error(response.data)

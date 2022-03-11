@@ -15,7 +15,7 @@
 		@addLookout="addLookout"
 	/>
 	<Editor v-show="showEditor" @save="save"/>
-	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
+	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents" :channelUrl="channelId"/>
 	<Graph ref="sceneComponent"/>
 </template>
 
@@ -38,9 +38,9 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			loggedIn: true,
-			email: 'asd@asd.de',
-			password: '12345678',
+			loggedIn: false,
+			email: '',
+			password: '',
 			initScene: [],
 			needsInit: true,
 			showSource: true,
@@ -76,14 +76,12 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.state = 1
 					this.headerTitle = this.channel.title
-
+					//console.log(this.channel)
 					if(this.needsInit) {
 						this.$refs.sceneComponent.init();
-						// this.$root.store.unsavedChanges = 0;
 					}else {
 						this.$refs.sceneComponent.updateContents(this.channel.contents)
 					}
-
 					this.needsInit=false
 					break;
 				// MOVED PERMANENTLY
