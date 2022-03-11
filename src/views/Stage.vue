@@ -37,9 +37,9 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			loggedIn: false,
-			email: '',
-			password: '',
+			loggedIn: true,
+			email: 'asd@asd.de',
+			password: '12345678',
 			initScene: [],
 			needsInit: true,
 			showSource: true,
