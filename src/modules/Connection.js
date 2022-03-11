@@ -67,7 +67,6 @@ class Connection {
 
     this.startObject.connections.splice(this.startObject.connections.indexOf(this.middleObject.contentItem),1);
     this.endObject.connections.splice(this.startObject.connections.indexOf(this.middleObject.contentItem),1);
-    console.log('disposed');
   }
 
   blur(){

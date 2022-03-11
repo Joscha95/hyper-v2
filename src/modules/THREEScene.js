@@ -129,7 +129,7 @@ class THREEScene {
       for (const block of this.blocks) {
         simPos=this.forceSimulation.getNodeById(block.h_id);
         if (block.isDragged) {
-          if (!simPos.isFixed) {
+          if (!block.contentItem.isFixed) {
             simPos.x=block.position().x;
             simPos.y=block.position().y;
             simPos.z=block.position().z;
@@ -192,10 +192,9 @@ class THREEScene {
     });
 
     this.updateHitboxArray();
-
   }
 
-  simDataChanged(){
+  simDataChanged(isInit=false){
     const nodes = this.store.sceneList;
     const planes = this.blocks;
 
@@ -262,6 +261,8 @@ class THREEScene {
     }
 
     this.updateHitboxArray();
+
+    if(isInit) this.thread.setup(this.blocks);
   }
 
   updateHitboxArray(){

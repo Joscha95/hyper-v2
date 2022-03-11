@@ -10,10 +10,12 @@ class ForceSimulation {
     this.onDataChange=()=>{};
     this.minAlpha=0.01;
     this.alphaDecay=1 - Math.pow(this.minAlpha, 1 / 300)
-    this.init();
+    //this.init();
   }
 
-  init(){
+  init(nodes){
+    this.graphData.nodes=nodes;
+    this.graphData.links=this.graphData.nodes.filter( n => n.h_type=='connection').map((n) => n.links).flat()
     this.simulation.numDimensions(3)
     this.simulation.alphaDecay(0.1)
     this.simulation.nodes(this.graphData.nodes)
@@ -24,6 +26,7 @@ class ForceSimulation {
     //.force('center', d3Force3d.forceCenter())
     //.force('dagRadial', null);
     this.nodeMap=new Map(this.graphData.nodes.map((n)=> [n.h_id,n]))
+    this.onDataChange(true)
   }
 
   updateLinks(){
