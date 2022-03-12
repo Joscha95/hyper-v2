@@ -11,7 +11,7 @@
 
 
     <div id="node_info" :class="{show:showNodeInfo}" v-if="lastValidChainElement">
-      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn" class="icon threadprev"></a> <!-- {{ lastValidChainElement.from.name }} -->
+      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn" class="icon threadnext"></a> <!-- {{ lastValidChainElement.from.name }} -->
       <div id="node_info_text">
         <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
         <div class="description this" v-if="lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
@@ -101,7 +101,7 @@ export default {
       return marked.parse(this.lastValidChainElement.content)
     },
     showNodeInfo(){
-      return this.currentelementInCameraView && this.lastValidChainElement.h_type!='connection' && (this.lastValidChainElement.name || this.lastValidChainElement.content || this.lastValidChainElement.from || this.lastValidChainElement.to || this.lastValidChainElement.description)
+      return this.currentelementInCameraView && (this.lastValidChainElement.name || (this.lastValidChainElement.content && this.lastValidChainElement.h_type!='connection') || this.lastValidChainElement.from || this.lastValidChainElement.to || this.lastValidChainElement.description)
     },
     showPolarGrid(){
       return this.store.sceneSettings.showCircles
