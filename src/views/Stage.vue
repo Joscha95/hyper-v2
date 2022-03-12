@@ -88,7 +88,7 @@ export default {
 						this.$root.store.sceneList = lists.sceneList;
 						this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : [];
 						forceSimulation.init(lists.forceList);
-						setTimeout(()=>{this.$refs.sceneComponent.init();},100)
+						this.$refs.sceneComponent.init();
 
 					}else {
 						this.$refs.sceneComponent.updateContents(this.channel.contents)
