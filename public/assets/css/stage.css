@@ -594,12 +594,15 @@ button.edit_button {
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
 }
-#thread_plus{
+#thread_plus {
 	position:fixed;
-	padding:.5em .8em;
+	padding:.5em .8em .5em 1.9em;
 	border-radius:1em;
 	background-color: var(--main-thread-color);
 	color: white;
+	background-position: .5em center;
+	background-repeat: no-repeat;
+	background-size: 1.1em;
 }
 .cursor_pointer{
 	cursor:pointer;
