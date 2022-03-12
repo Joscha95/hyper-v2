@@ -1,7 +1,7 @@
 <template>
 	<div v-if="editmode" :type="element.h_type">
-		<input v-if="h_type=='lookout' " @focus="store.focused=true" @blur="store.focused=false;" v-model="element.name" type="text" placeholder="title">
-		<textarea @focus="store.focused=true" @blur="onBlurText" rows="5" v-model="element.content" :placeholder="'say something about the '+h_type"></textarea>
+		<input v-if="h_type=='lookout' " @focus="store.focused=true" @blur="store.focused=false;" v-model="element.name" type="text" placeholder="Title">
+		<textarea @focus="store.focused=true" @blur="onBlurText" rows="5" v-model="element.content" :placeholder="'Say something about the '+h_type"></textarea>
 	</div>
 	<div v-else @click="store.selectedObject=element" class="drag_handle">
 		<div class="draggable_list_item_thumb" v-if="element.imageUrl">
@@ -18,6 +18,8 @@
 		</div>
 		<span class="icon eye" title="Look at" @click="lookAt($event,element)"></span>
 	</div>
+
+  <div v-if="h_type=='lookout' && element.content && !editmode" class="lookout_content" @click="editmode=!editmode" v-html="markDownContent"></div>
 
 	<div class="node_settings" v-if="store.selectedObject==element">
 		<div class="connection_properties" v-if="h_type=='connection' ">
@@ -41,6 +43,7 @@
 import draggableNumber from '@/components/stage/subcomponents/draggable-number.vue'
 import toggle from '@/components/stage/subcomponents/toggle.vue'
 import {sceneElements, forceSimulation} from '@/store.js'
+import { marked } from 'marked';
 
 export default {
   components: {
@@ -72,6 +75,9 @@ export default {
         conNodes.target=this.store.sceneList.find((n) => n.h_id==id)
       }
       return conNodes
+    },
+    markDownContent(){
+      return marked.parse(this.element.content)
     },
     nodeIsFixed(){
       return this.element.isFixed

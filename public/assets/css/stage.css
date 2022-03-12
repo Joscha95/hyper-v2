@@ -24,7 +24,7 @@ html, body {
 
 #source, #source:active {
 	position:fixed;
-	z-index: var(--main-layer-one);
+	z-index: var(--main-layer-two);
 	user-select:none;
 	top: 3.2rem;
 	max-height: calc(100% - 1rem - 3.2rem);
@@ -62,6 +62,9 @@ html, body {
 	z-index: 100;
 	text-align: left;
 }
+.searchbar {
+	font-size: .9em;
+}
 #source_header .searchbar:focus {
 	width: calc(100% - .5rem);
 	background: white;
@@ -91,7 +94,7 @@ html, body {
 	right: 0;
 	top: 0;
 	bottom: 0;
-	z-index: var(--main-layer-two);
+	z-index: var(--main-layer-three);
 	background: white;
 	width: var(--draggable-list-item-width);
 	padding: 1rem;
@@ -113,26 +116,6 @@ html, body {
 	vertical-align: text-bottom;
 	margin-right: 1em;
 }
-#editor input[type="text"]{
-  border-style:dashed;
-  padding:10px 0;
-  display:inline-block;
-  width: calc(100% - 2px);
-  margin: 1px;
-  color:inherit;
-  text-align:center
-}
-#editor textarea{
-  display:block;
-  margin: 1px;
-  width: calc(100% - 2px);
-  box-sizing:border-box;
-  resize:vertical;
-  height:auto;
-  border-style:dashed;
-  font-family:inherit;
-  margin-bottom: 1rem;
-}
 #editor input:focus, #editor textarea:focus {
   background-color: white;
 }
@@ -147,7 +130,7 @@ html, body {
 	position:fixed;
 	top: 1rem;
 	right: 1rem;
-	z-index: var(--main-layer-three);
+	z-index: var(--main-layer-five);
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
@@ -254,7 +237,7 @@ html, body {
 #lookout_btn.transform {
 	color: white;
 	background-color: var(--main-darkgray-color);
-	border: none;
+	border-color: var(--main-lightgray-color);
 }
 #lookout_btn.transform:hover {
 	color: white;
@@ -293,6 +276,7 @@ html, body {
 	margin-top: -1px;
 	color: var(--main-mediumgray-color);
 	height: 3rem;
+	font-size: 0.7em;
 }
 .draggable_list_item:first-child {
 	margin-top: 0;
@@ -325,7 +309,6 @@ html, body {
 	position: relative;
 	height: 3rem;
 	white-space: nowrap;
-	font-size: .7em;
 	box-sizing: border-box;
 }
 .drag_handle:before, .drag_handle:after {
@@ -436,6 +419,35 @@ input.searchbar {
   font-size: 1rem;
 }
 
+.draggable_list_item input[type="text"]{
+  border-color: var(--main-gray-color);
+  padding:10px 0;
+  display:inline-block;
+  width: calc(100% - 2px);
+  margin: 1px;
+  color:inherit;
+  text-align:center;
+  font-size: .7em;
+}
+.draggable_list_item textarea{
+  display:block;
+  margin: 1px;
+  width: calc(100% - 2px);
+  box-sizing:border-box;
+  resize:vertical;
+  height:auto;
+  font-family:inherit;
+  margin-bottom: 1rem;
+  border-color: var(--main-gray-color);
+  padding: 0.5em;
+}
+
+.lookout_content {
+	padding: 0 1em;
+	text-align: left;
+}
+
+
 
 .node_properties {
 	display: flex;
@@ -445,6 +457,7 @@ input.searchbar {
 	justify-content: center;
 	padding: 0 .5em;
 	height: 2rem;
+	font-size: 1rem;
 }
 .node_properties .toggle {
 	margin-right: 1em;
@@ -464,15 +477,22 @@ button.edit_button {
 	font-size: .7em;
 	padding: 0 1rem;
 }
+.selected .edit_click_area:empty:after {
+	content: 'Title';
+	color: var(--main-gray-color);
+}
 .selected .edit_click_area:hover {
-	border-bottom: 1px dashed black;
+	border-bottom: 1px dashed var(--main-gray-color);
+	border-top: 1px solid transparent;
 	cursor: text;
+	color: var(--main-darkgray-color);
 }
 
 /* DRAGGABLE NUMBER  */
 
 .connection_properties {
 	text-align: center;
+	font-size: 1rem;
 }
 .connection_property_circle {
 	border: 1px solid var(--main-connection-color);

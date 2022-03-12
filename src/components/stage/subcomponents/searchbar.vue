@@ -1,5 +1,5 @@
 <template lang="html">
-  <input @focus="store.focused=true" @blur="this.store.focused=false" type="search" v-model="searchstring" placeholder="⌕" class="searchbar">
+  <input @focus="store.focused=true" @blur="this.store.focused=false" type="search" v-model.trim="searchstring" placeholder="⌕" class="searchbar">
 </template>
 
 <script>

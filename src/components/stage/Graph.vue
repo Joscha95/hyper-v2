@@ -10,7 +10,7 @@
   <div id="toolbox_wrapper"></div>
 
 
-    <div id="node_info" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement">
+    <div id="node_info" :class="{show:showNodeInfo}" v-if="lastValidChainElement">
       <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn" class="icon threadprev"></a> <!-- {{ lastValidChainElement.from.name }} -->
       <div id="node_info_text">
         <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
@@ -99,6 +99,9 @@ export default {
     },
     markDownContent(){
       return marked.parse(this.lastValidChainElement.content)
+    },
+    showNodeInfo(){
+      return this.currentelementInCameraView && this.lastValidChainElement.h_type!='connection' && (this.lastValidChainElement.name || this.lastValidChainElement.content || this.lastValidChainElement.from || this.lastValidChainElement.to || this.lastValidChainElement.description)
     }
   },
   watch:{
@@ -215,9 +218,9 @@ export default {
 }
 
 #toolbox_wrapper{
-  position:fixed;
-  z-index:1;
-  user-select:none;
+  position: fixed;
+  z-index: var(--main-layer-one);
+  user-select: none;
 }
 
 #node_info {
@@ -226,7 +229,7 @@ export default {
   padding: 1rem;
   position: fixed;
   bottom: 0;
-  z-index: var(--main-layer-three);
+  z-index: var(--main-layer-four);
   margin: 0;
   width: auto;
   left: 50%;
