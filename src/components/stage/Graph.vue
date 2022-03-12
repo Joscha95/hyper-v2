@@ -11,7 +11,7 @@
 
 
     <div id="node_info" :class="{show:showNodeInfo}" v-if="lastValidChainElement">
-      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn" class="icon threadnext"></a> <!-- {{ lastValidChainElement.from.name }} -->
+      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn" class="icon threadprev"></a> <!-- {{ lastValidChainElement.from.name }} -->
       <div id="node_info_text">
         <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
         <div class="description this" v-if="lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
@@ -267,7 +267,7 @@ export default {
 }
 #weave_from_btn, #weave_to_btn {
   color: var(--main-thread-color);
-  font-size: .9em;
+  flex-shrink: 0;
 }
 
 a {

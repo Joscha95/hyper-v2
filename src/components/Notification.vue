@@ -35,7 +35,7 @@ export default {
 		box-shadow: none;
 		box-sizing: content-box;
 		cursor: pointer;
-		z-index: var(--main-layer-three);
+		z-index: var(--main-layer-six);
 	}
 	#notification.show {
 		top: 1em;
