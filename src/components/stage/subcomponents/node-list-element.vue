@@ -19,7 +19,7 @@
 		<span class="icon eye" title="Look at" @click="lookAt($event,element)"></span>
 	</div>
 
-  <div v-if="h_type=='lookout' && element.content && !editmode" class="lookout_content" @click="editmode=!editmode" v-html="markDownContent"></div>
+  <div v-if="store.selectedObject==element && h_type=='lookout' && element.content && !editmode" class="lookout_content" @click="editmode=!editmode" v-html="markDownContent"></div>
 
 	<div class="node_settings" v-if="store.selectedObject==element">
 		<div class="connection_properties" v-if="h_type=='connection' ">
