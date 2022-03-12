@@ -83,13 +83,13 @@ class Connection {
     this.middleObject.name = list_element.name;
 
     this.middleObject.h_id=list_element.h_id;
-
+    const fac =.93;
     const l = {
       link1:
         {
           source : this.startObject.h_id,
           target : list_element.h_id,
-          distance : dist/2,
+          distance : dist/2*fac,
           name:  '',
           h_type: 'connection',
           h_id: makeid(5),
@@ -100,7 +100,7 @@ class Connection {
         {
           source : list_element.h_id,
           target : this.endObject.h_id,
-          distance : dist/2,
+          distance : dist/2*fac,
           name:  '',
           h_type: 'connection',
           h_id: makeid(5),
@@ -108,7 +108,7 @@ class Connection {
     }
 
     simulation_element.links=[l.link1,l.link2];
-    list_element.initDistance=dist;
+    list_element.initDistance=dist*fac;
 
     return l;
   }
