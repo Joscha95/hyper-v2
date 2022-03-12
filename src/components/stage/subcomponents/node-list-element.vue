@@ -14,7 +14,7 @@
 			</span>
 			<span v-else>
         <span v-if="!toArena" @click="toggleArenaLink(element)">{{ element.class=='Text' ? element.content : element.name }}</span>
-        <span v-else @click="toArena=false"><a href="https://are.na" target="_blank" class="node_list_arena_link">View in Are.na?</a>&emsp;x</span>
+        <span v-else @click="toArena=false"><a :href="'https://www.are.na/block/'+element.a_id" target="_blank" class="node_list_arena_link">View in Are.na?</a>&emsp;x</span>
       </span>
 		</div>
 		<span class="icon eye" title="Look at" @click="lookAt($event,element)"></span>

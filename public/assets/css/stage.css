@@ -35,10 +35,11 @@ html, body {
 	flex-direction: column;
 	box-shadow: 0 0 0 .1em rgba(0,0,0,.05);
 	opacity: .75;
-	transition: opacity .3s;
+	transition: opacity 2s;
 }
 #source:hover {
 	opacity: 1;
+	transition: opacity .3s;
 }
 #source_header {
 	padding: .25rem;
@@ -267,10 +268,13 @@ html, body {
 	display: block;
 }
 #editor .drag_list:empty:after {
-	content: 'Nothing added yet';
+	content: 'No items found';
 }
 #source .drag_list:empty:after {
 	content: 'Channel is empty';
+}
+.state_2 #source .drag_list:empty:after {
+	content: 'loading...';
 }
 .draggable_list_item {
 	border: 1px solid var(--main-lightgray-color);
