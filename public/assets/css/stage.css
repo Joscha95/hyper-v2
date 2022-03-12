@@ -596,9 +596,10 @@ button.edit_button {
 }
 #thread_plus{
 	position:fixed;
-	padding:.5em;
+	padding:.5em .8em;
 	border-radius:1em;
-	background:white;
+	background-color: var(--main-thread-color);
+	color: white;
 }
 .cursor_pointer{
 	cursor:pointer;
