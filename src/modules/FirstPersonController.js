@@ -28,6 +28,21 @@ class FirstPersonController {
   	window.addEventListener( 'keydown', (e)=> this.handleKeyDown(e));
   	window.addEventListener( 'keyup', (e)=> this.handleKeyUp(e));
 
+    // touch
+     this.domElement.onpointerdown = (e) => {this.pointerdown_handler(e)};
+     this.domElement.onpointermove = (e) => {this.pointermove_handler(e)};
+
+     this.evCache = [];
+     this.prevDiff = -1;
+     this.prevX = -1;
+
+     // Use same handler for pointer{up,cancel,out,leave} events since
+     // the semantics for these events - in this app - are the same.
+     this.domElement.onpointerup = (e) => {this.pointerup_handler(e)};
+     this.domElement.onpointercancel = (e) => {this.pointerup_handler(e)};
+     this.domElement.onpointerout = (e) => {this.pointerup_handler(e)};
+     this.domElement.onpointerleave = (e) => {this.pointerup_handler(e)};
+
     this.onmove=()=>{};
     this.onstart=()=>{};
     this.onchange=()=>{};
@@ -282,6 +297,46 @@ class FirstPersonController {
 
 		this.onmove();
 	}
+
+  pointerdown_handler(e){
+    this.evCache.push(e);
+  }
+
+  pointermove_handler(e){
+    // Find this event in the cache and update its record with this event
+   for (var i = 0; i < this.evCache.length; i++) {
+     if (e.pointerId == this.evCache[i].pointerId) {
+        this.evCache[i] = e;
+     break;
+     }
+   }
+   // If two pointers are down, check for pinch gestures
+   if (this.evCache.length == 2) {
+     // Calculate the distance between the two pointers
+     var curDiff = Math.abs(this.evCache[0].clientX - this.evCache[1].clientX);
+     if (this.prevDiff > 0) {
+       this.onMouseWheel({deltaY:(this.prevDiff-curDiff)*.1,deltaMode:1})
+     }
+     // Cache the distance for the next move event
+     this.prevDiff = curDiff;
+   } else if (this.evCache.length == 1) {
+     this.rotateCam(event)
+   }
+
+  }
+
+  pointerup_handler(e){
+    for (var i = 0; i < this.evCache.length; i++) {
+       if (this.evCache[i].pointerId == e.pointerId) {
+         this.evCache.splice(i, 1);
+         break;
+       }
+     }
+    // If the number of pointers down is less than two then reset diff tracker
+    if (this.evCache.length < 2) {
+      this.prevDiff = -1;
+    }
+  }
 
   position(){
     if (this.orbit) {

@@ -68,6 +68,7 @@ export default {
 
     this.THREEScene = new THREEScene(this.$refs.scene,forceSimulation,cameraSettings,this.store,sceneElements);
     this.THREEScene.onLinkAdded = (l) => {this.linkAdded(l)};
+
   },
   components:{
     CanvasDragtarget,toggle
@@ -211,6 +212,7 @@ export default {
       this.THREEScene.thread.setup(this.THREEScene.blocks);
       nextTick(() => {
         this.store.unsavedChanges=0;
+        if(window.innerWidth<700)this.store.isOrbit=true;
       })
     }
   }
