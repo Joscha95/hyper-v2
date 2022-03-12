@@ -32,7 +32,6 @@ module.exports = {
 
 		splitSceneObjectFromServer(serverArray){
 			const lists = {sceneList:[],forceList:[]}
-
 			serverArray.forEach( (item) => {
 				const nsli = {
 					h_id:item.h_id,
@@ -202,16 +201,16 @@ module.exports = {
 		},
 
 
-		save(scene_objects){
+		save(_scene_objects){
 			if(this.loggedIn) {
 
 				const scene_data={
 					scene_data:{
 						threadIds:this.$root.store.thread.map((n)=> n.h_id)
 					},
-					scene_objects:scene_objects
+					scene_objects:_scene_objects
 				}
-
+				console.log(scene_data,'save');
 				if( this.state == 2 ) {
 					this.$root.notify('Update in progress.')
 				} else {
