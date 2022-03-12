@@ -26,6 +26,7 @@
 			<!--<span class="icon thread"></span>-->
 			<span class="icon threadstart"></span>
 			<span class="icon threaddelete"></span>
+			<span class="icon threadinsert"></span>
 			<span class="icon threadprev"></span>
 			<span class="icon threadnext"></span>
 			<span class="icon trash"></span>

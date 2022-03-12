@@ -11,19 +11,19 @@
 
 
     <div id="node_info" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement">
-      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn">ᐊ</a> <!-- {{ lastValidChainElement.from.name }} -->
+      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn" class="icon threadprev"></a> <!-- {{ lastValidChainElement.from.name }} -->
       <div id="node_info_text">
         <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
         <div class="description this" v-if="lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
         <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'" v-html="markDownContent"></div>
       </div>
-      <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id" id="weave_to_btn">▷</a> <!-- {{ lastValidChainElement.to.name }} -->
+      <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id" id="weave_to_btn" class="icon threadnext"></a> <!-- {{ lastValidChainElement.to.name }} -->
     </div>
 
 
   <div id="camera_controls" :class="{margin_right:showEditor}">
 	  <div v-if="loggedIn" id="lookout_btn" :class="{transform:isInLookout}"  v-on="isInLookout ? { click: toggleLookoutSync } : { click: addLookout }" >
-      <span v-if="isInLookout">{{ lookoutSyncActive ? 'End transform' : 'Transform'}}</span>
+      <span v-if="isInLookout">{{ lookoutSyncActive ? 'Stop move' : 'Move'}}</span>
       <span v-else>Add</span>
 		  <span class="icon lookout"></span>
 	  </div>
