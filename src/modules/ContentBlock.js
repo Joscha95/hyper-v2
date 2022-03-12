@@ -1,6 +1,7 @@
 import {PlaneGeometry,Mesh} from 'three'
 import {CSS3DObject} from '@/modules/CSS3DRenderer.js'
 import Toolbar from '@/modules/Toolbar.js'
+import { marked } from 'marked';
 
 class ContentBlock {
   constructor(scene,contentItem,mat,options={cssResolution:.2},objectControls) {
@@ -205,7 +206,6 @@ class ContentBlock {
         this.setPlaneGeomToDomWidth()
         break;
       case'Connection':
-      case'Lookout':
       default:
         ele=document.createElement('PRE');
         const content=this.contentItem.content;
@@ -213,7 +213,8 @@ class ContentBlock {
           ele.classList.add('empty');
           ele.innerHTML='<span class="icon link"></span>'
         }else{
-          ele.appendChild(document.createTextNode( content ));
+          // ele.appendChild(document.createTextNode( content ));
+          ele.innerHTML = marked.parseInline(content);
         }
         this.setPlaneGeomToDomWidth()
         break;
