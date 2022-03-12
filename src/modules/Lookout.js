@@ -62,6 +62,7 @@ class Lookout {
     this.onBlur=()=>{};
     this.onFocus=()=>{};
     this.onStartLink=()=>{};
+    this.onExitLink=()=>{};
     this.onDispose=()=>{};
 
     this.scene.add(this.group);
@@ -108,9 +109,13 @@ class Lookout {
 
   startLink(){
     this.onStartLink(this,'connection');
+    this.isConnecting=true;
+    this.updateToolboxOptions();
   }
   startThread(){
     this.onStartLink(this,'thread');
+    this.isConnecting=true;
+    this.updateToolboxOptions();
   }
 
   hover(){
@@ -138,6 +143,7 @@ class Lookout {
     this.onBlur();
     if(this.toolbox)this.toolbox.dispose();
     this.toolbox=undefined;
+    this.isConnecting=false;
   }
 
   updateBounds(){
@@ -158,7 +164,7 @@ class Lookout {
     this.toolbox=null;
 
     const scope=this;
-    const options = [
+    let options = [
       {name:'center',class:'eye',tooltip:'focus element',callback:()=>{window.location.hash=scope.h_id;window.dispatchEvent(new HashChangeEvent("hashchange"))}},
       {name:'connection',class:'connect',tooltip:'make a new connection',callback:()=>{scope.startLink()}},
     ]
@@ -171,6 +177,8 @@ class Lookout {
     }else if(this.isInThreat) {
       options.push({name:'thread',class:'threaddelete',tooltip:'remove from thread',callback:()=>{scope.onQuitThread(scope);scope.updateToolboxOptions()}});
     }
+
+    if(this.isConnecting) options = [{name:'endconnection',class:'close',tooltip:'stop connecting',callback:()=>{scope.onExitLink();scope.isConnecting=false;scope.updateToolboxOptions();}}]
 
     this.toolbox=new Toolbar(options);
     this.updateToolbox()

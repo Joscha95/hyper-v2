@@ -26,6 +26,7 @@ class ContentBlock {
     this.onBlur=()=>{};
     this.onFocus=()=>{};
     this.onStartLink=()=>{};
+    this.onExitLink=()=>{};
     this.onStartThread=()=>{};
     this.onDispose=()=>{};
     this.onQuitThread=()=>{};
@@ -67,10 +68,14 @@ class ContentBlock {
 
   startLink(){
     this.onStartLink(this,'connection');
+    this.isConnecting=true;
+    this.updateToolboxOptions();
   }
 
   startThread(){
     this.onStartLink(this,'thread');
+    this.isConnecting=true;
+    this.updateToolboxOptions();
   }
 
   position(){
@@ -107,6 +112,7 @@ class ContentBlock {
     this.toolbox=undefined;
     this.dom.classList.remove('focus')
     this.isTransforming=false;
+    this.isConnecting=false;
   }
 
   focus(){
@@ -140,6 +146,7 @@ class ContentBlock {
     }
 
     if(this.isTransforming) options = [{name:'endtransform',class:'close',tooltip:'exit transform',callback:()=>{scope.toggleTransform()}}]
+    if(this.isConnecting) options = [{name:'endconnection',class:'close',tooltip:'stop connecting',callback:()=>{scope.onExitLink();scope.isConnecting=false;scope.updateToolboxOptions();}}]
 
     this.toolbox=new Toolbar(options);
     this.updateToolbox()

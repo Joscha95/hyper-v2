@@ -172,10 +172,6 @@ class THREEScene {
       } else {
         nn=this.createNewElement('content',item)
       }
-      nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
-      nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
-      nn.canStartThread=this.thread.empty;
-      this.blocks.push(nn);
     });
 
     // let startObject,middleObject,endObject,con;
@@ -209,10 +205,6 @@ class THREEScene {
       } else {
         nn=this.createNewElement('content',item)
       }
-      nn.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
-      nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
-      nn.canStartThread=this.thread.empty;
-      this.blocks.push(nn);
       });
     toAdd.filter((n) => n.h_type=='connection').forEach((item, i) => {
       const startObject=this.blocks.find((p)=> p.h_id==item.sourceID);
@@ -270,17 +262,24 @@ class THREEScene {
   }
 
   createNewElement(type,contentItem){
+    let nn = null;
     switch (type) {
       case 'lookout':
-          return new Lookout(this.scene,contentItem,this.forceSimulation.getNodeById(contentItem.h_id),this.objectControls,this.cameraController.camera,this.store.colors.lookout)
+          nn = new Lookout(this.scene,contentItem,this.forceSimulation.getNodeById(contentItem.h_id),this.objectControls,this.cameraController.camera,this.store.colors.lookout)
         break;
       case 'content':
-        return new ContentBlock(this.scene,contentItem,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
+        nn = new ContentBlock(this.scene,contentItem,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
         break;
       default:
-        return new ContentBlock(this.scene,contentItem,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
+        nn = new ContentBlock(this.scene,contentItem,this.defaultMat,{cssResolution:this.scale_factor},this.objectControls)
     }
 
+    nn.onStartLink=(ele,_type)=>{this.startConnection(ele,_type)};
+    nn.onExitLink=()=>{this.disposeConnection()};
+    nn.onQuitThread=(ele)=>{this.thread.remove(ele)}
+    nn.canStartThread=this.thread.empty;
+    this.blocks.push(nn);
+    return nn
   }
 
   getWorldPosition(x,y,offset=500){
@@ -520,7 +519,7 @@ class THREEScene {
         this.thread.newEntry(this.lineHelper.startObject,obj);
       }
     }
-
+    this.lineHelper.startObject.isConnecting=false;
     this.lineHelper.startObject.updateToolboxOptions();
     this.lineHelper=null;
   }
@@ -554,10 +553,6 @@ class THREEScene {
     const con = new Connection(this.scene, this.lineHelper.startObject, middleNodePlane, obj,this.store.colors.connection);
     middleNodePlane.onFocus=()=>{con.focus()};
     middleNodePlane.onBlur=()=>{con.blur()};
-    middleNodePlane.onStartLink=(ele,type)=>{this.startConnection(ele,type)};
-    middleNodePlane.onQuitThread=(ele)=>{this.thread.remove(ele)}
-    middleNodePlane.canStartThread=this.thread.empty;
-    this.blocks.push(middleNodePlane);
 
     const nl=con.createNew(list_element,simulation_element);
     con.onDispose=(n)=>{this.store.sceneList.splice(this.store.sceneList.indexOf(n),1)}

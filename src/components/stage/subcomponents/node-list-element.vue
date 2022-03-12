@@ -7,7 +7,6 @@
 		<div class="draggable_list_item_thumb" v-if="element.imageUrl">
 			<img :src="element.imageUrl">
 		</div>
-		{{ element.h_id }}
 		<div class="draggable_list_item_content">
 			<span v-if="h_type=='lookout' || h_type=='connection'" class="edit_click_area" @click="editmode=!editmode">
 				<span :class="'icon '+h_type"></span>

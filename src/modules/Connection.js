@@ -17,7 +17,6 @@ class Connection {
       	gapSize: 3,
       } );
 
-
     this.middleObject.onDispose=()=>{this.dispose()};
 
     this.startObject.connections.push(this.middleObject.contentItem);
@@ -32,7 +31,6 @@ class Connection {
     this.cones.forEach((item, i) => {
       scene.add(item)
     });
-
 
     this.line=new Line( geometry, this.material );
     this.line.computeLineDistances();
