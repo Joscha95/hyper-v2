@@ -40,7 +40,6 @@ export default {
         clientY:e.originalEvent.clientY
       })
       this.lastAdded=null;
-
     },
     changed(e){
       // this is a vue event, i also need the mouse pos, so the event is emitted from added evenet (which originates from dom)

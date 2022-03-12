@@ -13,8 +13,7 @@ module.exports = {
 					if( this.$route.params.slug == this.targetSlug ){
 						// request slug is the most recent
 						this.initScene = response.data.scene
-						this.$root.store.sceneList = this.initScene ? this.initScene.scene_objects : [];
-						this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : [];
+
 						this.authenticate()
 						this.update()
 					} else {
@@ -29,6 +28,62 @@ module.exports = {
 				console.error(error)
 				this.state = -1
 			})
+		},
+
+		splitSceneObjectFromServer(serverArray){
+			const lists = {sceneList:[],forceList:[]}
+
+			serverArray.forEach( (item) => {
+				const nsli = {
+					h_id:item.h_id,
+					name:item.name,
+					content: item.content,
+					description: item.description,
+					isFixed: item.isFixed,
+					h_type: item.h_type,
+				}
+				if (item.h_type=='connection') {
+						nsli.sourceID = item.sourceID
+						nsli.targetID = item.targetID
+						nsli.initDistance = item.initDistance
+					} else if(item.h_type=='content') {
+						nsli.a_id =  item.a_id
+						nsli.class =  item.class
+						nsli.imageUrl = item.imageUrl
+					}
+				lists.sceneList.push(nsli)
+
+				const nfli = {
+					h_id:item.h_id,
+					h_type: item.h_type,
+					x: item.x,
+					y: item.y,
+					z: item.z,
+					fx: item.fx,
+					fy: item.fy,
+					fz: item.fz
+				}
+
+				if(item.h_type=='lookout') {
+					nfli.rx = item.rx
+					nfli.ry = item.ry
+					nfli.rz = item.rz
+				} else if(item.h_type=='connection') {
+					nfli.links = item.links.map((l) => {
+						return{
+						source : l.source,
+						target : l.target,
+						distance : l.distance,
+						name:  l.name,
+						h_type: l.h_type,
+						h_id: l.h_id,
+					}})
+				}
+
+				lists.forceList.push(nfli)
+			})
+
+			return lists;
 		},
 
 
@@ -147,51 +202,8 @@ module.exports = {
 		},
 
 
-		save(){
+		save(scene_objects){
 			if(this.loggedIn) {
-
-				const scene_objects = this.$root.store.sceneList.map((n)=> {
-					const newNode= {
-						h_id: n.h_id,
-						name: n.name,
-						val: n.val,
-						content: n.content,
-						description: n.description,
-						isFixed: n.isFixed,
-						x: n.x,
-						y: n.y,
-						z: n.z,
-						fx: n.fx,
-						fy: n.fy,
-						fz: n.fz,
-						h_type: n.h_type,
-					}
-
-					if (n.h_type=='connection') {
-						newNode.links = n.links.map((l) => {
-							return{
-							source : l.source.h_id,
-							target : l.target.h_id,
-							distance : l.distance,
-							name:  l.name,
-							h_type: l.h_type,
-							h_id: l.h_id,
-						}})
-						newNode.sourceID = n.sourceID
-						newNode.targetID = n.targetID
-						newNode.initDistance = n.initDistance
-					} else if(n.h_type=='lookout') {
-				newNode.rx = n.rx
-				newNode.ry = n.ry
-				newNode.rz = n.rz
-					} else {
-						newNode.a_id =  n.a_id
-						newNode.class =  n.class
-						newNode.imageUrl = n.imageUrl
-					}
-
-					return newNode;
-				})
 
 				const scene_data={
 					scene_data:{
@@ -199,8 +211,6 @@ module.exports = {
 					},
 					scene_objects:scene_objects
 				}
-
-				console.log(scene_data);
 
 				if( this.state == 2 ) {
 					this.$root.notify('Update in progress.')

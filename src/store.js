@@ -1,4 +1,5 @@
-import { reactive } from 'vue'
+import { reactive,shallowReactive } from 'vue'
+import ForceSimulation from '@/modules/3dForceSimulation.js'
 
 const store = reactive({
   selectedObject:null,
@@ -19,4 +20,7 @@ const store = reactive({
   }
 })
 
-export default store
+const sceneElements = [];
+const forceSimulation = new ForceSimulation({nodes:[],links:[]})
+
+export {store as default, forceSimulation, sceneElements}

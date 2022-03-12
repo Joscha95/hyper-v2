@@ -39,6 +39,7 @@ class Toolbar {
 
   updateField(name,condition=true,className=''){
     const field = this.fields.get(name)
+    if(!field) return;
     switch (field.item.type) {
       case 'toggle':
           field.dom.className= condition ? field.item.on : field.item.off;
