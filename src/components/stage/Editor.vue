@@ -13,7 +13,7 @@
 		:group="{ name: 'object',pull:onPull,put:true}"
 		@move="onMove"
 		@end="onEnd"
-		@change="onChange"
+		ref="editorList"
 		handle=".drag_handle"
 		animation="50"
 		item-key="h_id">
@@ -33,6 +33,7 @@
 import draggable from "vuedraggable";
 import searchbar from "@/components/stage/subcomponents/searchbar.vue";
 import nodeListElement from "@/components/stage/subcomponents/node-list-element.vue";
+import { nextTick } from 'vue'
 
 export default {
 	data(){
@@ -49,6 +50,17 @@ export default {
 			return this.store.selectedObject ? this.store.selectedObject.h_id : ''
 		}
 	},
+	watch:{
+		selectedObjectId(newId){
+			if (newId=='') return;
+			console.log(this.$refs.editorList);
+			nextTick(()=>{
+				const el = this.$refs.editorList.targetDomElement.querySelector('.selected')
+				if(el) el.scrollIntoView({behavior: "smooth"})
+			})
+
+		}
+	},
 	methods:{
 		filterBlocks(e){
 			this.searchstring=e.value
@@ -60,9 +72,6 @@ export default {
 			if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
 			this.lastSelected=evt.to;
 			this.lastSelected.classList.add('selected-by-drag')
-		},
-		onChange(evt){
-			this.$emit('change',evt);
 		},
 		onEnd(evt){
 			if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
