@@ -11,13 +11,13 @@
 
 
     <div id="node_info" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement">
-      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn">◀</a> <!-- {{ lastValidChainElement.from.name }} -->
+      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn">ᐊ</a> <!-- {{ lastValidChainElement.from.name }} -->
       <div id="node_info_text">
         <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
         <div class="description this" v-if="lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
         <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'"><pre>{{ lastValidChainElement.content }}</pre></div>
       </div>
-      <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id" id="weave_to_btn">▶</a> <!-- {{ lastValidChainElement.to.name }} -->
+      <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id" id="weave_to_btn">▷</a> <!-- {{ lastValidChainElement.to.name }} -->
     </div>
 
 
