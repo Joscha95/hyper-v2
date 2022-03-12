@@ -23,9 +23,11 @@
 			<!--<span class="icon arrow"></span>-->
 			<span class="icon dynamic"></span>
 			<span class="icon anchor"></span>
-			<span class="icon thread"></span>
+			<!--<span class="icon thread"></span>-->
 			<span class="icon threadstart"></span>
 			<span class="icon threaddelete"></span>
+			<span class="icon threadprev"></span>
+			<span class="icon threadnext"></span>
 			<span class="icon trash"></span>
 			<span class="icon trashopen"></span>
 			<span class="icon refresh"></span>
