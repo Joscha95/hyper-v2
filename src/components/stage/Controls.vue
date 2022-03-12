@@ -24,11 +24,11 @@
 			</section>
 
 			<section id="settings_panel" v-else>
-				<h4>Settings</h4>
+				<span class="bold">Settings</span>
 				<div id="scene_settings">
 					<div class="setting colors">
 						<span>Polar Helper</span>
-						<toggle  off="OFF" on="ON" tooltipOff="Show the helper circle in the middle of your scene" tooltipOn="Hide the helper circle in the middle of your scene" :bool="store.sceneSettings.showCircles" v-model="store.sceneSettings.showCircles" :icon="false"/>
+						<toggle  off="OFF&nbsp;" on="&nbsp;ON&nbsp;" tooltipOff="Show the helper circle in the middle of your scene" tooltipOn="Hide the helper circle in the middle of your scene" :bool="store.sceneSettings.showCircles" v-model="store.sceneSettings.showCircles" :icon="false"/>
 					</div>
 					<div class="setting colors">
 						<span>Background</span>
