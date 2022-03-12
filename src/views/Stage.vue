@@ -14,7 +14,7 @@
 		@toggleEditor="toggleEditor"
 	/>
 	<Editor v-show="showEditor" @save="save"/>
-	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents" :channelId="channelId"/>
+	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
 	<Graph :showEditor="showEditor" :loggedIn="loggedIn" ref="sceneComponent"/>
 </template>
 
@@ -24,6 +24,7 @@ import Controls from '@/components/stage/Controls.vue'
 import Editor from '@/components/stage/Editor.vue'
 import Source from '@/components/stage/Source.vue'
 import Graph from '@/components/stage/Graph.vue'
+import {forceSimulation} from '@/store.js'
 
 export default {
 	mixins: [
@@ -57,7 +58,7 @@ export default {
 			if(e.which == 83 && (e.ctrlKey||e.metaKey) || (e.which == 19)) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.save()
+				this.preSave()
 			}
 		})
 	},
@@ -82,9 +83,13 @@ export default {
 					this.$root.notify('Channel has been updated.', 'success')
 					this.state = 1
 					this.headerTitle = this.channel.title
-					//console.log(this.channel)
 					if(this.needsInit) {
-						this.$refs.sceneComponent.init();
+						const lists = this.initScene ? this.splitSceneObjectFromServer(this.initScene.scene_objects) : {sceneList:[],forceList:[]}
+						this.$root.store.sceneList = lists.sceneList;
+						this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : [];
+						forceSimulation.init(lists.forceList);
+						setTimeout(()=>{this.$refs.sceneComponent.init();},100)
+
 					}else {
 						this.$refs.sceneComponent.updateContents(this.channel.contents)
 					}
@@ -108,6 +113,52 @@ export default {
 		}
 	},
 	methods: {
+		preSave(){
+			const scene_objects = this.$root.store.sceneList.map((n)=> {
+				const forceNode=forceSimulation.getNodeById(n.h_id)
+				const newNode= {
+					h_id: n.h_id,
+					name: n.name,
+					content: n.content,
+					description: n.description,
+					isFixed: n.isFixed,
+					val: forceNode.val,
+					x: forceNode.x,
+					y: forceNode.y,
+					z: forceNode.z,
+					fx: forceNode.fx,
+					fy: forceNode.fy,
+					fz: forceNode.fz,
+					h_type: n.h_type,
+				}
+
+				if (n.h_type=='connection') {
+					newNode.links = forceNode.links.map((l) => {
+						return{
+						source : l.source.h_id,
+						target : l.target.h_id,
+						distance : l.distance,
+						name:  l.name,
+						h_type: l.h_type,
+						h_id: l.h_id,
+					}})
+					newNode.sourceID = n.sourceID
+					newNode.targetID = n.targetID
+					newNode.initDistance = n.initDistance
+				} else if(n.h_type=='lookout') {
+			newNode.rx = forceNode.rx
+			newNode.ry = forceNode.ry
+			newNode.rz = forceNode.rz
+				} else {
+					newNode.a_id =  n.a_id
+					newNode.class =  n.class
+					newNode.imageUrl = n.imageUrl
+				}
+
+				return newNode;
+			})
+			this.save(scene_objects)
+		},
 		toggleSource () {
 			if(this.loggedIn){
 				this.showSource = !this.showSource
