@@ -214,7 +214,7 @@ class ContentBlock {
           ele.innerHTML='<span class="icon link"></span>'
         }else{
           // ele.appendChild(document.createTextNode( content ));
-          ele.innerHTML = marked.parseInline(content);
+          ele.innerHTML = marked.parse(content);
         }
         this.setPlaneGeomToDomWidth()
         break;
