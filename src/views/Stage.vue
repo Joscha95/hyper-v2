@@ -13,7 +13,7 @@
 		@recover="recover"
 		@toggleEditor="toggleEditor"
 	/>
-	<Editor v-show="showEditor" @save="preSave"/>
+	<Editor v-show="showEditor" @save="save"/>
 	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
 	<Graph :showEditor="showEditor" :loggedIn="loggedIn" ref="sceneComponent"/>
 </template>

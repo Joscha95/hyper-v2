@@ -47,11 +47,11 @@ pre{
 
 /* BASIC */
 
-a, a:visited {
+a {
 	color: inherit;
 	text-decoration-style: dotted;
 }
-a:hover, a:focus, a:active {
+a:hover, a:focus, a:active, a:visited {
 	color: black;
 	text-decoration-style: solid;
 }
@@ -194,7 +194,7 @@ textarea {
 
 .popup {
 	background: white;
-	box-shadow: 0 0 0 2px rgba(0,0,0,.1);
+	box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15);
 	position: fixed;
 	top: 45%;
 	left: 50%;
@@ -204,9 +204,9 @@ textarea {
 	padding: 2rem 1.5rem;
 	z-index: calc( var(--main-layer-overkill) + 1);
 	max-width: 80%;
-	border-radius: .5rem;
+	border-radius: 2px;
 	line-height: 1.5em;
-	border: 1px solid var(--main-darkgray-color);
+	border: 1px solid var(--main-gray-color);
 	color: var(--main-darkgray-color);
 }
 .popup_close_button {
@@ -226,7 +226,7 @@ textarea {
 	bottom: 0;
 	left: 0;
 	background: gray;
-	opacity: 0.2;
+	opacity: 0.1;
 	z-index: var(--main-layer-overkill);
 }
 
@@ -263,6 +263,9 @@ textarea {
 }
 .icon.lookout {
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2{fill:none;}.cls-2{stroke: black ;stroke-miterlimit:10;stroke-width:2px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Lookout"><polygon class="cls-2" points="17.18 13.16 29.57 3.11 28.29 16.57 16.91 29.01 17.18 13.16"/><polyline class="cls-2" points="29.76 2.14 1.8 11.94 16.06 30.27"/><line class="cls-2" x1="28.29" y1="16.57" x2="1.8" y2="11.94"/><line class="cls-2" x1="1.8" y1="11.94" x2="17.18" y2="13.16"/><path d="M29.37,1.25,30.71.89l-.79,1.94s-1.44-.36-1.31-.47A11.21,11.21,0,0,0,29.37,1.25Z" transform="translate(0)"/><polygon points="15.87 31.6 15.27 30.87 15.24 29.84 15.78 29.65 16 30.52 15.87 31.6"/></g></svg>');
+}
+#lookout_btn.transform .icon {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2{fill:none;}.cls-2{stroke: white ;stroke-miterlimit:10;stroke-width:2px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="Lookout"><polygon class="cls-2" points="17.18 13.16 29.57 3.11 28.29 16.57 16.91 29.01 17.18 13.16"/><polyline class="cls-2" points="29.76 2.14 1.8 11.94 16.06 30.27"/><line class="cls-2" x1="28.29" y1="16.57" x2="1.8" y2="11.94"/><line class="cls-2" x1="1.8" y1="11.94" x2="17.18" y2="13.16"/><path d="M29.37,1.25,30.71.89l-.79,1.94s-1.44-.36-1.31-.47A11.21,11.21,0,0,0,29.37,1.25Z" transform="translate(0)"/><polygon points="15.87 31.6 15.27 30.87 15.24 29.84 15.78 29.65 16 30.52 15.87 31.6"/></g></svg>');
 }
 .icon.firstperson {
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1,.cls-2{fill:none;}.cls-2{stroke: black ;stroke-miterlimit:10;stroke-width:2px;}</style></defs><g id="Ebene_10" data-name="Ebene 10"><rect class="cls-1" width="32" height="32"/></g><g id="First_person" data-name="First person"><path class="cls-2" d="M19.65,19.77c0,1-5.16.5-5.16.92,0,6.07-1.49,9-6.43,9-4.64,0-6.95-5.84-6.95-13s-.29-13,7-13c3.08,0,5.6,2,6.06,7.55C14.25,12.79,19.65,18.17,19.65,19.77Z" transform="translate(0)"/><line class="cls-2" x1="20.49" y1="12.05" x2="29.96" y2="12.05"/><polyline class="cls-2" points="26.38 6.55 30.63 12.05 26.38 17.55"/></g></svg>');
