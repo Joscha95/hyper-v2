@@ -1,6 +1,6 @@
 <template>
   <div class="number_handle" @mousedown="mousedown" title="drag to change length of connection">
-    ↤ <span class="number_handle_value">{{ _value.toFixed(2) }}</span> ↦
+    <span class="number_handle_value">{{ Math.round(_value) }}</span>
   </div>
 </template>
 

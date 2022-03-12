@@ -60,6 +60,15 @@ a:hover, a:focus, a:active, a:visited {
 .bold {
 	font-weight: bold;
 }
+.white { color: white; }
+.faintgray { color: var(--main-faintgray-color); }
+.lightgray { color: var(--main-lightgray-color); }
+.gray { color: var(--main-gray-color); }
+.mediumgray { color: var(--main-mediumgray-color); }
+.darkgray { color: var(--main-darkgray-color); }
+.black { color: black; }
+
+
 
 .page {
 	max-width: 600px;

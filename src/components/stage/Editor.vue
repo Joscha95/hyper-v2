@@ -53,7 +53,6 @@ export default {
 	watch:{
 		selectedObjectId(newId){
 			if (newId=='') return;
-			console.log(this.$refs.editorList);
 			nextTick(()=>{
 				const el = this.$refs.editorList.targetDomElement.querySelector('.selected')
 				if(el) el.scrollIntoView({behavior: "smooth"})

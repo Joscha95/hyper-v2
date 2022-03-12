@@ -211,7 +211,6 @@ module.exports = {
 					},
 					scene_objects:_scene_objects
 				}
-				console.log(scene_data,'save');
 				if( this.state == 2 ) {
 					this.$root.notify('Update in progress.')
 				} else {

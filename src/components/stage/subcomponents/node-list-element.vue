@@ -24,9 +24,9 @@
 
 	<div class="node_settings" v-if="store.selectedObject==element">
 		<div class="connection_properties" v-if="h_type=='connection' ">
-			<span class="connection_property_circle" :title="connectedNodes.source.name"></span>
-			<draggableNumber :value="linkDistance" v-model="linkDistance"/>
-			<span class="connection_property_circle" :title="connectedNodes.target.name"></span>
+	  	<a :href="'#'+connectedNodes.source.h_id" class="connection_property_circle" :title="connectedNodes.source.name"></a>
+	  	<draggableNumber :value="linkDistance" v-model="linkDistance"/>
+	  	<a :href="'#'+connectedNodes.target.h_id" class="connection_property_circle" :title="connectedNodes.target.name"></a>
 		</div>
 
 		<div class="node_properties">

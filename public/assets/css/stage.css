@@ -55,6 +55,13 @@ html, body {
 	width: 26%;
 	z-index: 0;
 	border: none;
+	opacity: .75;
+}
+#refresh_button:hover {
+	opacity: 1;
+}
+.state_2 #refresh_button {
+	opacity: .4;
 }
 #source_header .searchbar {
 	right: .25rem;
@@ -86,6 +93,12 @@ html, body {
 	text-decoration: underline;
 	text-decoration-style: dotted;
 }
+
+
+
+
+
+
 
 
 
@@ -121,6 +134,9 @@ html, body {
 #editor input:focus, #editor textarea:focus {
   background-color: white;
 }
+
+
+
 
 
 
@@ -202,6 +218,9 @@ html, body {
 	display: none;
 }
 
+
+/* CAMERA CONTROLS */
+
 #camera_controls {
 	position:fixed;
 	bottom:1rem;
@@ -211,6 +230,7 @@ html, body {
 	right:1rem;
 	align-items: stretch;
 	height: 2.3rem;
+	font-size: 1.08em;
 }
 #camera_controls.margin_right {
 	right:calc(var(--draggable-list-item-width) + 3rem);
@@ -245,6 +265,10 @@ html, body {
 	color: white;
 	background-color: black;
 }
+
+
+
+
 
 
 
@@ -424,6 +448,14 @@ input.searchbar {
   font-size: 1rem;
 }
 
+
+
+
+
+
+
+/* NODE SETTINGS  */
+
 .draggable_list_item input[type="text"]{
   border-color: var(--main-gray-color);
   padding:10px 0;
@@ -446,16 +478,13 @@ input.searchbar {
   border-color: var(--main-gray-color);
   padding: 0.5em;
 }
-
 .lookout_content {
 	padding: 0 var(--draggable-list-item-padding);
 	text-align: left;
 }
-
 .node_properties, .connection_properties {
 	height: 2rem;
 }
-
 .node_properties {
 	display: flex;
 	flex-wrap: nowrap;
@@ -468,6 +497,9 @@ input.searchbar {
 .node_properties .toggle {
 	margin-right: 1em;
 }
+.node_properties .iconToggle .slider span:not(.icon) {
+	padding-top: .6em;
+}
 .node_properties button {
 	height: 100%;
 }
@@ -478,10 +510,6 @@ button.delete_button {
 	border-color: var(--main-error-color);
 	color: var(--main-error-color);
 	margin: 0;
-}
-button.edit_button {
-	font-size: .7em;
-	padding: 0 1rem;
 }
 .selected .edit_click_area:empty:after {
 	content: 'Title';
@@ -495,28 +523,46 @@ button.edit_button {
 }
 
 
-
 /* DRAGGABLE NUMBER  */
 
 .connection_properties {
-	text-align: center;
 	font-size: 1rem;
-	display: inline-block;
+	display: flex;
 	border-radius: 5px;
-	border: 1px solid var(--main-connection-color)
+	flex-wrap: nowrap;
+	width: 6rem;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0 auto;
+	background-color: var(--main-faintgray-color);
+	border: 1px solid var(--main-lightgray-color);
 }
 .connection_property_circle {
-	border: 1px solid var(--main-connection-color);
+ 	border: 1px solid var(--main-connection-color); 
 	display: inline-block;
-	width: .5em;
-	height: .5em;
+	width: .6em;
+	height: .6em;
 	border-radius: 1em;
-	margin: 0 .3em;
-	vertical-align: middle;
 	box-sizing: border-box;
+	cursor: pointer;
+	position: relative;
+	margin: 0 .7em;
 }
-.connection_properties:hover .connection_property_circle {
-	border-width: 2px;
+.connection_property_circle:after {
+	position: absolute;
+	content: '';
+	height: 1px;
+	width: .7em;
+	top: 50%;
+	background-color: var(--main-connection-color);
+}
+.connection_property_circle:first-child:after {
+	right: 0;
+	transform: translate(100%, -50%);
+}
+.connection_property_circle:last-child:after {
+	left: 0;
+	transform: translate(-100%, -50%);
 }
 .connection_property_circle:hover {
 	background: var(--main-connection-color);
@@ -525,19 +571,19 @@ button.edit_button {
 	color: var(--main-connection-color);
 	cursor: row-resize;
 	user-select: none;
-	padding: 10px 0;
-	display: inline-block;
-	font-size: .9em;
-	font-style: italic;
+	font-size: .8em;
 }
 .number_handle:hover .number_handle_value {
-	text-decoration: underline;
-	text-decoration-style: dotted;
+	font-weight: bold;
 }
 
 
 
 
+
+
+
+/* FLOATING BLOCKS */
 
 .floating-blocks{
 	pointer-events:none;
@@ -580,6 +626,8 @@ button.edit_button {
 .floating-blocks.focus{
 	box-shadow: 0 0 0 5px white, 0 0 0 10px black;
 }
+
+
 
 
 
