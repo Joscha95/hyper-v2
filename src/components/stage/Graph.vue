@@ -102,12 +102,21 @@ export default {
     },
     showNodeInfo(){
       return this.currentelementInCameraView && this.lastValidChainElement.h_type!='connection' && (this.lastValidChainElement.name || this.lastValidChainElement.content || this.lastValidChainElement.from || this.lastValidChainElement.to || this.lastValidChainElement.description)
+    },
+    showPolarGrid(){
+      return this.store.sceneSettings.showCircles
+    },
+    sceneBackground(){
+      return this.store.sceneSettings.backgroundColor.bottom+this.store.sceneSettings.backgroundColor.top
     }
   },
   watch:{
-    // linkDistance(){
-    //     this.forceSimulation.updateLinkDistances();
-    //   },
+    showPolarGrid(newVal){
+      this.THREEScene.togglePolar(newVal);
+    },
+    sceneBackground(newVal){
+      this.THREEScene.horizon.updateGradient(this.store.sceneSettings.backgroundColor);
+    },
     isFocused(){
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
@@ -174,8 +183,8 @@ export default {
       const node = {
         h_id: makeid(5),
         name:'',
-        to:[],
-        from:[],
+        to:undefined,
+        from:undefined,
         isFixed:true,
         content:'',
         h_type: 'lookout',

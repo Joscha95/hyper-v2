@@ -88,6 +88,7 @@ export default {
 						const lists = this.initScene ? this.splitSceneObjectFromServer(this.initScene.scene_objects) : {sceneList:[],forceList:[]}
 						this.$root.store.sceneList = lists.sceneList;
 						this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : [];
+						this.$root.store.sceneSettings = this.initScene && this.initScene.scene_data.sceneSettings ? this.initScene.scene_data.sceneSettings : {showCircles:true,backgroundColor:{bottom:'#f0f0f0',top:'#c8c8c8'}}
 						forceSimulation.init(lists.forceList);
 						this.$refs.sceneComponent.init();
 
