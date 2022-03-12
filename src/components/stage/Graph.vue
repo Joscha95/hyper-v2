@@ -109,11 +109,11 @@ export default {
   },
   watch:{
     showPolarGrid(newVal){
-        this.THREEScene.togglePolar(newVal);
-      },
+      this.THREEScene.togglePolar(newVal);
+    },
     sceneBackground(newVal){
-        this.THREEScene.horizon.updateGradient();
-      },
+      this.THREEScene.horizon.updateGradient(this.store.sceneSettings.backgroundColor);
+    },
     isFocused(){
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
@@ -180,8 +180,8 @@ export default {
       const node = {
         h_id: makeid(5),
         name:'',
-        to:[],
-        from:[],
+        to:undefined,
+        from:undefined,
         isFixed:true,
         content:'',
         h_type: 'lookout',

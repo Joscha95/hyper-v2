@@ -24,7 +24,7 @@ function drawCircle(circleRadius, circleSegments, y=0,mat )
 }
 
 class Globe {
-	constructor(radius, nLat=15, nLon=32, segments=32, color='white' ) {
+	constructor(radius, nLat=15, nLon=32, segments=32, color='white',gradient ) {
 		this.group = new Group();
 		const _rad = radius*.8
 		nLat = nLat + 1 ;
@@ -56,10 +56,10 @@ class Globe {
     const material = new ShaderMaterial({
       uniforms: {
         color1: {
-          value: new Color("rgb(240,240,240)")
+          value: new Color(gradient.bottom)
         },
         color2: {
-          value: new Color("rgb(200,200,200)")
+          value: new Color(gradient.top)
         }
       },
       vertexShader: `
@@ -83,8 +83,13 @@ class Globe {
       `,
       side:BackSide
     });
-    const sphere = new Mesh( geometry, material );
-    this.group.add( sphere );
+    this.sphere = new Mesh( geometry, material );
+    this.group.add( this.sphere );
+	}
+
+	updateGradient(gradient){
+		this.sphere.material.uniforms.color1.value=new Color(gradient.bottom)
+		this.sphere.material.uniforms.color2.value=new Color(gradient.top)
 	}
 }
 

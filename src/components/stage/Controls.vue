@@ -24,6 +24,18 @@
 			</section>
 
 			<section id="settings_panel" v-else>
+				<h4>Settings</h4>
+				<div id="scene_settings">
+					<div class="setting colors">
+						<span>Polar Helper</span>
+						<toggle  off="OFF" on="ON" tooltipOff="Show the helper circle in the middle of your scene" tooltipOn="Hide the helper circle in the middle of your scene" :bool="store.sceneSettings.showCircles" v-model="store.sceneSettings.showCircles" :icon="false"/>
+					</div>
+					<div class="setting colors">
+						<span>Background</span>
+						<input type="text" class="color" v-model="store.sceneSettings.backgroundColor.bottom" :style="`background-color:${store.sceneSettings.backgroundColor.bottom}` " @focus="store.focused=true" @blur="this.store.focused=false">
+						<input type="text" class="color" v-model="store.sceneSettings.backgroundColor.top" :style="`background-color:${store.sceneSettings.backgroundColor.top}`" @focus="store.focused=true" @blur="this.store.focused=false">
+					</div>
+				</div>
 				<div id="logout">
 					Logged in as <span class="bold black">{{ email }}</span>.&emsp;<span id="logout_button" @click="$emit('logout')">Log out?</span>
 				</div>
@@ -108,5 +120,30 @@ export default {
 }
 #settings_panel {
 	font-size: .8em;
+}
+#settings_panel h4{
+	margin:0;
+	margin-bottom:1em;
+	font-weight:bold;
+	text-align:center
+}
+#logout{
+	margin-top:3em;
+}
+.setting{
+	margin:1em 0;
+}
+.setting.colors{
+	display:flex;
+	align-items:center;
+}
+.setting.colors > span{
+	padding-right:1em;
+}
+input.color{
+	width: 6em;
+}
+input.color:first-of-type{
+	margin-right:1em;
 }
 </style>

@@ -63,13 +63,11 @@ class THREEScene {
     window.addEventListener('hashchange', (e)=>this.onHashChange(e));
     window.addEventListener('keydown', (e)=>this.onKeyDown(e));
 
-    this.horizon = new Globe(this.cameraController.camera.far*.9, 16, 32, 64, 'rgb(240,240,240)').group; // Radius, num lat, num lon, segments, color
-    this.horizon.position.copy(this.cameraController.position());
+    this.horizon = new Globe(this.cameraController.camera.far*.9, 16, 32, 64, 'rgb(240,240,240)',this.store.sceneSettings.backgroundColor); // Radius, num lat, num lon, segments, color
+    this.horizon.group.position.copy(this.cameraController.position());
 
-    this.scene.add(this.horizon);
-
-    const helper = new PolarGrid();
-    this.scene.add(helper.group);
+    this.scene.add(this.horizon.group);
+    this.polar = undefined;
 
     this.cssRenderer = new CSS3DRenderer();
     this.cssRenderer.setSize(window.innerWidth, window.innerHeight);
@@ -102,10 +100,22 @@ class THREEScene {
 
     this.importNodes();
 
+    this.togglePolar(this.store.sceneSettings.showCircles)
+
     domparent.appendChild(this.renderer.domElement);
     this.render();
 
     if(store.selectedObject) this.focusItem(store.selectedObject.h_id,store.selectedObject.h_type)
+  }
+
+  togglePolar(bool){
+    if (bool) {
+      this.polar = new PolarGrid();
+      this.scene.add(this.polar.group);
+    } else if (this.polar){
+      this.scene.remove(this.polar.group);
+      this.polar = undefined;
+    }
   }
 
   setRendererSize(){
@@ -468,7 +478,7 @@ class THREEScene {
     }
 
     if(this.lineHelper)  this.lineHelper.update();
-    this.horizon.position.copy(this.cameraController.position());
+    this.horizon.group.position.copy(this.cameraController.position());
   }
 
   objectTouched() {
@@ -529,9 +539,9 @@ class THREEScene {
     const list_element = {
       h_id:makeid(5),
       name: '',
-      to:[],
+      to:undefined,
       val:1,
-      from:[],
+      from:undefined,
       content: '',
       initDistance:0,
       isFixed:false,

@@ -206,7 +206,8 @@ module.exports = {
 
 				const scene_data={
 					scene_data:{
-						threadIds:this.$root.store.thread.map((n)=> n.h_id)
+						threadIds:this.$root.store.thread.map((n)=> n.h_id),
+						sceneSettings:this.$root.store.sceneSettings
 					},
 					scene_objects:_scene_objects
 				}
