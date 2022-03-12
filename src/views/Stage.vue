@@ -84,7 +84,6 @@ export default {
 					this.state = 1
 					this.headerTitle = this.channel.title
 					if(this.needsInit) {
-						console.log(this.initScene);
 						const lists = this.initScene ? this.splitSceneObjectFromServer(this.initScene.scene_objects) : {sceneList:[],forceList:[]}
 						this.$root.store.sceneList = lists.sceneList;
 						this.$root.store.threadIds = this.initScene && this.initScene.scene_data.threadIds ? this.initScene.scene_data.threadIds : [];
