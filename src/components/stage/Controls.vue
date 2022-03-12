@@ -25,7 +25,7 @@
 
 			<section id="settings_panel" v-else>
 				<div id="logout">
-					Logged in as <span class="bold">{{ email }}</span>. <span id="logout_button" @click="$emit('logout')">Log out?</span>
+					Logged in as <span class="bold black">{{ email }}</span>.&emsp;<span id="logout_button" @click="$emit('logout')">Log out?</span>
 				</div>
 			</section>
 		</div>

@@ -1,34 +1,35 @@
 <template lang="html">
+  
+  
   <CanvasDragtarget @blockAdded="blockAdded"/>
+
 
   <div oncontextmenu="return false;" id="scene" ref="scene"></div>
 
+
   <div id="toolbox_wrapper"></div>
 
-  <div id="activeelement_navigator" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement" >
-    <div id="chain_navigator">
-      <a v-if = "lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id"> {{ lastValidChainElement.from.name }} ⇢ </a>
 
-      <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
-      <div class="description" v-if="lastValidChainElement.description!=''"  v-html="lastValidChainElement.description"></div>
-      <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'"><pre>{{ lastValidChainElement.content }}</pre></div>
-
-      <a v-if = "lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id"> ⇢ {{ lastValidChainElement.to.name }} </a>
+    <div id="node_info" :class="currentelementInCameraView?'show':''" v-if="lastValidChainElement">
+      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn">◀</a> <!-- {{ lastValidChainElement.from.name }} -->
+      <div id="node_info_text">
+        <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
+        <div class="description this" v-if="lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
+        <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'"><pre>{{ lastValidChainElement.content }}</pre></div>
+      </div>
+      <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id" id="weave_to_btn">▶</a> <!-- {{ lastValidChainElement.to.name }} -->
     </div>
-  </div>
+
 
   <div id="camera_controls" :class="{margin_right:showEditor}">
-		<div v-if="loggedIn && !isInLookout" id="add_lookout_btn" @click="addLookout">
-			Add
-			<span class="icon lookout"></span>
-		</div>
-		<div v-if="loggedIn && isInLookout" id="add_lookout_btn" @click="toggleLookoutSync">
-
-      {{THREEScene.cameraController.lookoutSync ? 'end Transform' : 'Transform'}}
-			<span class="icon lookout"></span>
-		</div>
-		<toggle id="camera_toggle" off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="store.isOrbit" v-model="store.isOrbit" :icon="true"/>
+	  <div v-if="loggedIn" id="lookout_btn" :class="{transform:isInLookout}"  v-on="isInLookout ? { click: toggleLookoutSync } : { click: addLookout }" >
+      <span v-if="isInLookout">{{THREEScene.cameraController.lookoutSync ? 'End transform' : 'Transform'}}</span>
+      <span v-else>Add</span>
+		  <span class="icon lookout"></span>
+	  </div>
+    <toggle id="camera_toggle" off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="store.isOrbit" v-model="store.isOrbit" :icon="true"/>
 	</div>
+
 
 </template>
 
@@ -194,6 +195,7 @@ export default {
 </script>
 
 <style scoped>
+
 #scene{
   position:fixed;
   top:0;
@@ -207,50 +209,44 @@ export default {
   user-select:none;
 }
 
+#node_info {
+  background-color: white;
+  border-radius: 5px;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  z-index: var(--main-layer-three);
+  margin: 0;
+  width: auto;
+  left: 50%;
+  transform: translate(-50%, 110%);
+  transition:transform .4s ease;
+  box-shadow: 0 0 0 3px rgba(0,0,0,.1), 0 0 1em rgba(0,0,0,.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+#node_info.show{
+  transform: translate(-50%, 0);
+  bottom: 1rem;
+  box-shadow: 0;
+}
+#node_info_text {
+  flex-grow: 2;
+  margin: 0 2rem;
+}
 .description{
-  margin-top:.5em;
+  margin-top:.7em;
   font-size:.7em;
 }
-
-#activeelement_navigator{
-  position:fixed;
-  bottom:0;
-  z-index:100;
-  margin: 0 auto;
-  width:auto;
-  left:50%;
-  transform:translate(-50%,150%);
-  transition:transform .3s ease;
+#weave_from_btn, #weave_to_btn {
+  color: var(--main-thread-color);
+  font-size: .9em;
 }
 
-#chain_navigator, #edit_lookout span{
-  background-color:white;
-  border-radius:1em;
-  padding:10px;
-}
-
-#edit_lookout{
-  margin-bottom:2em;
-  text-align:center;
-}
-
-#activeelement_navigator.show{
-  transform:translate(-50%,-15%)
-}
-a{
+a {
   text-decoration:none;
 }
 
-</style>
-
-<style media="screen">
-  #camera_controls {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-  #add_lookout_btn {
-    cursor: pointer;
-    margin-right: 1rem;
-  }
 </style>

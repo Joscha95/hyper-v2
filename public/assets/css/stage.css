@@ -22,7 +22,7 @@ html, body {
 
 /* SOURCE */
 
-#source {
+#source, #source:active {
 	position:fixed;
 	z-index: var(--main-layer-one);
 	user-select:none;
@@ -33,6 +33,11 @@ html, body {
 	display: flex;
 	flex-direction: column;
 	box-shadow: 0 0 0 .1em rgba(0,0,0,.05);
+	opacity: .75;
+	transition: opacity .3s;
+}
+#source:hover {
+	opacity: 1;
 }
 #source_header {
 	padding: .25rem;
@@ -74,6 +79,7 @@ html, body {
 }
 #to_arena_channel_btn a:hover {
 	text-decoration: underline;
+	text-decoration-style: dotted;
 }
 
 
@@ -214,6 +220,9 @@ html, body {
 #camera_controls {
 	position:fixed;
 	bottom:1rem;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
 	right:1rem;
 	align-items: stretch;
 	height: 2.3rem;
@@ -221,7 +230,7 @@ html, body {
 #camera_controls.margin_right {
 	right:calc(var(--draggable-list-item-width) + 3rem);
 }
-#add_lookout_btn {
+#lookout_btn {
 	background: white;
 	border: 1px solid var(--main-gray-color);
 	vertical-align: middle;
@@ -233,16 +242,24 @@ html, body {
 	padding: 0 1em;
 	font-size: .8em;
 	color: black;
+	cursor: pointer;
+	margin-right: 1rem;
 }
-#add_lookout_btn .icon {
+#lookout_btn .icon {
 	margin-left: .7em;
 }
-#add_lookout_btn:hover {
+#lookout_btn:hover {
 	border-color: black;
 }
-#camera_controls .slider {
+#lookout_btn.transform {
+	color: white;
+	background-color: var(--main-darkgray-color);
+	border: none;
 }
-
+#lookout_btn.transform:hover {
+	color: white;
+	background-color: black;
+}
 
 
 
@@ -311,7 +328,7 @@ html, body {
 	font-size: .7em;
 	box-sizing: border-box;
 }
-.drag_handle:before {
+.drag_handle:before, .drag_handle:after {
 	content:'';
 	position: absolute;
 	height:100%;
@@ -320,9 +337,20 @@ html, body {
 	right: 0;
 	z-index: 1;
 }
-#editor .drag_handle:hover:before, #editor .selected .drag_handle:before {
+.drag_handle:after {
+	display: none;
+	left: 0;
+	right: auto;
+}
+#editor .drag_handle:hover:before, #editor .selected .drag_handle:before, .drag_handle:after {
 	width: 3.3em;
+}
+#editor .drag_handle:hover:before, #editor .selected .drag_handle:before {
 	background: linear-gradient(90deg,rgba(255,255,255,0), white 25%, white 100%);
+}
+.draggable_list_item[type="connection"] .drag_handle:after, .draggable_list_item[type="lookout"] .drag_handle:after {
+	background: linear-gradient(270deg,rgba(255,255,255,0), white 25%, white 100%);
+	display: block;
 }
 .drag_handle .icon.eye {
 	opacity: .75;
@@ -340,6 +368,12 @@ html, body {
 	padding: 0 .3em .3em .8em;
 	box-sizing: border-box;
 }
+#editor .draggable_list_item_content span {
+	padding-right: 3em;
+}
+.draggable_list_item[type="connection"] .draggable_list_item_content span, .draggable_list_item[type="lookout"] .draggable_list_item_content span {
+	padding-left: 3em;
+}
 .drag_handle:hover .draggable_list_item_content span {
 	transform: translateX( calc(-100% + (var(--draggable-list-item-width) - var(--thumbs-witdh) - 2px ) ) );
 	transition: transform 5s linear;
@@ -348,9 +382,6 @@ html, body {
 .draggable_list_item[type="connection"] .drag_handle:hover .draggable_list_item_content span,
 .draggable_list_item[type="lookout"] .drag_handle:hover .draggable_list_item_content span {
 	transform: translateX( calc(-100% + ( var(--draggable-list-item-width) - 2px ) ) );
-}
-.draggable_list_item_content .icon {
-	display: inline;
 }
 .draggable_list_item_thumb {
 	flex-basis: var(--thumbs-witdh);
@@ -387,16 +418,24 @@ html, body {
 input.searchbar {
 	border: 1px solid var(--main-gray-color);
 }
-.drag_handle .icon.eye {
+
+.drag_handle .icon.eye, .drag_handle .icon.lookout, .drag_handle .icon.connection {
   position: absolute;
-  right: .5em;
   z-index: 1;
+}
+.drag_handle .icon.lookout, .drag_handle .icon.connection {
+  left: 1em;
+  z-index: 2;
+}
+.drag_handle .icon.eye {
+  right: .5em;
   display: none;
 }
 .drag_handle:hover .icon.eye, .draggable_list_item.selected .icon.eye  {
   display: block;
   font-size: 1rem;
 }
+
 
 .node_properties {
 	display: flex;
@@ -475,10 +514,13 @@ button.edit_button {
 	line-height:1.5;
 	background-color:white;
 }
+.floating-blocks[data-contentclass="Image"]{
+	background-color: transparent;
+}
 .floating-blocks p {
 	margin: 3rem;
 }
-.floating-blocks[contentclass="Text"]{
+.floating-blocks[data-contentclass="Text"]{
 	max-width:200px;
 }
 

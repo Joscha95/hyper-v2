@@ -25,7 +25,7 @@
 		setup() {
 			let style = document.createElement('style')
 			for (const [key, value] of Object.entries(store.colors)) {
-				style.innerHTML = style.innerHTML+':root{--main-'+key+'-color: '+store.colors.connection+';}'
+				style.innerHTML = style.innerHTML+':root{--main-'+key+'-color: '+value+';}'
 			}
 			document.head.appendChild(style)
 		},

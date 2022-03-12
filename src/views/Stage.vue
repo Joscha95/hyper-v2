@@ -14,7 +14,7 @@
 		@toggleEditor="toggleEditor"
 	/>
 	<Editor v-show="showEditor" @save="save"/>
-	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
+	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents" :channelId="channelId"/>
 	<Graph :showEditor="showEditor" :loggedIn="loggedIn" ref="sceneComponent"/>
 </template>
 

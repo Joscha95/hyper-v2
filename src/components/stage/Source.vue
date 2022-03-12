@@ -27,7 +27,7 @@
         </div>
       </template>
     </draggable>
-    <div id="to_arena_channel_btn"><a :href="'https://www.are.na/channel/'+channelUrl" target="_blank">View this channel in Are.na</a></div>
+    <div id="to_arena_channel_btn"><a :href="'https://www.are.na/channel/'+channelId" target="_blank">View this channel in Are.na</a></div>
   </div>
 </template>
 
@@ -42,7 +42,7 @@ export default {
     draggable,
     searchbar
   },
-  props:['blocks', 'channelUrl'],
+  props:['blocks', 'channelId'],
   data() {
     return {
       store: this.$root.$data.store,
