@@ -1,6 +1,6 @@
 <template lang="html">
-  
-  
+
+
   <CanvasDragtarget @blockAdded="blockAdded"/>
 
 
@@ -15,7 +15,7 @@
       <div id="node_info_text">
         <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
         <div class="description this" v-if="lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
-        <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'"><pre>{{ lastValidChainElement.content }}</pre></div>
+        <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'" v-html="markDownContent"></div>
       </div>
       <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id" id="weave_to_btn">▷</a> <!-- {{ lastValidChainElement.to.name }} -->
     </div>
@@ -23,7 +23,7 @@
 
   <div id="camera_controls" :class="{margin_right:showEditor}">
 	  <div v-if="loggedIn" id="lookout_btn" :class="{transform:isInLookout}"  v-on="isInLookout ? { click: toggleLookoutSync } : { click: addLookout }" >
-      <span v-if="isInLookout">{{THREEScene.cameraController.lookoutSync ? 'End transform' : 'Transform'}}</span>
+      <span v-if="isInLookout">{{ lookoutSyncActive ? 'End transform' : 'Transform'}}</span>
       <span v-else>Add</span>
 		  <span class="icon lookout"></span>
 	  </div>
@@ -40,6 +40,13 @@ import CanvasDragtarget from '@/components/stage/CanvasDragtarget.vue';
 import { nextTick,shallowReactive } from 'vue'
 import toggle from '@/components/stage/subcomponents/toggle.vue'
 import {forceSimulation,sceneElements} from '@/store.js'
+import { marked } from 'marked';
+
+marked.setOptions({
+  gfm: true,
+  breaks: true,
+  // sanitize: false,
+});
 
 export default {
 
@@ -47,7 +54,8 @@ export default {
     this.THREEScene = null
     this.store = this.$root.store
     return{
-      lastValidChainElement:undefined
+      lastValidChainElement:undefined,
+      lookoutSyncActive:false
     }
   },
   props:['showEditor','loggedIn'],
@@ -88,6 +96,9 @@ export default {
     },
     isInLookout(){
       return this.lastValidChainElement && this.lastValidChainElement.h_type=='lookout' && this.lastValidChainElement.active
+    },
+    markDownContent(){
+      return marked.parse(this.lastValidChainElement.content)
     }
   },
   watch:{
@@ -110,6 +121,9 @@ export default {
     },
     nodesLength(){
       forceSimulation.updateNodes(this.store.sceneList.map(e => e.h_id));
+    },
+    isInLookout(){
+      this.lookoutSyncActive= this.THREEScene.cameraController.lookoutSync
     },
     isOrbit(val){
       this.THREEScene.toggleCamMode();
@@ -149,7 +163,7 @@ export default {
     },
     toggleLookoutSync(){
       this.THREEScene.cameraController.toggleLookoutSync();
-      //forceSimulation.reheat(.1);
+      this.lookoutSyncActive= this.THREEScene.cameraController.lookoutSync
     },
     addLookout(){
       const rot = this.THREEScene.cameraController.rotation();
@@ -222,7 +236,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
 }
 #node_info.show{
   transform: translate(-50%, 0);
