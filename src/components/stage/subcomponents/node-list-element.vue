@@ -13,8 +13,9 @@
 				{{ h_type=='connection' ? element.content : element.name }}
 			</span>
 			<span v-else>
-				{{ element.class=='Text' ? element.content : element.name }}
-			</span>
+        <span v-if="!toArena" @click="toggleArenaLink(element)">{{ element.class=='Text' ? element.content : element.name }}</span>
+        <span v-else @click="toArena=false"><a href="https://are.na" target="_blank" class="node_list_arena_link">View in Are.na?</a>&emsp;x</span>
+      </span>
 		</div>
 		<span class="icon eye" title="Look at" @click="lookAt($event,element)"></span>
 	</div>
@@ -59,6 +60,7 @@ export default {
       store:this.$root.store,
       editmode:false,
       remove:false,
+      toArena:false,
       h_type:this.element.h_type,
       h_id:this.element.h_id,
 			linkDistance: this.forceElement && this.forceElement.links ? this.forceElement.links[0].distance*2 : 0
@@ -105,6 +107,7 @@ export default {
     selectedObject(){
       this.editmode=false
       this.remove=false
+      this.toArena=false
     },
 		linkDistance(newVal,oldVal){
 			forceSimulation.setLinkLength(this.h_id,newVal,newVal/oldVal)
@@ -127,6 +130,10 @@ export default {
     lookAt(e,element){
       window.location.hash=element.h_id;
       window.dispatchEvent(new HashChangeEvent("hashchange"));
+    },
+    toggleArenaLink(element){
+      this.store.selectedObject==element ? this.toArena=true : this.toArena=false
+      
     }
   }
 };

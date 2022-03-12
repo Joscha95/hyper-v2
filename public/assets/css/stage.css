@@ -346,25 +346,25 @@ html, body {
 	overflow: hidden;
 	flex-grow: 2;
 }
-.draggable_list_item_content span {
+.draggable_list_item_content > span {
 	display: inline-block;
 	min-width: 100%;
 	padding: 0 .3em .3em .8em;
 	box-sizing: border-box;
 }
-#editor .draggable_list_item_content span {
+#editor .draggable_list_item_content > span {
 	padding-right: 3em;
 }
-.draggable_list_item[type="connection"] .draggable_list_item_content span, .draggable_list_item[type="lookout"] .draggable_list_item_content span {
+.draggable_list_item[type="connection"] .draggable_list_item_content > span, .draggable_list_item[type="lookout"] .draggable_list_item_content > span {
 	padding-left: 3em;
 }
-.drag_handle:hover .draggable_list_item_content span {
+.drag_handle:hover .draggable_list_item_content > span {
 	transform: translateX( calc(-100% + (var(--draggable-list-item-width) - var(--thumbs-witdh) - 2px ) ) );
 	transition: transform 5s linear;
 }
-.drag_handle.no_thumb:hover .draggable_list_item_content span,
-.draggable_list_item[type="connection"] .drag_handle:hover .draggable_list_item_content span,
-.draggable_list_item[type="lookout"] .drag_handle:hover .draggable_list_item_content span {
+.drag_handle.no_thumb:hover .draggable_list_item_content > span,
+.draggable_list_item[type="connection"] .drag_handle:hover .draggable_list_item_content > span,
+.draggable_list_item[type="lookout"] .drag_handle:hover .draggable_list_item_content > span {
 	transform: translateX( calc(-100% + ( var(--draggable-list-item-width) - 2px ) ) );
 }
 .draggable_list_item_thumb {
@@ -489,6 +489,8 @@ button.edit_button {
 	cursor: text;
 	color: var(--main-darkgray-color);
 }
+
+
 
 /* DRAGGABLE NUMBER  */
 
