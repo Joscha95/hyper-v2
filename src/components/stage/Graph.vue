@@ -99,12 +99,21 @@ export default {
     },
     markDownContent(){
       return marked.parse(this.lastValidChainElement.content)
+    },
+    showPolarGrid(){
+      return this.store.sceneSettings.showCircles
+    },
+    sceneBackground(){
+      return this.store.sceneSettings.backgroundColor.bottom+this.store.sceneSettings.backgroundColor.top
     }
   },
   watch:{
-    // linkDistance(){
-    //     this.forceSimulation.updateLinkDistances();
-    //   },
+    showPolarGrid(newVal){
+        this.THREEScene.togglePolar(newVal);
+      },
+    sceneBackground(newVal){
+        this.THREEScene.horizon.updateGradient();
+      },
     isFocused(){
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
