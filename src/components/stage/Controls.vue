@@ -25,6 +25,7 @@
 
 			<section id="settings_panel" v-else>
 				<span class="bold">Settings</span>
+				<span id="restore" @click="store.sceneSettings=JSON.parse(JSON.stringify(store.sceneSettingsDefault))"> restore default</span>
 				<div id="scene_settings">
 					<div class="setting colors">
 						<span>Polar Helper</span>
@@ -132,6 +133,14 @@ export default {
 }
 .setting{
 	margin:1em 0;
+}
+
+#restore{
+	font-size:.75em;
+	cursor:pointer;
+	float:right;
+	text-decoration:underline;
+	text-decoration-style: dotted;
 }
 .setting.colors{
 	display:flex;
