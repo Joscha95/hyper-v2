@@ -7,6 +7,7 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 	$channel_id = intval($data->channel->id);
 	$slug = urlencode($data->channel->slug);
 	
+	
 	$query = "
 		INSERT INTO scenes (email, password, channel_id) VALUES ('$email', '$password', '$channel_id');
 		SET @scene_id = LAST_INSERT_ID();
@@ -29,12 +30,28 @@ if( $data=json_decode(file_get_contents('php://input')) ) {
 		}
 	} while ($mysqli->next_result());
 	
-	if( $mysqli->error ){
+	if( $mysqli->error )
+	{
 		$mysqli->rollback();
 		$error = [500,'Internal Server Error',$mysqli->error];
-	} else {
+	} 
+	else 
+	{
 		$mysqli->commit();
 		$response = array('id' => $id, 'slug' => $slug.$counter);
+		
+		$recipient = $email;
+		$sender = 'hyper';
+		$subject = 'New hyperchannel created';
+		$content = "
+			<p>Your new hyperchannel has been created.<br>
+			Just follow this link:<br>
+			<br>
+			https://hyperchannel.net/".$slug.$counter."</p>
+		";
+		include_once('inc/mail.inc.php');
+		$mail->send();
+		
 	}
 	
 } else {
