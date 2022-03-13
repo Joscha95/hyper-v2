@@ -53,11 +53,7 @@ export default {
 	watch:{
 		selectedObjectId(newId){
 			if (newId=='') return;
-			nextTick(()=>{
-				const el = this.$refs.editorList.targetDomElement.querySelector('.selected')
-				if(el) el.scrollIntoView({behavior: "smooth"})
-			})
-
+			this.scrollToSelected()
 		}
 	},
 	methods:{
@@ -66,6 +62,15 @@ export default {
 		},
 		onPull(evt){
 			return evt.options.group.name=='object' ? 'clone' :true;
+		},
+		scrollToSelected(){
+			nextTick(()=>{
+				const el = this.$refs.editorList.targetDomElement.querySelector('.selected')
+				if(el){
+					const top = el.getBoundingClientRect().top
+					if(top<(window.innerHeight*.1) || top>window.innerHeight) el.scrollIntoView({behavior: "smooth"})
+				}
+			})
 		},
 		onMove(evt){
 			if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')

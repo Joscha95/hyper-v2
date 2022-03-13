@@ -14,8 +14,13 @@
       <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn" class="icon threadprev"></a> <!-- {{ lastValidChainElement.from.name }} -->
       <div id="node_info_text">
         <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
-        <div class="description this" v-if="lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
+        <div class="description this" v-if="lastValidChainElement.description && lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
         <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'" v-html="markDownContent"></div>
+        <div class="connection_properties" v-if="lastValidChainElement.h_type=='connection'">
+    	  	<a :href="'#'+lastValidChainElement.sourceID" class="connection_property_circle" title="Connection source"></a>
+          <span class="arrows">> ></span>
+    	  	<a :href="'#'+lastValidChainElement.targetID" class="connection_property_circle" title="Connection target"></a>
+    		</div>
       </div>
       <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id" id="weave_to_btn" class="icon threadnext"></a> <!-- {{ lastValidChainElement.to.name }} -->
     </div>
@@ -41,11 +46,13 @@ import { nextTick,shallowReactive } from 'vue'
 import toggle from '@/components/stage/subcomponents/toggle.vue'
 import {forceSimulation,sceneElements} from '@/store.js'
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 marked.setOptions({
   gfm: true,
   breaks: true,
-  // sanitize: false,
+  // sanitize: true,
+  // sanitizer: (txt) => {return DOMPurify.sanitize(txt, { USE_PROFILES: { html: true } })},
 });
 
 export default {
@@ -63,7 +70,8 @@ export default {
     const cameraSettings = {
     	zoomSpeed: 50,
     	moveSpeed: 5,
-    	rotateSpeed: 0.15
+    	rotateSpeed: 0.15,
+      isTouch:this.store.isTouch
     }
 
     this.THREEScene = new THREEScene(this.$refs.scene,forceSimulation,cameraSettings,this.store,sceneElements);
@@ -99,16 +107,19 @@ export default {
       return this.lastValidChainElement && this.lastValidChainElement.h_type=='lookout' && this.lastValidChainElement.active
     },
     markDownContent(){
-      return marked.parse(this.lastValidChainElement.content)
+      return marked.parse(DOMPurify.sanitize(this.lastValidChainElement.content, { USE_PROFILES: { html: true } }))
     },
     showNodeInfo(){
-      return this.currentelementInCameraView && (this.lastValidChainElement.name || (this.lastValidChainElement.content && this.lastValidChainElement.h_type!='connection') || this.lastValidChainElement.from || this.lastValidChainElement.to || this.lastValidChainElement.description)
+      return this.currentelementInCameraView && (this.lastValidChainElement.h_type=='connection' || this.lastValidChainElement.name || this.lastValidChainElement.content || this.lastValidChainElement.from || this.lastValidChainElement.to || this.lastValidChainElement.description)
     },
     showPolarGrid(){
       return this.store.sceneSettings.showCircles
     },
     sceneBackground(){
       return this.store.sceneSettings.backgroundColor.bottom+this.store.sceneSettings.backgroundColor.top
+    },
+    isLoggedIn(){
+      return this.store.loggedIn
     }
   },
   watch:{
@@ -121,9 +132,17 @@ export default {
     isFocused(){
       this.THREEScene.cameraController.enabled=!this.store.focused;
     },
+    isLoggedIn(){
+      if(this.THREEScene.focusedItem) this.THREEScene.focusedItem.blur()
+    },
     currentItem(newVal){
       if(!newVal) return;
-      this.THREEScene.focusItem(this.store.selectedObject.h_id,this.store.selectedObject.h_type)
+      if (this.store.loggedIn) {
+        this.THREEScene.focusItem(this.store.selectedObject.h_id,this.store.selectedObject.h_type)
+      }else {
+        window.location.hash=this.store.selectedObject.h_id;
+        window.dispatchEvent(new HashChangeEvent("hashchange"));
+      }
     },
     currentelementInCameraView(newVal){
       if (newVal) this.lastValidChainElement=newVal
@@ -272,6 +291,35 @@ export default {
 
 a {
   text-decoration:none;
+}
+
+.connection_properties {
+  border:none;
+  background:unset;
+}
+.connection_properties span {
+  color:var(--main-connection-color);
+  padding-bottom: 0.2rem;
+}
+@media (min-width:700px) {
+  #node_info{
+    max-width:50%;
+  }
+}
+@media (max-width:700px) {
+  #node_info{
+    width: 100%;
+    min-height: 4rem;
+    max-height:20%;
+    box-sizing: border-box;
+    border-radius: unset;
+  }
+  #node_info.show{
+    bottom: 0;
+  }
+  #node_info_text{
+    overflow-y:auto;
+  }
 }
 
 </style>

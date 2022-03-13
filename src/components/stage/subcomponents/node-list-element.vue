@@ -17,7 +17,7 @@
         <span v-else @click="toArena=false"><a :href="'https://www.are.na/block/'+element.a_id" target="_blank" class="node_list_arena_link">View in Are.na?</a>&emsp;x</span>
       </span>
 		</div>
-		<span class="icon eye" title="Look at" @click="lookAt($event,element)"></span>
+		<a :href="'#'+element.h_id" class="icon eye" title="Look at" @click="lookAt"></a>
 	</div>
 
   <div v-if="store.selectedObject==element && h_type=='lookout' && element.content && !editmode" class="lookout_content" @click="editmode=!editmode" v-html="markDownContent"></div>
@@ -127,13 +127,12 @@ export default {
 			this.store.unsavedChanges++;
       this.store.selectedObject=undefined;
     },
-    lookAt(e,element){
-      window.location.hash=element.h_id;
+    lookAt(){
       window.dispatchEvent(new HashChangeEvent("hashchange"));
     },
     toggleArenaLink(element){
       this.store.selectedObject==element ? this.toArena=true : this.toArena=false
-      
+
     }
   }
 };

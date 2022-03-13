@@ -13,6 +13,8 @@ const store = reactive({
   connectionCount:0,
   unsavedChanges:0,
   isOrbit:false,
+  loggedIn:false,
+  isTouch:(('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)),
   colors:{
     connection: '#4a4aba',
     thread: '#f85330',

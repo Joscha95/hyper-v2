@@ -2,6 +2,7 @@ import {PlaneGeometry,Mesh} from 'three'
 import {CSS3DObject} from '@/modules/CSS3DRenderer.js'
 import Toolbar from '@/modules/Toolbar.js'
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 class ContentBlock {
   constructor(scene,contentItem,mat,options={cssResolution:.2},objectControls) {
@@ -165,10 +166,15 @@ class ContentBlock {
     this.updateToolboxOptions();
   }
 
-  updateToolbox(){
+  updateToolbox(isInView=true){
     if(!this.toolbox) return;
-    this.domRect=this.dom.getBoundingClientRect();
-    this.toolbox.setPos(this.domRect.right,this.domRect.top)
+    if (isInView) {
+      this.domRect=this.dom.getBoundingClientRect();
+      this.toolbox.setPos(this.domRect.right,this.domRect.top)
+      this.toolbox.show()
+    }else {
+      this.toolbox.hide()
+    }
   }
 
   hover(){
@@ -214,7 +220,7 @@ class ContentBlock {
           ele.innerHTML='<span class="icon link"></span>'
         }else{
           // ele.appendChild(document.createTextNode( content ));
-          ele.innerHTML = marked.parse(content);
+          ele.innerHTML = marked.parse(DOMPurify.sanitize(content, { USE_PROFILES: { html: true } }));
         }
         this.setPlaneGeomToDomWidth()
         break;

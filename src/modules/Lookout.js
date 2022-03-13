@@ -184,14 +184,19 @@ class Lookout {
     this.updateToolbox()
   }
 
-  updateToolbox(){
+  updateToolbox(isInView=true){
     if(!this.toolbox) return;
-    const pos = this.outerBound.clone().project(this.camera)
+    if (isInView) {
+      const pos = this.outerBound.clone().project(this.camera)
 
-    pos.x = (pos.x * this.widthHalf) + this.widthHalf;
-    pos.y = - (pos.y * this.heightHalf) + this.heightHalf;
-    pos.z = 0;
-    this.toolbox.setPos(pos.x,pos.y)
+      pos.x = (pos.x * this.widthHalf) + this.widthHalf;
+      pos.y = - (pos.y * this.heightHalf) + this.heightHalf;
+      pos.z = 0;
+      this.toolbox.setPos(pos.x,pos.y)
+      this.toolbox.show()
+    }else {
+      this.toolbox.hide()
+    }
   }
 
   toggleFixed(){

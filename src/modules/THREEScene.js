@@ -34,6 +34,7 @@ class THREEScene {
     this.store=store;
     this.blockGeometries=[];
 
+
     this.thread = new Thread(this.scene,store,makeid(5));
     domparent.appendChild(this.thread.domPlus)
 
@@ -320,7 +321,7 @@ class THREEScene {
 
     if (intersects.length > 0) {
       if (intersects[0].object.name=="thread") {
-        if (!this.thread.isInserting){
+        if (!this.thread.isInserting && this.store.loggedIn){
           this.thread.startInsert(intersects[0].point);
         }else {
           this.thread.abortInsert();
@@ -435,18 +436,8 @@ class THREEScene {
 
     const intersect = this.castRay(this.mouse,this.thread.isInserting ? this.blockGeometries : [...this.blockGeometries,this.thread.spline.mesh])[0]
     this.hoveredItem.set(intersect ? intersect.object : undefined );
-    if (this.hoveredItem.item) {
-      if (this.hoveredItem.item.h_type=='thread') {
-        if (!this.thread.empty && !this.thread.isInserting && !this.cameraController.enteredLookout) {
-          // const pos = this.raycaster.intersectObject(this.thread.spline.mesh)[0].point.clone().project(this.cameraController.camera)
-          //
-          // pos.x = (pos.x * (this.width/2)) + this.width/2;
-          // pos.y = - (pos.y * (this.height/2)) + this.height/2;
-          // pos.z = 0;
-
-          this.thread.hover(event.clientX,event.clientY)
-        }
-      }
+    if (this.store.loggedIn && this.hoveredItem.item && this.hoveredItem.item.h_type=='thread' && !this.thread.empty && !this.thread.isInserting && !this.cameraController.enteredLookout) {
+      this.thread.hover(event.clientX,event.clientY)
     }
   }
 
@@ -462,7 +453,9 @@ class THREEScene {
     if (!this.forceSimulation.isHot) {
       this.blocks.forEach((item, i) => {
         item.lookAt(this.cameraController.position());
-        item.updateToolbox();
+        if (item.toolbox) {
+          item.updateToolbox(this.cameraController.isInView(item.position()));
+        }
       });
     }
 

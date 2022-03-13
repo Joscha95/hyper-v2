@@ -538,7 +538,7 @@ button.delete_button {
 	border: 1px solid var(--main-lightgray-color);
 }
 .connection_property_circle {
- 	border: 1px solid var(--main-connection-color); 
+ 	border: 1px solid var(--main-connection-color);
 	display: inline-block;
 	width: .6em;
 	height: .6em;
@@ -598,7 +598,7 @@ button.delete_button {
 	margin: 3rem;
 }
 .floating-blocks[data-contentclass="Text"]{
-	max-width:200px;
+	max-width:20em;
 }
 
 .floating-blocks.connection{
@@ -688,4 +688,10 @@ button.delete_button {
 }
 .hover{
 	opacity:.5;
+}
+
+@media (max-width:700px) {
+	#controls_header {
+    top: 0.72rem;
+	}
 }

@@ -11,6 +11,8 @@
 		</div>
 	</div>
 
+	<helpPopup/>
+
 	<div id="settings" class="popup" v-if="showSettings">
 		<div class="popup_body">
 
@@ -25,7 +27,7 @@
 
 			<section id="settings_panel" v-else>
 				<span class="bold">Settings</span>
-				<span id="restore" @click="store.sceneSettings=JSON.parse(JSON.stringify(store.sceneSettingsDefault))"> restore default</span>
+				<span id="restore" class="mediumgray" @click="store.sceneSettings=JSON.parse(JSON.stringify(store.sceneSettingsDefault))"> restore default</span>
 				<div id="scene_settings">
 					<div class="setting colors">
 						<span>Polar Helper</span>
@@ -50,9 +52,10 @@
 
 <script>
 import toggle from '@/components/stage/subcomponents/toggle.vue'
+import helpPopup from '@/components/stage/subcomponents/helpPopup.vue'
 
 export default {
-	components: { toggle },
+	components: { toggle,helpPopup },
 	props: [
 		'email',
 		'password',

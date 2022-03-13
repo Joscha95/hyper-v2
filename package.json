@@ -10,6 +10,7 @@
     "@kyvg/vue3-notification": "^2.3.4",
     "axios": "^0.25.0",
     "d3-force-3d": "^3.0.3",
+    "dompurify": "^2.3.6",
     "marked": "^4.0.12",
     "three": "^0.138.2",
     "vue": "^3.0.0",

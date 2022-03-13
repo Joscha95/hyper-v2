@@ -28,20 +28,22 @@ class FirstPersonController {
   	window.addEventListener( 'keydown', (e)=> this.handleKeyDown(e));
   	window.addEventListener( 'keyup', (e)=> this.handleKeyUp(e));
 
-    // touch
-     this.domElement.onpointerdown = (e) => {this.pointerdown_handler(e)};
-     this.domElement.onpointermove = (e) => {this.pointermove_handler(e)};
+
 
      this.evCache = [];
      this.prevDiff = -1;
-     this.prevX = -1;
+     this.prevXY = {x:-1,y:-1};
 
-     // Use same handler for pointer{up,cancel,out,leave} events since
-     // the semantics for these events - in this app - are the same.
-     this.domElement.onpointerup = (e) => {this.pointerup_handler(e)};
-     this.domElement.onpointercancel = (e) => {this.pointerup_handler(e)};
-     this.domElement.onpointerout = (e) => {this.pointerup_handler(e)};
-     this.domElement.onpointerleave = (e) => {this.pointerup_handler(e)};
+     if (options.isTouch) {
+      this.domElement.onpointerdown = (e) => {this.pointerdown_handler(e)};
+      this.domElement.onpointermove = (e) => {this.pointermove_handler(e)};
+      this.domElement.onpointerup = (e) => {this.pointerup_handler(e)};
+      this.domElement.onpointercancel = (e) => {this.pointerup_handler(e)};
+      this.domElement.onpointerout = (e) => {this.pointerup_handler(e)};
+      this.domElement.onpointerleave = (e) => {this.pointerup_handler(e)};
+     }
+     console.log('is touch: ',options.isTouch);
+
 
     this.onmove=()=>{};
     this.onstart=()=>{};
@@ -67,6 +69,8 @@ class FirstPersonController {
     this.orbit = false;
     this.cameraPos = new Vector3();
     this.camZtarg=0;
+
+    this.cameraDir = new Vector3()
   }
 
   updateSize(aspect){
@@ -150,6 +154,7 @@ class FirstPersonController {
       const clone = this.transformparent.clone();
       clone.lookAt(targetPos);
       this.quatTarg = clone.quaternion.clone();
+      targetObj.dragObject.geometry.computeBoundingSphere()
       posOffset = -Math.max(this.calcOptimumDistToObj(targetObj.dragObject.geometry.boundingSphere.radius),80);
     }
 
@@ -177,8 +182,8 @@ class FirstPersonController {
 
   initOrbit(boundingSphere){
 
-    let cameraDir = new Vector3();
-    this.transformparent.getWorldDirection(cameraDir);
+    let cameraDirOrbit = new Vector3();
+    this.transformparent.getWorldDirection(cameraDirOrbit);
 
     this.moveTarget.copy(boundingSphere.center);
     this.camZtarg= - this.calcOptimumDistToObj(boundingSphere.radius);
@@ -320,7 +325,11 @@ class FirstPersonController {
      // Cache the distance for the next move event
      this.prevDiff = curDiff;
    } else if (this.evCache.length == 1) {
-     this.rotateCam(event)
+     if (this.prevXY.x > 0) {
+       this.rotateCam({movementX:this.prevXY.x - e.clientX, movementY:this.prevXY.y - e.clientY})
+     }
+     this.prevXY.x=e.clientX;
+     this.prevXY.y=e.clientY;
    }
 
   }
@@ -336,6 +345,8 @@ class FirstPersonController {
     if (this.evCache.length < 2) {
       this.prevDiff = -1;
     }
+
+    this.prevXY = {x:-1,y:-1};
   }
 
   position(){
@@ -351,6 +362,11 @@ class FirstPersonController {
 
   rotation(){
     return this.transformparent.rotation
+  }
+
+  isInView(position){
+    this.camera.getWorldDirection(this.cameraDir)
+    return ( position.clone().sub( this.position() ).angleTo( this.cameraDir ) ) < ( Math.PI / 2 )
   }
 
 	rotateCam(event) {

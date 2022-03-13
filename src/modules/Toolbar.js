@@ -4,6 +4,7 @@ class Toolbar {
     this.dom.classList.add('toolbox');
     this.parent=document.querySelector('#toolbox_wrapper');
     this.fields = new Map();
+    this.visible = true;
 
     let btn;
     options.forEach((item, i) => {
@@ -53,6 +54,20 @@ class Toolbar {
 
   dispose(){
     this.dom.remove();
+  }
+
+  hide(){
+    if (this.visible) {
+      this.dom.style.display='none'
+      this.visible=false;
+    }
+  }
+
+  show(){
+    if (!this.visible) {
+      this.dom.style.display='block'
+      this.visible=true;
+    }
   }
 }
 

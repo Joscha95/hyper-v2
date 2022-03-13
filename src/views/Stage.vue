@@ -13,7 +13,7 @@
 		@recover="recover"
 		@toggleEditor="toggleEditor"
 	/>
-	<Editor v-show="showEditor" @save="preSave"/>
+	<Editor v-show="showEditor" @save="preSave" ref="editorComponent"/>
 	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
 	<Graph :showEditor="showEditor" :loggedIn="loggedIn" ref="sceneComponent"/>
 </template>
@@ -167,6 +167,9 @@ export default {
 		},
 		toggleEditor () {
 			this.showEditor = !this.showEditor
+			if (this.showEditor) {
+				this.$refs.editorComponent.scrollToSelected()
+			}
 		}
 	}
 }
