@@ -16,6 +16,7 @@
 	<Editor v-show="showEditor" @save="preSave" ref="editorComponent"/>
 	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
 	<Graph :showEditor="showEditor" :loggedIn="loggedIn" ref="sceneComponent"/>
+		<h1 @click="sequence">EXPORT</h1>
 </template>
 
 <script>
@@ -170,6 +171,12 @@ export default {
 			if (this.showEditor) {
 				this.$refs.editorComponent.scrollToSelected()
 			}
+		},
+		sequence(){
+			const _store=this.store;
+			this.$router.push({ name: 'Sequence', params: {
+				store: JSON.stringify(_store)
+			}})
 		}
 	}
 }
