@@ -23,6 +23,15 @@ html, body {
 
 /* SOURCE */
 
+
+#source_header, #editor, #to_arena_channel_btn {
+	background-color: rgba(255,255,255,0.7);
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+}
+
+
+
 #source, #source:active {
 	position:fixed;
 	z-index: var(--main-layer-two);
@@ -35,7 +44,7 @@ html, body {
 	flex-direction: column;
 	box-shadow: 0 0 0 .1em rgba(0,0,0,.05);
 	opacity: .75;
-	transition: opacity 2s;
+	transition: opacity 10s;
 }
 #source:hover {
 	opacity: 1;
@@ -44,7 +53,6 @@ html, body {
 #source_header {
 	padding: .25rem;
 	position: relative;
-	background: white;
 	box-sizing: border-box;
 	border: 1px solid var(--main-lightgray-color);
 	border-bottom: none;
@@ -56,6 +64,7 @@ html, body {
 	z-index: 0;
 	border: none;
 	opacity: .75;
+	background: transparent;
 }
 #refresh_button:hover {
 	opacity: 1;
@@ -79,7 +88,6 @@ html, body {
 	background: white;
 }
 #to_arena_channel_btn {
-	background: white;
 	font-size: .7em;
 	padding: .9em .7em;
 	border: 1px solid var(--main-lightgray-color);
@@ -98,10 +106,6 @@ html, body {
 
 
 
-
-
-
-
 /* EDITOR */
 
 #editor {
@@ -110,7 +114,6 @@ html, body {
 	top: 0;
 	bottom: 0;
 	z-index: var(--main-layer-three);
-	background: white;
 	width: var(--draggable-list-item-width);
 	padding: 1rem;
 	padding-top: 4rem;
