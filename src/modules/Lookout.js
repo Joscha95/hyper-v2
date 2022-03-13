@@ -10,7 +10,6 @@ class Lookout {
     this.h_id = this.contentItem.h_id;
     this.h_type=this.contentItem.h_type;
     this.name=this.contentItem.name;
-    this.contentItem.sceneElement=this;
     this.isActive = false;
   	this.group = new Group();
     this.objectControls=objectControls;

@@ -50,7 +50,6 @@ class ContentBlock {
     cssObj.scale.set(this.cssRes, this.cssRes, this.cssRes);
     this.plane.add(cssObj);
     cssObj.position.set(0, 0, 0);
-    //this.contentItem.sceneElement=this;
 
     this.canStartThread=true;
 
