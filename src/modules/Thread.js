@@ -199,14 +199,14 @@ class Thread {
 
       const from=this.thread[i-1];
       if(from) {
-        item.contentItem.from=from
+        item.contentItem.from=from.h_id
       }else {
         item.isThreatStart=true
       }
 
       const to=this.thread[i+1];
       if(to) {
-        item.contentItem.to=to
+        item.contentItem.to=to.h_id
       }else {
         item.isThreatEnd=true
       }

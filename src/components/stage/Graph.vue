@@ -11,7 +11,7 @@
 
 
     <div id="node_info" :class="{show:showNodeInfo}" v-if="lastValidChainElement">
-      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from.h_id" id="weave_from_btn" class="icon threadprev"></a> <!-- {{ lastValidChainElement.from.name }} -->
+      <a v-if="lastValidChainElement.from" :href="'#'+lastValidChainElement.from" id="weave_from_btn" class="icon threadprev"></a>
       <div id="node_info_text">
         <div class="bold" v-if="lastValidChainElement.name!=''">{{ lastValidChainElement.name }}</div>
         <div class="description this" v-if="lastValidChainElement.description && lastValidChainElement.description!=''" v-html="lastValidChainElement.description"></div>
@@ -22,7 +22,7 @@
     	  	<a :href="'#'+lastValidChainElement.targetID" class="connection_property_circle" title="Connection target"></a>
     		</div>
       </div>
-      <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to.h_id" id="weave_to_btn" class="icon threadnext"></a> <!-- {{ lastValidChainElement.to.name }} -->
+      <a v-if="lastValidChainElement.to" :href="'#'+lastValidChainElement.to" id="weave_to_btn" class="icon threadnext"></a>
     </div>
 
 
