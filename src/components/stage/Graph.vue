@@ -262,8 +262,8 @@ export default {
   margin: 0 2rem;
 }
 .description{
-  margin-top:.7em;
-  font-size:.7em;
+  margin-top: .7em;
+  font-size: .8em;
 }
 #weave_from_btn, #weave_to_btn {
   color: var(--main-thread-color);
