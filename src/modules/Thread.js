@@ -13,7 +13,7 @@ class Thread {
     const geometry = new BufferGeometry();
 		geometry.setAttribute( 'position', new BufferAttribute( new Float32Array( this.ARC_SEGMENTS * 3 ), 3 ) );
 
-		const curve = new CatmullRomCurve3( this.store.thread.map((n)=>n.position()) );
+		const curve = new CatmullRomCurve3();
 		curve.curveType = 'catmullrom';
 
     this.material=new LineDashedMaterial( {
@@ -43,13 +43,15 @@ class Thread {
 
     this.val=0;
     this.valTarg=1;
+
+    this.thread=[];
   }
 
   setup(nodes){
 
     this.store.threadIds.forEach((item, i) => {
       const node = nodes.find((n) => n.h_id==item);
-      if(node) this.store.thread.push(node);
+      if(node) this.thread.push(node);
     });
 
     if(this.store.threadIds.length>=2) this.scene.add(this.spline.mesh)
@@ -57,26 +59,26 @@ class Thread {
   }
 
   dispose(){
-    this.store.thread.forEach((item, i) => {
+    this.thread.forEach((item, i) => {
       item.contentItem.from=undefined
       item.contentItem.to=undefined
       item.isThreatStart=false
       item.isThreatEnd=false
       item.isInThreat=false
     });
-    this.store.thread=[];
+    this.thread=[];
     this.empty=true
     this.scene.remove(this.spline.mesh)
     this.spline.mesh.geometry.setAttribute( 'position', new BufferAttribute( new Float32Array( this.ARC_SEGMENTS * 3 ), 3 ) );
   }
 
   prepend(node){
-    this.store.thread.unshift(node)
+    this.thread.unshift(node)
     this.nodesChanged()
   }
 
   append(node){
-    this.store.thread.push(node)
+    this.thread.push(node)
     this.nodesChanged()
   }
 
@@ -104,7 +106,7 @@ class Thread {
 
   startInsert(point){
     this.unHover();
-    const divisions = this.store.thread.length*10
+    const divisions = this.thread.length*10
     const points = this.spline.getPoints(divisions);
     let dist = 100000;
     let ind = null;
@@ -116,7 +118,7 @@ class Thread {
       }
     });
 
-    ind = Math.floor(ind/(divisions/(this.store.thread.length-1)))
+    ind = Math.floor(ind/(divisions/(this.thread.length-1)))
     this.spline.points.splice(ind+1,0,point)
     this.insertindex=ind+1;
     this.isInserting=true;
@@ -136,30 +138,30 @@ class Thread {
   }
 
   insert(obj){
-    this.store.thread.splice(this.insertindex,0,obj);
+    this.thread.splice(this.insertindex,0,obj);
     this.spline.tension = .5;
     this.spline.mesh.material = this.material;
     this.nodesChanged()
   }
 
   init(start,end){
-    this.store.thread=[start,end]
+    this.thread=[start,end]
     this.empty=false
     this.nodesChanged()
     this.scene.add(this.spline.mesh)
   }
 
   remove(node){
-    const ind = this.store.thread.map((n)=>n.h_id).indexOf(node.h_id);
+    const ind = this.thread.map((n)=>n.h_id).indexOf(node.h_id);
     node.contentItem.from=undefined
     node.contentItem.to=undefined
     node.isThreatStart=false
     node.isThreatEnd=false
     node.isInThreat=false
 
-    this.store.thread.splice(ind,1);
+    this.thread.splice(ind,1);
 
-    if (this.store.thread.length<2) {
+    if (this.thread.length<2) {
       this.dispose()
     }
 
@@ -191,18 +193,18 @@ class Thread {
   nodesChanged(){
     this.isInserting=false;
 
-    this.store.thread.forEach((item, i) => {
+    this.thread.forEach((item, i) => {
       item.isThreatStart=false
       item.isThreatEnd=false
 
-      const from=this.store.thread[i-1];
+      const from=this.thread[i-1];
       if(from) {
         item.contentItem.from=from
       }else {
         item.isThreatStart=true
       }
 
-      const to=this.store.thread[i+1];
+      const to=this.thread[i+1];
       if(to) {
         item.contentItem.to=to
       }else {
@@ -214,11 +216,12 @@ class Thread {
 
     })
 
-    this.spline.points=this.store.thread.map((n)=>n.position());
+    this.spline.points=this.thread.map((n)=>n.position());
 
     this.updateSpline();
     this.spline.mesh.computeLineDistances();
-    this.empty=this.store.thread.length==0;
+    this.empty=this.thread.length==0;
+    this.store.threadIds=this.thread.map((n)=> n.h_id)
   }
 
 
