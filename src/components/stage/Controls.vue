@@ -66,7 +66,7 @@ export default {
 		return{
 			store: this.$root.store,
 			showSettings: false,
-			showHelp: false,
+			showHelp: true,
 			validEmail: false,
 			passwordMinLength: 8
 		}
