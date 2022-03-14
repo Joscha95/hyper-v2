@@ -27,7 +27,7 @@
         </div>
       </template>
     </draggable>
-    <div id="to_arena_channel_btn"><a :href="'https://www.are.na/channel/'+channelId" target="_blank">View this channel in Are.na</a></div>
+    <div id="to_arena_channel_btn" class="under_list_btn"><a :href="'https://www.are.na/channel/'+channelId" target="_blank">View this channel in Are.na</a></div>
   </div>
 </template>
 

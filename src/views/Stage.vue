@@ -14,9 +14,8 @@
 		@toggleEditor="toggleEditor"
 	/>
 	<Editor v-show="showEditor" @save="preSave" ref="editorComponent"/>
-	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents"/>
+	<Source v-if="loggedIn && showSource" @update="update" :blocks="channel.contents" :channelId="channelId"/>
 	<Graph :showEditor="showEditor" :loggedIn="loggedIn" ref="sceneComponent"/>
-		<h1 @click="sequence">EXPORT</h1>
 </template>
 
 <script>
@@ -91,7 +90,6 @@ export default {
 						this.$root.store.sceneSettings = this.initScene && this.initScene.scene_data.sceneSettings ? this.initScene.scene_data.sceneSettings : {showCircles:true,backgroundColor:{bottom:'#f0f0f0',top:'#c8c8c8'}}
 						forceSimulation.init(lists.forceList);
 						this.$refs.sceneComponent.init();
-
 					}else {
 						this.$refs.sceneComponent.updateContents(this.channel.contents)
 					}
@@ -171,12 +169,6 @@ export default {
 			if (this.showEditor) {
 				this.$refs.editorComponent.scrollToSelected()
 			}
-		},
-		sequence(){
-			const _store=this.store;
-			this.$router.push({ name: 'Sequence', params: {
-				store: JSON.stringify(_store)
-			}})
 		}
 	}
 }

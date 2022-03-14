@@ -74,7 +74,7 @@ export default {
 
     this.THREEScene = new THREEScene(this.$refs.scene,forceSimulation,cameraSettings,this.store,sceneElements);
     this.THREEScene.onLinkAdded = (l) => {this.linkAdded(l)};
-
+    forceSimulation.reheat()
   },
   components:{
     CanvasDragtarget,toggle

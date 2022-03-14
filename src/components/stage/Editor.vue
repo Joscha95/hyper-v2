@@ -26,6 +26,7 @@
 				</div>
 			</template>
 		</draggable>
+		<div class="under_list_btn" @click="sequence">Sequentialize</div>
 	</div>
 </template>
 
@@ -80,7 +81,19 @@ export default {
 		onEnd(evt){
 			if(this.lastSelected) this.lastSelected.classList.remove('selected-by-drag')
 			this.lastSelected=null;
+		},
+		sequence(){
+			const _store=this.store;
+			this.$router.push({ name: 'Sequence', params: {
+				store: JSON.stringify(_store)
+			}})
 		}
 	}
 };
 </script>
+
+<style scoped>
+	.under_list_btn{
+		color:black
+	}
+</style>

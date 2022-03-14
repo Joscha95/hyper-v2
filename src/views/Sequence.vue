@@ -2,7 +2,7 @@
 	<router-link to="/" class="header_nav_link">Back</router-link>
 	<section class="page">
 		<div class="toggle_wrapper">
-			<toggle  off="Show Scene-list" on="&nbsp;Show thread&ensp;" tooltipOff="" tooltipOn="" :bool="showThread" v-model="showThread" :icon="false"/>
+			<toggle  off="&nbsp;Show Scene-list&ensp;" on="&nbsp;Show thread&ensp;" tooltipOff="" tooltipOn="" :bool="showThread" v-model="showThread" :icon="false"/>
 		</div>
 
 		<h1>Sequence</h1>
@@ -20,8 +20,8 @@
 				<p v-if="block.content" v-html="markdown(block.content)" ></p>
 				<div v-else class="icon connection"></div>
 			</div>
-
 		</div>
+		<h3 v-if="!hasContent">No Data. Please go back to your hyperchannel and click the Sequence button.</h3>
 	</section>
 </template>
 
@@ -35,7 +35,8 @@ export default {
 		return {
 			sceneList: [],
 			thread: [],
-			showThread:true
+			showThread:true,
+			hasContent:true
 		}
 	},
 	methods:{
@@ -46,14 +47,16 @@ export default {
 	props:['store'],
 	components:{toggle},
 	mounted() {
+		if(!this.store) {
+			this.hasContent=false;
+			return;
+		}
 		const _store = JSON.parse(this.store)
-
 		this.sceneList = _store.sceneList
 		_store.threadIds.forEach((item) => {
 			const el = this.sceneList.find( e => e.h_id == item )
 			if(el) this.thread.push(el)
 		})
-		console.log(this.thread)
 	},
 	computed:{
 		activeList(){
@@ -69,6 +72,10 @@ export default {
 	}
 	.toggle_wrapper{
 		text-align:center;
+	}
+
+	h3{
+		line-height:1.5;
 	}
 
 </style>

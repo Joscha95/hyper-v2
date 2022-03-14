@@ -87,7 +87,7 @@ html, body {
 	width: calc(100% - .5rem);
 	background: white;
 }
-#to_arena_channel_btn {
+.under_list_btn {
 	font-size: .7em;
 	padding: .9em .7em;
 	border: 1px solid var(--main-lightgray-color);
@@ -467,7 +467,7 @@ input.searchbar {
   margin: 1px;
   color:inherit;
   text-align:center;
-  font-size: .7em;
+  font-size: 1em;
 }
 .draggable_list_item textarea{
   display:block;
