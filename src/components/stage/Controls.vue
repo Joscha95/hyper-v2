@@ -1,7 +1,7 @@
 <template>
 
 	<div id="controls_header">
-		<div id="help_button">?</div>
+		<div id="help_button" @click="showHelp=!showHelp">?</div>
 		<div v-if="loggedIn" id="settings_button" title="Settings" @click="showSettings=!showSettings">Settings</div>
 		<div v-if="loggedIn" id="main_button" @click="$emit('toggleEditor')">
 			<span id="main_button_text">Edit</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
@@ -11,7 +11,7 @@
 		</div>
 	</div>
 
-	<helpPopup/>
+	<help-popup v-if="showHelp"/>
 
 	<div id="settings" class="popup" v-if="showSettings">
 		<div class="popup_body">
@@ -52,7 +52,7 @@
 
 <script>
 import toggle from '@/components/stage/subcomponents/toggle.vue'
-import helpPopup from '@/components/stage/subcomponents/helpPopup.vue'
+import helpPopup from '@/components/stage/subcomponents/help-popup.vue'
 
 export default {
 	components: { toggle,helpPopup },
@@ -66,6 +66,7 @@ export default {
 		return{
 			store: this.$root.store,
 			showSettings: false,
+			showHelp: false,
 			validEmail: false,
 			passwordMinLength: 8
 		}

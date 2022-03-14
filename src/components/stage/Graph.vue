@@ -50,9 +50,7 @@ import DOMPurify from 'dompurify';
 
 marked.setOptions({
   gfm: true,
-  breaks: true,
-  // sanitize: true,
-  // sanitizer: (txt) => {return DOMPurify.sanitize(txt, { USE_PROFILES: { html: true } })},
+  breaks: true
 });
 
 export default {
