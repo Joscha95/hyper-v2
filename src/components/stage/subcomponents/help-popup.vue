@@ -4,10 +4,8 @@
 
 			<h3>Help</h3>
 
-				<!--<span class="icon arrows"></span>-->
 				<div class="helpsection cheatsheet">
 					<div class="iconset table">
-						<!-- <u>Toolbar</u> <br> -->
 						<span class="icon eye"></span> <span>focus element </span>
 						<span class="icon move"></span> <span> move element</span>
 						<span class="icon connect"></span> <span> begin connection</span>
@@ -18,8 +16,13 @@
 						<span class="icon threaddelete"></span> <span>remove node from thread </span>
 					</div>
 
+					<div class="keyboard table">
+						<span><span class="key">←</span>&nbsp;/&nbsp;<span class="key">→</span> </span> <span>go back/forward</span>
+						<span><span class="key">o</span>  </span> <span>toggle camera mode</span>
+						<span><span class="key">cmd</span> + <span class="key">s</span></span> <span>save</span>
+					</div>
+
 					<div class="buttons table">
-						<!-- <u>Edit</u><br> -->
 						<div class="connection_properties_wrapper">
 							<div class="connection_properties help">
 						  	<a class="connection_property_circle" ></a>
@@ -27,7 +30,7 @@
 						  	<a class="connection_property_circle" ></a>
 							</div>
 						</div>
-						<span>focus connected/change length</span>
+						<span>focus connected/<wbr>change length</span>
 
 						<toggle class="camtogglehelp" id="camera_toggle" off="firstperson" on="orbit" tooltipOff="First person camera" tooltipOn="Orbit camera" :bool="false" :icon="true"/>
 						<span>toggle camera mode</span>
@@ -35,11 +38,7 @@
 						<span class="icon threadinsert"></span> <span> insert node in thread</span>
 					</div>
 
-					<div class="keyboard table">
-						<span><span class="key">←</span> / <span class="key">→</span> </span> <span>go back/forward</span>
-						<span><span class="key">o</span>  </span> <span>toggle camera mode</span>
-						<span><span class="key">cmd</span> + <span class="key">s</span></span> <span>save</span>
-					</div>
+
 				</div>
 				<h3 class="showmorebtn" @click="showMore=!showMore">More details <span>{{ showMore ? '-' : '+' }}</span> </h3>
 				<section class="helpsections" v-if="showMore">
@@ -246,6 +245,17 @@ export default {
 	.showmorebtn{
 		margin-top:2em;
 		cursor:pointer
+	}
+
+	@media (max-width:1100px){
+		.cheatsheet > div:not(:first-of-type){
+			margin-top:2em;
+		}
+	}
+	@media (max-width:1900px){
+		.cheatsheet > div:last-of-type{
+			margin-top:2em;
+		}
 	}
 
 
