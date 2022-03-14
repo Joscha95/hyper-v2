@@ -1,8 +1,12 @@
 <template>
 	<router-link to="/" class="header_nav_link">Back</router-link>
 	<section class="page">
+		<div class="toggle_wrapper">
+			<toggle  off="Show Scene-list" on="&nbsp;Show thread&ensp;" tooltipOff="" tooltipOn="" :bool="showThread" v-model="showThread" :icon="false"/>
+		</div>
+
 		<h1>Sequence</h1>
-		<div class="block" v-for="block in thread">
+		<div class="block" v-for="block in activeList">
 			<div v-if="block.h_type=='content'">
 				<img v-if="block.imageUrl!=''" :src="block.imageUrl" alt="">
 				<span v-if="block.description!=''" v-html="block.description"></span>
@@ -24,12 +28,14 @@
 <script>
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import toggle from '@/components/stage/subcomponents/toggle.vue'
 
 export default {
 	data(){
 		return {
 			sceneList: [],
-			thread: []
+			thread: [],
+			showThread:true
 		}
 	},
 	methods:{
@@ -38,6 +44,7 @@ export default {
 		}
 	},
 	props:['store'],
+	components:{toggle},
 	mounted() {
 		const _store = JSON.parse(this.store)
 
@@ -47,6 +54,11 @@ export default {
 			if(el) this.thread.push(el)
 		})
 		console.log(this.thread)
+	},
+	computed:{
+		activeList(){
+			return this.showThread ? this.thread : this.sceneList;
+		}
 	}
 }
 </script>
@@ -54,6 +66,9 @@ export default {
 <style scoped>
 	.block{
 		margin: 1em 0;
+	}
+	.toggle_wrapper{
+		text-align:center;
 	}
 
 </style>
