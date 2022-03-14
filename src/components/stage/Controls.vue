@@ -1,8 +1,8 @@
 <template>
 
 	<div id="controls_header">
-		<div id="help_button" @click="showHelp=!showHelp">?</div>
-		<div v-if="loggedIn" id="settings_button" title="Settings" @click="showSettings=!showSettings">Settings</div>
+		<div id="help_button" @click="showHelp=!showHelp;showSettings=false ">?</div>
+		<div v-if="loggedIn" id="settings_button" title="Settings" @click="showSettings=!showSettings;showHelp=false">Settings</div>
 		<div v-if="loggedIn" id="main_button" @click="$emit('toggleEditor')">
 			<span id="main_button_text">Edit</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
 		</div>
@@ -45,7 +45,7 @@
 			</section>
 		</div>
 	</div>
-	<div class="viewport_block" @click="showSettings=false" v-if="showSettings"></div>
+	<div class="viewport_block" @click="showSettings=showHelp=false" v-if="showSettings || showHelp"></div>
 
 </template>
 

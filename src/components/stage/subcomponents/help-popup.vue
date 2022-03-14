@@ -36,9 +36,9 @@
 					</div>
 
 					<div class="keyboard table">
-						<span><span class="key">←</span> <span class="key">→</span> </span> <span>go back/forward</span>
+						<span><span class="key">←</span> / <span class="key">→</span> </span> <span>go back/forward</span>
 						<span><span class="key">o</span>  </span> <span>toggle camera mode</span>
-						<span><span class="key">cmd</span>+<span class="key">s</span></span> <span>save</span>
+						<span><span class="key">cmd</span> + <span class="key">s</span></span> <span>save</span>
 					</div>
 				</div>
 				<h3 class="showmorebtn" @click="showMore=!showMore">More details <span>{{ showMore ? '-' : '+' }}</span> </h3>
@@ -226,7 +226,7 @@ export default {
 		background-color:var(--main-faintgray-color);
 		border:1px solid var(--main-lightgray-color);
 		border-radius:3px;
-		padding:.2em;
+		padding:0.1em .3em;
 		box-sizing:border-box;
 	}
 
