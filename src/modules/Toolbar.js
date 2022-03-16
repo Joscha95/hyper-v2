@@ -37,6 +37,7 @@ class Toolbar {
     this.dom.style.top=y+'px';
     this.dom.style.left=x+'px';
   }
+  
 
   updateField(name,condition=true,className=''){
     const field = this.fields.get(name)

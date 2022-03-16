@@ -185,9 +185,9 @@ export default {
         if(item.h_type=='connection') return;
         a_block = allBlocks.find((b) => b.id == item.contentItem.a_id);
         if(!a_block) return;
-        item.name= a_block.title
-        item.content = a_block.content_html
-        item.imageUrl = a_block.image ? a_block.image.thumb.url : '',
+        item.contentItem.name = a_block.title
+        item.contentItem.content = a_block.content_html
+        item.contentItem.imageUrl = a_block.image ? a_block.image.thumb.url : '',
         item.updateDisplayElement();
       })
     },

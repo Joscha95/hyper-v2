@@ -105,7 +105,6 @@ class THREEScene {
 
     domparent.appendChild(this.renderer.domElement);
     this.render();
-
     if(store.selectedObject) this.focusItem(store.selectedObject.h_id,store.selectedObject.h_type)
   }
 
