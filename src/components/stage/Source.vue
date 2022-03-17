@@ -10,6 +10,8 @@
       :group="{ name: 'arena-blocks', pull: 'clone', put: false }"
       :sort="false"
       :clone="cloneBlock"
+      :delayOnTouchOnly="true"
+      :delay="100"
       @start="toggleCanvasDragTarget"
       @end="toggleCanvasDragTarget"
       @move="onMove"

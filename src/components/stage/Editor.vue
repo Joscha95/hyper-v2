@@ -11,6 +11,8 @@
 		class="drag_list editor_list"
 		:list="store.sceneList"
 		:group="{ name: 'object',pull:onPull,put:true}"
+		:delayOnTouchOnly="true"
+		:delay="100"
 		@move="onMove"
 		@end="onEnd"
 		ref="editorList"

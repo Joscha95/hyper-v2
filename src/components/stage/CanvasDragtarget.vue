@@ -35,10 +35,11 @@ export default {
   methods:{
     added(e){
       if(this.lastAdded) this.$emit('blockAdded',{
-        element:this.lastAdded,
-        clientX:e.originalEvent.clientX,
-        clientY:e.originalEvent.clientY
+        element: this.lastAdded,
+        clientX: e.originalEvent.changedTouches && e.originalEvent.changedTouches[0] ? e.originalEvent.changedTouches[0].clientX : e.originalEvent.clientX,
+        clientY: e.originalEvent.changedTouches && e.originalEvent.changedTouches[0] ? e.originalEvent.changedTouches[0].clientY : e.originalEvent.clientY,
       })
+
       this.lastAdded=null;
     },
     changed(e){
