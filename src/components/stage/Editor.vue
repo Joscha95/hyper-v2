@@ -28,7 +28,7 @@
 				</div>
 			</template>
 		</draggable>
-		<div class="under_list_btn" @click="sequence">Sequentialize</div>
+		<a class="under_list_btn" @click="sequence" href="">Sequentialize</a>
 	</div>
 </template>
 
@@ -93,9 +93,3 @@ export default {
 	}
 };
 </script>
-
-<style scoped>
-	.under_list_btn{
-		color:black
-	}
-</style>

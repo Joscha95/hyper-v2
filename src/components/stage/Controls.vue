@@ -13,7 +13,7 @@
 
 	<help-popup v-if="showHelp"/>
 
-	<div id="settings" class="popup" v-if="showSettings">
+	<div id="settings" class="popup login_popup" v-if="showSettings">
 		<div class="popup_body">
 
 			<section id="login" v-if="!loggedIn">
@@ -26,8 +26,7 @@
 			</section>
 
 			<section id="settings_panel" v-else>
-				<span class="bold">Settings</span>
-				<span id="restore" class="mediumgray" @click="store.sceneSettings=JSON.parse(JSON.stringify(store.sceneSettingsDefault))"> restore default</span>
+				<h4>Settings</h4>
 				<div id="scene_settings">
 					<div class="setting colors">
 						<span>Polar Helper</span>
@@ -39,8 +38,10 @@
 						<input type="text" class="color" v-model="store.sceneSettings.backgroundColor.top" :style="`background-color:${store.sceneSettings.backgroundColor.top}`" @focus="store.focused=true" @blur="this.store.focused=false">
 					</div>
 				</div>
+				<div id="restore" class="mediumgray" @click="store.sceneSettings=JSON.parse(JSON.stringify(store.sceneSettingsDefault))"> restore default</div>
 				<div id="logout">
-					Logged in as <span class="bold black">{{ email }}</span>.&emsp;<span id="logout_button" @click="$emit('logout')">Log out?</span>
+					<span class="bold black">{{ email }}</span><br>
+					<span id="logout_button" @click="$emit('logout')">Log out?</span>
 				</div>
 			</section>
 		</div>
@@ -103,18 +104,29 @@ export default {
 	text-align: center;
 	font-size: 1rem;
 }
+.login_popup {
+	border-radius: 1em;
+	padding: 3em 1.6em 3.2em 1.6em;
+}
+#login input {
+	width: 14em;
+}
+#login button {
+	padding: 0 1.7em;
+}
 #password_wrapper {
 	display: inline-block;
 	position: relative;
 }
 #recover_button {
 	position: absolute;
-	right: 1.4em;
-	font-size: .7em;
+	right: 1em;
+	font-size: .65em;
 	cursor: pointer;
 	color: var(--main-mediumgray-color);
 	line-height: 0;
-	top: 49%;
+	top: 50%;
+	font-weight: 600;
 }
 #recover_button:hover {
 	color: black;
@@ -128,12 +140,13 @@ export default {
 }
 #settings_panel h4{
 	margin:0;
-	margin-bottom:1em;
+	margin-bottom:2em;
 	font-weight:bold;
-	text-align:center
+	text-align:left;
+	color: black;
 }
 #logout{
-	margin-top:3em;
+	margin-top:2em;
 }
 .setting{
 	margin:1em 0;
@@ -142,7 +155,6 @@ export default {
 #restore{
 	font-size:.75em;
 	cursor:pointer;
-	float:right;
 	text-decoration:underline;
 	text-decoration-style: dotted;
 }
@@ -155,6 +167,8 @@ export default {
 }
 input.color{
 	width: 6em;
+	font-weight: 500;
+	text-shadow: -1px -1px 0 rgba(255,255,255,.7), 1px -1px 0 rgba(255,255,255,.7), -1px 1px 0 rgba(255,255,255,.7), 1px 1px 0 rgba(255,255,255,.7);
 }
 input.color:first-of-type{
 	margin-right:1em;

@@ -2,7 +2,7 @@
 	<router-link to="/" class="header_nav_link">Back</router-link>
 	<section class="page">
 		<div class="toggle_wrapper">
-			<toggle  off="&nbsp;Show Scene-list&ensp;" on="&nbsp;Show thread&ensp;" tooltipOff="" tooltipOn="" :bool="showThread" v-model="showThread" :icon="false"/>
+			<toggle  off="&nbsp;Show Scene-list&nbsp;&nbsp;" on="&nbsp;&nbsp;&nbsp;&nbsp;Show thread&nbsp;&nbsp;&nbsp;&nbsp;" tooltipOff="" tooltipOn="" :bool="showThread" v-model="showThread" :icon="false"/>
 		</div>
 
 		<h1>Sequence</h1>
@@ -21,7 +21,7 @@
 				<div v-else class="icon connection"></div>
 			</div>
 		</div>
-		<h3 v-if="!hasContent">No Data. Please go back to your hyperchannel and click the Sequence button.</h3>
+		<span v-if="!hasContent">No Data. Please go back to your hyperchannel and click the Sequence button.</span>
 	</section>
 </template>
 

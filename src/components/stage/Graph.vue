@@ -263,7 +263,7 @@ export default {
   left: 50%;
   transform: translate(-50%, 110%);
   transition:transform .4s ease;
-  box-shadow: 0 0 0 3px rgba(0,0,0,.1), 0 0 1em rgba(0,0,0,.1);
+  box-shadow: 0 0 1em rgba(0,0,0,.25);
   display: flex;
   justify-content: space-between;
   align-items: center;

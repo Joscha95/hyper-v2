@@ -28,6 +28,7 @@ export default {
 	vertical-align: top;
 	color: inherit;
 	margin-bottom: 0;
+	font-weight: 400;
 }
 .iconToggle {
 	line-height: 0;
