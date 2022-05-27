@@ -253,7 +253,6 @@ export default {
 
 #node_info {
   background-color: white;
-  border-radius: 5px;
   padding: 1rem;
   position: fixed;
   bottom: 0;

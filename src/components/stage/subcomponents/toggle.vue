@@ -44,12 +44,11 @@ export default {
 	box-sizing: border-box;
 	display: block;
 	border: 1px solid;
-	border-radius: 5px;
 	height: 100%;
-	border-color: var(--main-gray-color);
+	border-color: black;
 }
 .slider:hover {
-	border-color: black;
+	opacity: var(--hover-opacity);
 }
 .slider:after {
 	position: absolute;
@@ -63,7 +62,7 @@ export default {
 	transition: left .2s;
 	z-index: 0;
 	box-sizing: border-box;
-	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+	box-shadow: 0 0 4px rgba(0,0,0,0.75);
 	border-right: 1px solid var(--main-gray-color);
 }
 .slider:hover:after, input:checked + .slider:hover:after {

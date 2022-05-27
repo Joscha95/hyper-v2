@@ -42,7 +42,6 @@ html, body {
 	width: var(--draggable-list-item-width);
 	display: flex;
 	flex-direction: column;
-	box-shadow: 0 0 0 .1em rgba(0,0,0,.05);
 	opacity: .75;
 	transition: opacity 10s;
 }
@@ -63,11 +62,10 @@ html, body {
 	width: 26%;
 	z-index: 0;
 	border: none;
-	opacity: .75;
 	background: transparent;
 }
 #refresh_button:hover {
-	opacity: 1;
+	opacity: var(--hover-opacity);
 }
 .state_2 #refresh_button {
 	opacity: .4;
@@ -92,7 +90,7 @@ html, body {
 	padding: .9em .7em;
 	border: 1px solid var(--main-lightgray-color);
 	border-top: 0;
-	color: var(--main-gray-color);
+	color: var(--main-darkgray-color);
 }
 .under_list_btn a {
 	text-decoration: none;
@@ -116,14 +114,14 @@ html, body {
 	z-index: var(--main-layer-three);
 	width: var(--draggable-list-item-width);
 	padding: 1rem;
-	padding-top: 4rem;
+	padding-top: 4.4rem;
 	display: flex;
 	flex-direction: column;
-	box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+	border-left: 1px solid black;
 }
 #editor_header {
 	text-align: right;
-	margin-bottom: .25rem;
+	margin-bottom: -1px;
 }
 #save_button_wrapper {
 	margin-bottom: 1rem;
@@ -168,7 +166,6 @@ html, body {
 	cursor: pointer;
 	vertical-align: middle;
 	font-size: .8em;
-	color: var(--main-mediumgray-color);
 }
 #settings_button:hover, #help_button:hover:before {
 	text-decoration: underline;
@@ -179,39 +176,36 @@ html, body {
 	background: white;
 	padding: 0 .9rem;
 	color: black;
-	border-radius: 2rem;
 	position: relative;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
-	height: 2rem;
+	height: 2.3rem;
 	box-sizing: border-box;
-	border: 1px solid var(--main-gray-color);
+	border: 1px solid black;
 	font-weight: 400;
 }
 #main_button:hover {
-	border-color: black;
+	opacity: var(--hover-opacity);
 }
 #editor_button_indicator {
 	position: relative;
 	display: flex;
 	align-items: center;
-	background: var(--main-error-color);
 	border-radius: 2em;
-	min-width: 1.2rem;
-	height: 1.2rem;
-	margin-left: .5rem;
+	min-width: .75em;
+	height: .75em;
+	margin-left: .3em;
 	color: white;
 	font-size: .8em;
 	text-align: center;
 	box-sizing: border-box;
 	padding: 0 .5em;
-	margin-right: -.4rem;
+	margin-right: -.4em;
 }
 #main_button #editor_button_indicator.close_button {
-	background: linear-gradient(45deg, transparent calc(50% - 1px), var(--main-darkgray-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), var(--main-darkgray-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(var(--main-lightgray-color), var(--main-lightgray-color));
+	background: linear-gradient(45deg, transparent calc(50% - 1px), var(--main-darkgray-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), var(--main-darkgray-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(transparent, transparent);
 	color: transparent;
-	border: 5px solid var(--main-lightgray-color);
 	padding: 0;
 	width: 1.1rem;
 }
@@ -238,9 +232,8 @@ html, body {
 }
 #lookout_btn {
 	background: white;
-	border: 1px solid var(--main-gray-color);
+	border: 1px solid black;
 	vertical-align: middle;
-	border-radius: 5px;
 	box-sizing: border-box;
 	white-space: nowrap;
 	display: flex;
@@ -250,14 +243,13 @@ html, body {
 	color: black;
 	cursor: pointer;
 	margin-right: 1rem;
-	font-weight: 300;
 	letter-spacing: .03em;
 }
 #lookout_btn .icon {
 	margin-left: .7em;
 }
 #lookout_btn:hover {
-	border-color: black;
+	opacity: var(--hover-opacity);
 }
 #lookout_btn.transform {
 	color: white;
@@ -281,9 +273,9 @@ html, body {
 .drag_list {
 	width: 100%;
 	overflow-y: scroll;
-	background: linear-gradient(90deg, var(--main-lightgray-color) 1px, white 1px calc(100% - 1px), var(--main-lightgray-color) calc(100% - 1px));
-	border-top: 1px solid var(--main-lightgray-color);
-	border-bottom: 1px solid var(--main-lightgray-color);
+	background: linear-gradient(90deg, black 1px, white 1px calc(100% - 1px), black calc(100% - 1px));
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
 }
 #editor .drag_list {
 	margin-bottom: -1px;
@@ -304,9 +296,8 @@ html, body {
 	content: 'loading...';
 }
 .draggable_list_item {
-	border: 1px solid var(--main-lightgray-color);
+	border: 1px solid black;
 	margin-top: -1px;
-	color: var(--main-mediumgray-color);
 	height: 3rem;
 	font-size: 0.7em;
 }
@@ -318,10 +309,13 @@ html, body {
 	border-bottom-color: transparent;
 }
 .draggable_list_item:hover, .draggable_list_item.selected {
-	border-color: black;
 	z-index: 1;
 	position: relative;
 	color: black;
+	opacity: var(--hover-opacity);
+}
+.draggable_list_item.selected {
+	opacity: 1;
 }
 .draggable_list_item[draggable="true"]{
 	background: white;
@@ -431,7 +425,7 @@ html, body {
 	color: var(--main-connection-color)
 }
 input.searchbar {
-	border: 1px solid var(--main-gray-color);
+	border: 1px solid black;
 }
 
 .drag_handle .icon.eye, .drag_handle .icon.lookout, .drag_handle .icon.connection {
@@ -531,7 +525,6 @@ button.delete_button {
 .connection_properties {
 	font-size: 1rem;
 	display: flex;
-	border-radius: 5px;
 	flex-wrap: nowrap;
 	width: 6rem;
 	align-items: center;
