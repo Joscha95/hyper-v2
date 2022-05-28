@@ -64,7 +64,7 @@ class THREEScene {
     window.addEventListener('hashchange', (e)=>this.onHashChange(e));
     window.addEventListener('keydown', (e)=>this.onKeyDown(e));
 
-    this.horizon = new Globe(this.cameraController.camera.far*.9, 16, 32, 64, 'rgb(240,240,240)',this.store.sceneSettings.backgroundColor); // Radius, num lat, num lon, segments, color
+    this.horizon = new Globe(this.cameraController.camera.far*.9, 16, 32, 64, this.store.sceneSettings.globeGridColor, this.store.sceneSettings.backgroundColor); // Radius, num lat, num lon, segments, color
     this.horizon.group.position.copy(this.cameraController.position());
 
     this.scene.add(this.horizon.group);

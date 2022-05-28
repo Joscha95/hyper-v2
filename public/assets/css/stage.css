@@ -36,7 +36,7 @@ html, body {
 	position:fixed;
 	z-index: var(--main-layer-two);
 	user-select:none;
-	top: 3.2rem;
+	top: 3.3rem;
 	max-height: calc(100% - 1rem - 3.2rem);
 	left: 1rem;
 	width: var(--draggable-list-item-width);
@@ -53,7 +53,7 @@ html, body {
 	padding: .25rem;
 	position: relative;
 	box-sizing: border-box;
-	border: 1px solid var(--main-lightgray-color);
+	border: var(--main-border);
 	border-bottom: none;
 }
 
@@ -88,8 +88,8 @@ html, body {
 .under_list_btn {
 	font-size: .7em;
 	padding: .9em .7em;
-	border: 1px solid var(--main-lightgray-color);
-	border-top: 0;
+	border: var(--main-border);
+	border-top: none;
 	color: var(--main-darkgray-color);
 }
 .under_list_btn a {
@@ -117,7 +117,7 @@ html, body {
 	padding-top: 4.4rem;
 	display: flex;
 	flex-direction: column;
-	border-left: 1px solid black;
+	border-left: var(--main-border);
 }
 #editor_header {
 	text-align: right;
@@ -182,7 +182,7 @@ html, body {
 	align-items: center;
 	height: 2.3rem;
 	box-sizing: border-box;
-	border: 1px solid black;
+	border: var(--main-border);
 	font-weight: 400;
 }
 #main_button:hover {
@@ -192,22 +192,22 @@ html, body {
 	position: relative;
 	display: flex;
 	align-items: center;
-	border-radius: 2em;
 	min-width: .75em;
 	height: .75em;
-	margin-left: .3em;
 	color: white;
 	font-size: .8em;
 	text-align: center;
 	box-sizing: border-box;
-	padding: 0 .5em;
-	margin-right: -.4em;
+	padding: .9em .5em .8em;
+	background-color: var(--main-error-color);
+	margin: 0 -.5em 0 .8em;
 }
 #main_button #editor_button_indicator.close_button {
 	background: linear-gradient(45deg, transparent calc(50% - 1px), var(--main-darkgray-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(135deg, transparent calc(50% - 1px), var(--main-darkgray-color) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(transparent, transparent);
 	color: transparent;
 	padding: 0;
 	width: 1.1rem;
+	margin: 0 -.4em;
 }
 #editor_button_indicator.hide:not(.close_button) {
 	display: none;
@@ -232,7 +232,7 @@ html, body {
 }
 #lookout_btn {
 	background: white;
-	border: 1px solid black;
+	border: var(--main-border);
 	vertical-align: middle;
 	box-sizing: border-box;
 	white-space: nowrap;
@@ -274,8 +274,8 @@ html, body {
 	width: 100%;
 	overflow-y: scroll;
 	background: linear-gradient(90deg, black 1px, white 1px calc(100% - 1px), black calc(100% - 1px));
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
+	border-top: var(--main-border);
+	border-bottom: var(--main-border);
 }
 #editor .drag_list {
 	margin-bottom: -1px;
@@ -296,7 +296,7 @@ html, body {
 	content: 'loading...';
 }
 .draggable_list_item {
-	border: 1px solid black;
+	border: var(--main-border);
 	margin-top: -1px;
 	height: 3rem;
 	font-size: 0.7em;
@@ -425,7 +425,7 @@ html, body {
 	color: var(--main-connection-color)
 }
 input.searchbar {
-	border: 1px solid black;
+	border: var(--main-border);
 }
 
 .drag_handle .icon.eye, .drag_handle .icon.lookout, .drag_handle .icon.connection {
@@ -634,10 +634,10 @@ button.delete_button {
 
 .toolbox{
 	position:fixed;
-	box-shadow: 0 0 0px 1px rgba(0,0,0,0.2);
+	border-left: var(--main-border);
+	border-right: var(--main-border);
 	transform: translate(15%);
 	overflow:hidden;
-	border-radius: 5px;
 }
 .toolbox div{
 	cursor:pointer;
@@ -648,8 +648,8 @@ button.delete_button {
 	background-size: 1rem;
 	background-position: center;
 	box-sizing: border-box;
-	border-top: 1px solid var(--main-gray-color);
-	border-bottom: 1px solid var(--main-gray-color);
+	border-top: var(--main-border);
+	border-bottom: var(--main-border);
 	position: relative;
 	background-color:white;
 }
@@ -660,14 +660,6 @@ button.delete_button {
 }
 .toolbox div:not(:first-child) {
 	margin-top: -1px;
-}
-.toolbox div:first-child {
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
-.toolbox div:last-child {
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
 }
 #thread_plus {
 	position:fixed;

@@ -19,8 +19,22 @@ const store = reactive({
     thread: '#f85330',
     lookout: 'black'
   },
-  sceneSettings:{showCircles:false,backgroundColor:{bottom:'#f0f0f0',top:'#c8c8c8'}},
-  sceneSettingsDefault:{showCircles:true,backgroundColor:{bottom:'#f0f0f0',top:'#c8c8c8'}}
+  sceneSettings:{
+    showCircles:false,
+    backgroundColor:{
+      bottom:'#f0f0f0',
+      top:'#c8c8c8'
+    },
+    globeGridColor:'#ffffff'
+  },
+  sceneSettingsDefault:{
+    showCircles:true,
+    backgroundColor:{
+      bottom:'#f0f0f0',
+      top:'#c8c8c8'
+    },
+    globeGridColor:'#ffffff'
+  }
 })
 
 const sceneElements = [];

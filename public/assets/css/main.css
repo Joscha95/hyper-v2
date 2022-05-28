@@ -11,7 +11,9 @@
 	--main-success-color: #17ac10;;
 	--main-error-color: #ff5e00;
 	
-	--hover-opacity: .65;
+	--hover-opacity: .6;
+	
+	--main-border: 1px solid black;
 	
 	--main-layer-one: 1;
 	--main-layer-two: 2;
@@ -28,11 +30,11 @@
 html, body {
 	font-family: Helvetica Neue, 'Helvetica Neue', Helvetica, 'Helvetica', Arial, sans-serif;
 	color: black;
-	font-size: 1em;
-	line-height: 1em;
+	font-size: 16px;
+	line-height: 16px;
 	margin: 0;
 	font-weight: 400;
-	letter-spacing: .02em;
+	letter-spacing: .01em;
 }
 .Stage *:not(input, textarea) {
 	-webkit-touch-callout: none;
@@ -90,12 +92,12 @@ a:hover, a:focus, a:active {
 
 #logo {
 	position: fixed;
-	top: 1.2rem;
+	top: 1.4rem;
 	left: 1rem;
 	box-sizing: border-box;
 	z-index: var(--main-layer-two);
-	color: var(--main-mediumgray-color);
 	font-weight: 400;
+	font-size: 1.1em;
 }
 #app_name {
 	text-decoration: none;
@@ -133,11 +135,11 @@ a:hover, a:focus, a:active {
 /* FORMS */
 
 input {
-	border: 1px solid black;
+	border: var(--main-border);
 	height: 2.3rem;
 	border-radius: 3px;
 	font-size: 0.9em;
-	padding: 0 1em;
+	padding: 0 .7em;
 	background-color: white;
 	display: inline-block;
 	color: black;
@@ -182,7 +184,7 @@ button {
 	font-weight: bold;
 	font-size: 1em;
 	cursor: pointer;
-	border: 1px solid black;
+	border: var(--main-border);
 	color: black;
 	position: relative;
 	z-index:100;
@@ -232,7 +234,7 @@ textarea {
 	z-index: calc( var(--main-layer-overkill) + 1);
 	max-width: 80%;
 	line-height: 1.5em;
-	border: 1px solid var(--main-gray-color);
+	border: var(--main-border);
 	color: var(--main-darkgray-color);
 }
 .popup_close_button {

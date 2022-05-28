@@ -40,7 +40,7 @@ class Globe {
 			this.group.add(latCircle);
 		}
 
-		const lonCircle = drawCircle( _rad, segments );
+		const lonCircle = drawCircle( _rad, segments, 0, circleMat );
 		lonCircle.rotation.x = Math.PI / 2;
 
 		for(let i=1; i<nLon/2; i++)
@@ -90,6 +90,11 @@ class Globe {
 	updateGradient(gradient){
 		this.sphere.material.uniforms.color1.value=new Color(gradient.bottom)
 		this.sphere.material.uniforms.color2.value=new Color(gradient.top)
+	}
+	updateGlobeGrid(lineColor){
+		this.group.children.forEach(
+			line => line.material.color=new Color(lineColor)
+		)
 	}
 }
 

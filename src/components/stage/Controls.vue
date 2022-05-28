@@ -4,7 +4,7 @@
 		<div id="help_button" @click="showHelp=!showHelp;showSettings=false ">?</div>
 		<div v-if="loggedIn" id="settings_button" title="Settings" @click="showSettings=!showSettings;showHelp=false">Settings</div>
 		<div v-if="loggedIn" id="main_button" @click="$emit('toggleEditor')">
-			<span id="main_button_text">Edit</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
+			<span id="main_button_text" v-if="!showEditor">Edit</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>
 		</div>
 		<div v-else id="main_button" @click="showSettings=!showSettings">
 			<span id="main_button_text">Log in</span>
@@ -36,6 +36,10 @@
 						<span>Background</span>
 						<input type="text" class="color" v-model="store.sceneSettings.backgroundColor.bottom" :style="`background-color:${store.sceneSettings.backgroundColor.bottom}` " @focus="store.focused=true" @blur="this.store.focused=false">
 						<input type="text" class="color" v-model="store.sceneSettings.backgroundColor.top" :style="`background-color:${store.sceneSettings.backgroundColor.top}`" @focus="store.focused=true" @blur="this.store.focused=false">
+					</div>
+					<div class="setting colors">
+						<span>Globe grid</span>
+						<input type="text" class="color" v-model="store.sceneSettings.globeGridColor" :style="`background-color:${store.sceneSettings.globeGridColor}` " @focus="store.focused=true" @blur="this.store.focused=false">
 					</div>
 				</div>
 				<div id="restore" class="mediumgray" @click="store.sceneSettings=JSON.parse(JSON.stringify(store.sceneSettingsDefault))"> restore default</div>
@@ -103,10 +107,6 @@ export default {
 #login {
 	text-align: center;
 	font-size: 1rem;
-}
-.login_popup {
-	border-radius: 1em;
-	padding: 3em 1.6em 3.2em 1.6em;
 }
 #login input {
 	width: 14em;

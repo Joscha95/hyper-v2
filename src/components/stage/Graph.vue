@@ -116,6 +116,9 @@ export default {
     sceneBackground(){
       return this.store.sceneSettings.backgroundColor.bottom+this.store.sceneSettings.backgroundColor.top
     },
+    globeGridColor(){
+      return this.store.sceneSettings.globeGridColor
+    },
     isLoggedIn(){
       return this.store.loggedIn
     }
@@ -126,6 +129,9 @@ export default {
     },
     sceneBackground(newVal){
       this.THREEScene.horizon.updateGradient(this.store.sceneSettings.backgroundColor);
+    },
+    globeGridColor(newVal){
+      this.THREEScene.horizon.updateGlobeGrid(this.store.sceneSettings.globeGridColor);
     },
     isFocused(){
       this.THREEScene.cameraController.enabled=!this.store.focused;
