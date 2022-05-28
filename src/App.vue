@@ -16,7 +16,8 @@
 	export default {
 		data() {
 			return {
-				appName: 'hyper',
+				appName: 'hyperchannel',
+				appNameAbr: 'hyper',
 				notification: {},
 				popupBox: {},
 				store,

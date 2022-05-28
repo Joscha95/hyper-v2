@@ -96,7 +96,7 @@ a:hover, a:focus, a:active {
 	left: 1rem;
 	box-sizing: border-box;
 	z-index: var(--main-layer-two);
-	font-weight: 400;
+	font-weight: 300;
 	font-size: 1.1em;
 }
 #app_name {
@@ -107,6 +107,7 @@ a:hover, a:focus, a:active {
 	font-size: .75em;
 	line-height: .75em;
 	transform: translateX(100%);
+	font-weight: 400;
 }
 #header_title {
 	color: black;

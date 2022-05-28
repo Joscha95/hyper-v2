@@ -3,7 +3,7 @@
 		(
 			<span v-if="title" id="header_title">{{ title }}</span>
 		)
-		<router-link id="app_name" to="/about">{{ this.$root.appName }}</router-link>
+		<router-link id="app_name" to="/about">{{ this.$root.appNameAbr }}</router-link>
 	</div>
 </template>
 
