@@ -161,11 +161,13 @@ html, body {
 }
 #help_button {
 	cursor: pointer;
+	text-shadow: var(--main-text-shadow);
 }
 #settings_button, #help_button:hover:before {
 	cursor: pointer;
 	vertical-align: middle;
 	font-size: .8em;
+	text-shadow: var(--main-text-shadow);
 }
 #settings_button:hover, #help_button:hover:before {
 	text-decoration: underline;
