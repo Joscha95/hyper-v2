@@ -267,6 +267,14 @@ textarea {
 
 
 
+@media (max-width:700px) {
+	#logo {
+		top: 1.2rem;
+	}
+}
+
+
+
 
 /* ICONS */
 

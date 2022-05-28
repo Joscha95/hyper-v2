@@ -680,6 +680,6 @@ button.delete_button {
 
 @media (max-width:700px) {
 	#controls_header {
-    top: 0.72rem;
+ 	   top: 0.72rem;
 	}
 }

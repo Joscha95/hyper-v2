@@ -43,6 +43,13 @@ export default {
 		transform: translate(-50%, 0);
 		box-shadow: 0 0 .5em rgba(0,0,0,.25);
 	}
+	
+	@media (max-width:700px) {
+		#notification.show {
+		top: 0.72rem;
+		}
+	}
+	
 	.default {
 		background: var(--main-faintgray-color);
 		color: black;

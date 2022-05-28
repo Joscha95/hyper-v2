@@ -282,7 +282,6 @@ export default {
 #node_info_text {
   flex-grow: 2;
   margin: 0 2rem;
-  word-break: break-all;
 }
 .description{
   margin-top: .7em;
