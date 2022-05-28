@@ -39,7 +39,7 @@ export default {
 		border: var(--main-border);
 	}
 	#notification.show {
-		top: 1em;
+		top: 1rem;
 		transform: translate(-50%, 0);
 		box-shadow: 0 0 .5em rgba(0,0,0,.25);
 	}
