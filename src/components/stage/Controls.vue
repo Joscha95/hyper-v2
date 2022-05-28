@@ -1,7 +1,7 @@
 <template>
 
 	<div id="controls_header">
-		<div id="help_button" @click="showHelp=!showHelp;showSettings=false ">?</div>
+		<div id="help_button" v-if="loggedIn" @click="showHelp=!showHelp;showSettings=false ">?</div>
 		<div v-if="loggedIn" id="settings_button" title="Settings" @click="showSettings=!showSettings;showHelp=false">Settings</div>
 		<div v-if="loggedIn" id="main_button" @click="$emit('toggleEditor')">
 			<span id="main_button_text" v-if="!showEditor">Edit</span> <span id="editor_button_indicator" :class="{close_button:showEditor, hide:store.unsavedChanges<1}">{{ store.unsavedChanges }}</span>

@@ -18,7 +18,7 @@
         <div class="description" v-if="lastValidChainElement.content!='' && lastValidChainElement.h_type=='lookout'" v-html="markDownContent"></div>
         <div class="connection_properties" v-if="lastValidChainElement.h_type=='connection'">
     	  	<a :href="'#'+lastValidChainElement.sourceID" class="connection_property_circle" title="Connection source"></a>
-          <span class="arrows">> ></span>
+          <span class="arrows">&rarr;</span>
     	  	<a :href="'#'+lastValidChainElement.targetID" class="connection_property_circle" title="Connection target"></a>
     		</div>
       </div>
@@ -287,6 +287,9 @@ export default {
 .description{
   margin-top: .7em;
   font-size: .8em;
+}
+.description p:last-child {
+  margin-bottom: 0;
 }
 #weave_from_btn, #weave_to_btn {
   color: var(--main-thread-color);
