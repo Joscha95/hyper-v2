@@ -2,7 +2,7 @@
 	<form @submit.prevent="submit">
 		<h3>Create a hyperchannel</h3>
 		<section id="channel_search">
-			<label>Input the URL of an <a href="https://www.are.na/" target="_blank">Are.na</a> Channel:</label>
+			<label>Input the URL of an existing <a href="https://www.are.na/" target="_blank">Are.na</a> Channel:</label>
 			<input type="text" v-model.trim="query" :class="{ valid: channel }" required>
 			<p id="info" v-if="message">
 				<span id="message">{{ message }}</span>

@@ -30,7 +30,7 @@ export default {
 		font-size: .9em;
 		transform: translate(-50%, -100%);
 		padding: 1em 1.3em;
-		border-radius: 1.5em;
+		border-radius: 2em;
 		transition: all .33s;
 		box-shadow: none;
 		box-sizing: content-box;
