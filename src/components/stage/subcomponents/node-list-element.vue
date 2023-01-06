@@ -13,7 +13,7 @@
 				{{ h_type=='connection' ? element.content : element.name }}
 			</span>
 			<span v-else>
-        <span v-if="!toArena" @click="toggleArenaLink(element)">{{ element.class=='Text' ? element.content : element.name }}</span>
+        <span v-if="!toArena" @click="toggleArenaLink(element)">{{ element.class=='Text' ? nodeContent : element.name }}</span>
         <span v-else @click="toArena=false"><a :href="'https://www.are.na/block/'+element.a_id" target="_blank" class="node_list_arena_link">View in Are.na?</a>&emsp;x</span>
       </span>
 		</div>
@@ -85,7 +85,10 @@ export default {
       return this.element.isFixed
     },
     nodeContent(){
-      return this.element.content
+      const div = document.createElement('div')
+      div.innerHTML = this.element.content
+      const text = div.textContent || div.innerText || ''
+      return text
     },
     selectedObject(){
       return this.store.selectedObject
