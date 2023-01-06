@@ -76,6 +76,13 @@
 						<u>Thread</u><br>
 						The thread guides visitor through your scene. If a Node is in focus, which is also part of the thread the navigator will appear in the bottom of your screen. With the arrows (<span class="icon threadprev"/> and <span class="icon threadnext"/>) you can navigate to the previous/next Node.<br>Hovering over the thread will let you <span class="icon threadinsert"/> insert a node in your thread. <br>
 					</div>
+					
+					<div class="helpsection">
+						<u>Sequentialize</u><br>
+						You can get a plain list of either all the elements in a Thread <span class="icon thread"></span>, or a complete list of all the items present in the scene.
+						You can drag and drop the list items in the <span class="editor_button">Edit</span>-Panel to sort your sequence list.<br>
+					</div>
+					
 				</section>
 
 
@@ -163,9 +170,8 @@ export default {
 	.editor_button {
     background: white;
     padding: 0 0.9rem;
-		padding-top:.1rem;
+	padding-top:.1rem;
     color: black;
-    border-radius: 2rem;
     position: relative;
     cursor: pointer;
     display: inline-block;
