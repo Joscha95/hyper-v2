@@ -20,10 +20,14 @@
 		<button type="submit" :disabled="!channel" v-if="!advance">Next</button>
 		<button type="submit" :disabled="!valid" v-if="advance">Create hyper</button>
 	</form>
+	<Hint v-if="advance"/>
 </template>
 
 <script>
+import Hint from '@/components/setup/Hint.vue'
+	
 export default {
+	components: { Hint },
 	data() {
 		return {
 			query: '',
