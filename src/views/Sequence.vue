@@ -2,7 +2,7 @@
 	<a @click="$router.go(-1)" class="header_nav_link non_href_link">Back to hyperchannel</a>
 	<section class="page">
 		<div class="toggle_wrapper">
-			<toggle  off="&nbsp;Show Scene-list&nbsp;&nbsp;" on="&nbsp;&nbsp;&nbsp;&nbsp;Show thread&nbsp;&nbsp;&nbsp;&nbsp;" tooltipOff="" tooltipOn="" :bool="showThread" v-model="showThread" :icon="false"/>
+			<toggle off="&nbsp;Complete&nbsp;List&nbsp;" on="&nbsp;Show&nbsp;Thread&nbsp;" tooltipOff="" tooltipOn="" :bool="showThread" v-model="showThread" :icon="false"/>
 		</div>
 
 		<h1>Sequence</h1>
