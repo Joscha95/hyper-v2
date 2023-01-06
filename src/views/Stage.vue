@@ -38,9 +38,9 @@ export default {
 			targetSlug: false,
 			state: 0, // setup=0, OK=1
 			channel: false,
-			loggedIn: true, // !!! has to be false when build
-			email: 'mail@leuys.com', // !!! has to be empty when build
-			password: '12345678', // !!! has to be empty when build
+			loggedIn: false, // !!! has to be false when build
+			email: '', // !!! has to be empty when build
+			password: '', // !!! has to be empty when build
 			initScene: [],
 			needsInit: true,
 			showSource: true,
