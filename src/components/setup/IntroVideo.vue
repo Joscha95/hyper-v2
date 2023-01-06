@@ -20,7 +20,7 @@
 	
 	#video_wrapper {
 		position: relative;
-		max-width: 40rem;
+		width: 40rem;
 		height: 25rem;
 		margin: 5rem auto 10rem auto;
 		border: var(--main-border);
@@ -32,6 +32,13 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+	}
+	
+	@media (max-width:700px) {
+		#video_wrapper {
+			width: 28.8rem;
+			height: 18rem;
+		}
 	}
 	
 </style>
