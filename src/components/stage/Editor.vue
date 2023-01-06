@@ -28,7 +28,7 @@
 				</div>
 			</template>
 		</draggable>
-		<a class="under_list_btn" @click="sequence" href="">Sequentialize</a>
+		<a class="under_list_btn" @click="sequence">Sequentialize</a>
 	</div>
 </template>
 

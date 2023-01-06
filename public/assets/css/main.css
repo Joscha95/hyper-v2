@@ -59,12 +59,14 @@ pre{
 
 /* BASIC */
 
-a {
+a, .non_href_link {
 	color: inherit;
+	text-decoration: underline;
 	text-decoration-style: dotted;
 }
-a:hover, a:focus, a:active {
+a:hover, a:focus, a:active, .non_href_link:hover, .non_href_link:focus, .non_href_link:active {
 	color: black;
+	cursor: pointer;
 	text-decoration-style: solid;
 }
 .bold {
