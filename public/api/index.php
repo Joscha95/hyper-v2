@@ -26,6 +26,9 @@ if(isset($_GET['r'])){
 		case 'r':
 			include_once('route/recover.inc.php');
 			break;
+		case 're':
+			include_once('route/retrieve.inc.php');
+			break;
 		case 'pw':
 			include_once('route/reset.inc.php');
 			break;

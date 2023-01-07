@@ -6,6 +6,7 @@ import Stage from '@/views/Stage.vue'
 import Login from '@/views/Login.vue'
 import Error from '@/views/Error.vue'
 import Reset from '@/views/Reset.vue'
+import Retrieve from '@/views/Retrieve.vue'
 import Sequence from '@/views/Sequence.vue'
 import Test from '@/views/Test.vue'
 import NotFound from '@/views/NotFound.vue'
@@ -16,6 +17,7 @@ const routes = [
 	{ path: '/test', name: 'Test', component: Test },
 	{ path: '/oh/no', name: 'Error', component: Error },
 	{ path: '/reset/:auth', name: 'Reset', component: Reset },
+	{ path: '/Retrieve', name: 'Retrieve', component: Retrieve },
 	{ path: '/log/in', name: 'Login', component: Login, props: true },
 	{ path: '/:slug', name: 'Stage', component: Stage },
 	{ path: '/my/sequence', name: 'Sequence', component: Sequence, props: true },

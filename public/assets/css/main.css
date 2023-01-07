@@ -134,10 +134,14 @@ p:last-child {
 #logo.opened:not(.disabled) #header_title:after {
 	content: '▲';
 }
-.header_nav_link {
+#setup_nav, .single_header_nav_link {
 	position: absolute;
 	top: 1rem;
 	right: 1rem;
+	display: flex;
+}
+.header_nav_link + .header_nav_link {
+	margin-left: 1rem;
 }
 
 
