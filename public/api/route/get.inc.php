@@ -13,13 +13,12 @@ if(isset($_GET['s'])) {
 			scenes.scene,
 			scenes.updated_on,
 			scenes.created_at,
-			B.string AS current_slug,
-			B.number AS current_slug_number
+			A.string AS current_slug,
+			A.number AS current_slug_number
 		FROM
 			slugs A
-		LEFT JOIN scenes ON A.scene_id = scenes.id
-		INNER JOIN slugs B ON 
-			B.id = scenes.slug_id
+		LEFT JOIN 
+			scenes ON A.scene_id = scenes.id
 		WHERE
 			A.string = ? AND A.number = ?
 	";
