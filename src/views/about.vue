@@ -1,5 +1,5 @@
 <template>
-	<router-link to="/" class="header_nav_link">Create your hyperchannel</router-link>
+	<router-link to="/" class="single_header_nav_link">Create your hyperchannel</router-link>
 	<section class="page">
 		<h1>ABOUT</h1>
 		<p>Hyperchannel is an experimental tool centered around new ways of visualizing and connecting knowledge in digital space.</p>

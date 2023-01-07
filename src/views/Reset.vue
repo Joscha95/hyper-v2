@@ -1,5 +1,5 @@
 <template>
-	<router-link to="/" class="header_nav_link">Create new hyper</router-link>
+	<router-link to="/" class="single_header_nav_link">Create new hyper</router-link>
 	<section class="page">
 		<form @submit.prevent="submit">
 			<h1>Password reset</h1>

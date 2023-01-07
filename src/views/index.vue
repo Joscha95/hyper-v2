@@ -1,5 +1,8 @@
 <template>
-	<router-link to="/about" class="header_nav_link">About</router-link>
+	<nav id="setup_nav">
+		<router-link to="/retrieve" class="header_nav_link">Find your hyperchannel</router-link>
+		<router-link to="/about" class="header_nav_link">About</router-link>
+	</nav>
 	<Setup />
 	<IntroVideo />
 </template>
