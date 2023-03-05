@@ -193,7 +193,7 @@ export default {
         if(!a_block) return;
         item.contentItem.name = a_block.title
         item.contentItem.content = a_block.content_html
-        item.contentItem.imageUrl = a_block.image ? a_block.image.thumb.url : '',
+        item.contentItem.imageUrl = a_block.image ? a_block.image.original.url : '',
         item.updateDisplayElement();
       })
     },
