@@ -29,6 +29,7 @@ const store = reactive({
     globeGridColor:'#ffffff'
   },
   sceneSettingsDefault:{
+    highresImages:false,
     showCircles:true,
     backgroundColor:{
       bottom:'#f0f0f0',
