@@ -193,7 +193,8 @@ export default {
         if(!a_block) return;
         item.contentItem.name = a_block.title
         item.contentItem.content = a_block.content_html
-        item.contentItem.imageUrl = a_block.image ? a_block.image.original.url : '',
+        console.log(this.store.sceneSettings.highresImages ? 'original' : 'thumb');
+        item.contentItem.imageUrl = a_block.image ? a_block.image[this.store.sceneSettings.highresImages ? 'display' : 'thumb'].url : '',
         item.updateDisplayElement();
       })
     },

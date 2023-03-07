@@ -20,6 +20,7 @@ const store = reactive({
     lookout: 'black'
   },
   sceneSettings:{
+    highresImages:false,
     showCircles:false,
     backgroundColor:{
       bottom:'#f0f0f0',

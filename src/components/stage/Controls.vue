@@ -29,8 +29,19 @@
 				<h4>Settings</h4>
 				<div id="scene_settings">
 					<div class="setting colors">
+						<span>Image Resolution</span>
+						<toggle 
+						off="LOW&nbsp;" 
+						on="&nbsp;HIGH&ensp;" 
+						tooltipOff="Change resolution of your images. Be careful: Higher Resolutions will reduce performance." 
+						tooltipOn="Change resolution of your images. Be careful: Higher Resolutions will reduce performance." 
+						:bool="store.sceneSettings.highresImages" 
+						v-model="store.sceneSettings.highresImages" 
+						:icon="false"/>
+					</div>
+					<div class="setting colors">
 						<span>Polar Helper</span>
-						<toggle  off="OFF&nbsp;" on="&nbsp;ON&ensp;" tooltipOff="Show the helper circle in the middle of your scene" tooltipOn="Hide the helper circle in the middle of your scene" :bool="store.sceneSettings.showCircles" v-model="store.sceneSettings.showCircles" :icon="false"/>
+						<toggle off="OFF&nbsp;" on="&nbsp;ON&ensp;" tooltipOff="Show the helper circle in the middle of your scene" tooltipOn="Hide the helper circle in the middle of your scene" :bool="store.sceneSettings.showCircles" v-model="store.sceneSettings.showCircles" :icon="false"/>
 					</div>
 					<div class="setting colors">
 						<span>Background</span>
