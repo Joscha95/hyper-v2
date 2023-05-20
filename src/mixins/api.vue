@@ -110,14 +110,11 @@ module.exports = {
 					if( this.state == 2 ){
 						const channelLength = this.channel.length;
 						const maxAtOnce = 100;
-						if( channelLength > maxAtOnce ){ // 176
-							const pages = Math.ceil(channelLength/maxAtOnce) // 2
+						if( channelLength > maxAtOnce ){
+							const pages = Math.ceil(channelLength/maxAtOnce)
+							console.log(pages);
 							for (let page = 2; page <= pages; page++) {
-								/* we need to calculate how many blocks are left for the last get reqeust for the last page 
-								otherwise arena will deny the request */
-								// if it's the last page, only return as many as are left
-								const per =  (page==pages) ? ( channelLength.slice(-2) ) : maxAtOnce;
-								this.axios.get(`https://api.are.na/v2/channels/${this.channel.id}?page=${page}&per=${per}&t=${Date.now()}`)
+								this.axios.get(`https://api.are.na/v2/channels/${this.channel.id}?page=${page}&per=${maxAtOnce}&t=${Date.now()}`)
 								.then(response => {
 									this.channel.contents = [...this.channel.contents, ...response.data.contents]
 								})
