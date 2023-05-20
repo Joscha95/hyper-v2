@@ -39,7 +39,6 @@ export default {
         clientX: e.originalEvent.changedTouches && e.originalEvent.changedTouches[0] ? e.originalEvent.changedTouches[0].clientX : e.originalEvent.clientX,
         clientY: e.originalEvent.changedTouches && e.originalEvent.changedTouches[0] ? e.originalEvent.changedTouches[0].clientY : e.originalEvent.clientY,
       })
-
       this.lastAdded=null;
     },
     changed(e){
