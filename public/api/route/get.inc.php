@@ -36,7 +36,7 @@ if(isset($_GET['s'])) {
 			$result['current_slug'].='_'.$result['current_slug_number'];
 		}
 		unset($result['current_slug_number']);
-		$result['scene'] = json_decode($result['scene']);
+		$result['scene'] = json_decode((string)$result['scene']);
 		$response = $result;
 	} else {
 		$error = [404,'Not Found','No scene found'];
